@@ -27,7 +27,7 @@ A tag has three key components:
 
 If we wanted to run an experiment, using gpt with a 16k token max, we could create a tag, noting that our max tokens is 16k:
 
-Copy```
+```
 max_tokens_tag = pq.RunTag(key="Max Tokens", value="16k", tag_type=pq.TagType.GENERIC)
 max_tokens_tag = pq.RunTag(key="Max Tokens", value="16k", tag_type=pq.TagType.GENERIC)
 max_tokens_tag 
@@ -56,7 +56,7 @@ Prompt Run
 
 We can add tags to a simple Prompt run. For info on creating Prompt runs, see [Getting Started](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/getting-started)
 
-Copy```
+```
 pq.run(project_name='my_project_name',
 
 pq.run(project_name='my_project_name',
@@ -125,7 +125,7 @@ Prompt Sweep
 
 We can also add tags across a Prompt sweep, with multiple templates and/or models. For info on creating Prompt sweeps, see [Prompt Sweeps](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/prompt-sweeps)
 
-Copy```
+```
 pq.run_sweep(project_name='my_project_name',
 
 pq.run_sweep(project_name='my_project_name',
@@ -189,7 +189,7 @@ LangChain Callback
 
 We can even add tags, through the GalileoPromptCallback, to more complex chain runs, with LangChain. For info on using Prompt with chains, see [Using Prompt with Chains or multi-step workflows](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows)
 
-Copy```
+```
 pq.GalileoPromptCallback(project_name='my_project_name',
 
 pq.GalileoPromptCallback(project_name='my_project_name',

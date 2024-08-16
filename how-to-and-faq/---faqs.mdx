@@ -99,7 +99,7 @@ Questions
 
 Q: How do I install the Galileo Python client?
 
-Copy```
+```
 pip install dataquality
 pip install dataquality
 ```
@@ -153,7 +153,7 @@ Yes (glad you asked)! You can attach any metadata fields you'd like to your orig
 
 In all available logging functions for input data, you can attach custom metadata:
 
-Copy```
+```
 df = pd.DataFrame(
 
 df = pd.DataFrame(
@@ -272,7 +272,7 @@ log_dataset
 ])
 ```
 
-Copy```
+```
 texts = [
 
 texts = [
@@ -453,7 +453,7 @@ Q: How do I load a Galileo exported file for re-training?
 
 * * *
 
-Copy```
+```
 from datasets import Dataset, dataset_dict
 
 from datasets import Dataset, dataset_dict
@@ -587,7 +587,7 @@ Q: How do I get my NER data into huggingface format?
 
 * * *
 
-Copy```
+```
 import dataquality as dq
 
 import dataquality as dq
@@ -712,7 +712,7 @@ Q: **Importing dataquality throws a permissions error** `**PermissionError**`
 
 Galileo creates a folder in your system's <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> directory. If you are seeing a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">PermissionsError</code> it means that your system does not have access to your current <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> directory. This may happen in an automated CI system like AWS Glue. To overcome this, simply change your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> python Environment Variable to somewhere accessible. For example, the current directory you are in
 
-Copy```
+```
 import os
 
 import os
@@ -778,7 +778,7 @@ If you are training on datasets in the millions, and noticing that the Galileo p
 
 In order to leverage this feature, simply install <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataquality</code> with the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[cuda]</code> extra.
 
-Copy```
+```
 pip install 'dataquality[cuda]' --extra-index-url=https://pypi.nvidia.com/
 pip install 'dataquality[cuda]' --extra-index-url=https://pypi.nvidia.com/
 ```
@@ -791,7 +791,7 @@ After running that installation, dataquality will automatically pick up on the a
 
 To manually install these packages (at your own risk), you can run
 
-Copy```
+```
 pip install cuml-cu11 ucx-py-cu11 rmm-cu11 raft-dask-cu11 pylibraft-cu11 dask-cudf-cu11 cudf-cu11  --extra-index-url=https://pypi.nvidia.com/
 pip install cuml-cu11 ucx-py-cu11 rmm-cu11 raft-dask-cu11 pylibraft-cu11 dask-cudf-cu11 cudf-cu11  --extra-index-url=https://pypi.nvidia.com/
 ```

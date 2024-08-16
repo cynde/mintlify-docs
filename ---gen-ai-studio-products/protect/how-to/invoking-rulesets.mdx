@@ -18,7 +18,7 @@ Before invoking Protect, you need to create a project and a stage. This will be 
 
 To create a new project:
 
-Copy```
+```
 import galileo_protect as gp
 
 import galileo_protect as gp
@@ -43,7 +43,7 @@ create_project
 
 And to create a new stage thereafter:
 
-Copy```
+```
 stage = gp.create_stage(name="<stage_name>")
 
 stage = gp.create_stage(name="<stage_name>")
@@ -68,7 +68,7 @@ id
 
 If you want to add a stage to a pre-existing project, please also specify the project ID alongwith your stage creation request:
 
-Copy```
+```
 stage = gp.create_stage(name="<stage_name>", project_id="<project_id>")
 
 stage = gp.create_stage(name="<stage_name>", project_id="<project_id>")
@@ -102,7 +102,7 @@ Invocations
 
 At invocation time, you can either pass the project ID and stage name or the stage ID directly. These can be set as environment variables or passed directly to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">invoke</code> method as below.
 
-Copy```
+```
 response = gp.invoke(
 
 response = gp.invoke(
@@ -251,7 +251,7 @@ Logging Protect With Galileo Evaluate
 
 Protect blends nicely within your Galileo Evaluate experiments. To log protect data, you can use [custom chain logging](https://docs.rungalileo.io/galileo/gen-ai-studio-products/galileo-evaluate/integrating-evaluate-into-my-existing-application#custom-logging) as:
 
-Copy```
+```
 from promptquality import NodeRow
 
 from promptquality import NodeRow

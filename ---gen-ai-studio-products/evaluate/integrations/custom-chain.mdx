@@ -6,7 +6,7 @@ title: "Custom Chain"
 
 If you're not using an orchestration library, or using one other than Langchain, we also provide a similar interface for uploading your executions that do not use a callback mechanism. To log your runs with Galileo, you'd start with the same typical flow of logging into Galileo:
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -25,7 +25,7 @@ login
 
 Then, for each step of your sequence (or node in the chain), construct a [chain row](https://docs.rungalileo.io/galileo/python-clients/index/promptquality.types/promptquality.types.chains):
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow
@@ -79,7 +79,7 @@ ChainNodeType
 
 For example, you can log your retriever and llm node with the snippet below.
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow
@@ -392,7 +392,7 @@ We recommend you randomly generate _node\_id_ and _chain\_root\_id_ (e.g. uuid()
 
 When your execution completes, log that data to Galileo:
 
-Copy```
+```
 pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
 pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
 pq
@@ -429,7 +429,7 @@ If you are logging chains from <code class="py-[1px] px-1.5 min-w-[1.625rem] inl
 
 For custom chains, metadata values can be logged by dumping metadata along with page\_content as demonstrated below.
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow

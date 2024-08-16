@@ -14,7 +14,7 @@ In this example, we will demonstrate how to create a Galileo Evaluate run for a 
 
 Setup: Install Libraries
 
-Copy```
+```
 ! pip install promptquality
 
 ! pip install promptquality
@@ -68,7 +68,7 @@ For our RAG application, we will have the following pieces.
 *   Retriever: Chroma document retriever with k=3 docs
     
 
-Copy```
+```
 from langchain_openai import OpenAIEmbeddings
 
 from langchain_openai import OpenAIEmbeddings
@@ -292,7 +292,7 @@ Now we have the retriever, we can build our chain. The chain will:
 5.  Output and parse the answer from the model.
     
 
-Copy```
+```
 from langchain.prompts import ChatPromptTemplate
 
 from langchain.prompts import ChatPromptTemplate
@@ -520,7 +520,7 @@ Next, we will set our Galileo cluster url, API key, and project name in order to
 
 Finally, we can run our chain and configure a callback to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code> to log our results.
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq

@@ -10,7 +10,7 @@ A Chain Sweep allows you to execute, in bulk, multiple chains or workflows itera
 
 First, you'll need to wrap your workflow or chain in a function. This function should take anything you want to experiment with as an argument (e.g. chunk size, embedding model, top\_k).
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -345,7 +345,7 @@ finish
 
 Finally, call pq.sweep() with your chain's wrapper function and a dict containing all the different params you'd like to run your chain over:
 
-Copy```
+```
 pq.sweep(
 
 pq.sweep(

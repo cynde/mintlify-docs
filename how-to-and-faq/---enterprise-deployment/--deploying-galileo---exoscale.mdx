@@ -180,7 +180,7 @@ Deploying the SKS Cluster
 1.  **Create security groups**
     
 
-Copy```
+```
 exo compute security-group create sks-security-group
 
 exo compute security-group create sks-security-group
@@ -260,7 +260,7 @@ exo compute security-group rule add sks-security-group \
 1.  **Create SKS cluster**
     
 
-Copy```
+```
 exo compute sks create galileo \
 
 exo compute sks create galileo \
@@ -345,7 +345,7 @@ Deploy distributed block storage
 
 Longhorn is Open-Source Software that you can install inside your SKS cluster. Installation of Longhorn takes a few minutes, you need a SKS Cluster and access to this cluster via kubectl.
 
-Copy```
+```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/1.3.1/deploy/longhorn.yaml
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/1.3.1/deploy/longhorn.yaml
 ```

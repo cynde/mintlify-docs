@@ -12,7 +12,7 @@ First, npm install <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex jus
 
 Then add the following to your project:
 
-Copy```
+```
 import { ApiClient } from "@rungalileo/observe";
 
 import { ApiClient } from "@rungalileo/observe";
@@ -50,7 +50,7 @@ apiClient
 
 You can use this with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">getLoggedData</code> to retrieve the raw data.
 
-Copy```
+```
 // Optional
 
 // Optional
@@ -181,7 +181,7 @@ console
 
 You can use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">getMetrics</code> to get corresponding metrics.
 
-Copy```
+```
 const metrics = await apiClient.getMetrics(
 
 const metrics = await apiClient.getMetrics(
@@ -230,7 +230,7 @@ console
 
 First, see the [Quickstart guide](/galileo/gen-ai-studio-products/galileo-observe/getting-started) for installing galileo\_observe and using it in your project.
 
-Copy```
+```
 ...
 
 ...
@@ -254,7 +254,7 @@ MY_PROJECT_NAME)
 
 After logging some data to Galileo Observe, you can fetch rows and metrics like this:
 
-Copy```
+```
 filters = [{"col_name": "model", "operator": "eq", "value": "gpt-3.5-turbo"}]
 
 filters = [{"col_name": "model", "operator": "eq", "value": "gpt-3.5-turbo"}]
@@ -472,7 +472,7 @@ Authentication
 
 To fetch an authentication token, send a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">POST</code> request to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/login</code> with your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">username</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">password</code>:
 
-Copy```
+```
 import requests
 
 import requests
@@ -628,7 +628,7 @@ Project ID
 
 To log data, you'll need your project ID. Get your project ID by making a GET request to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/projects</code> endpoint, or simply copy it from the URL in your browser window. This project ID is static and will never change. You only have to do this once.
 
-Copy```
+```
 headers = {
 
 headers = {
@@ -730,7 +730,7 @@ Fetching all records
 
 To fetch a list of your records, make a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">POST</code> the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/observe/rows</code> endpoint:
 
-Copy```
+```
 headers = {
 
 headers = {
@@ -817,7 +817,7 @@ Fetching aggregate metrics
 
 To fetch a list of aggregate metrics bucketed over time, make a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">POST</code> request to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/observe/metrics/</code> endpoint:
 
-Copy```
+```
 headers = {
 
 headers = {

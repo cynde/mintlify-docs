@@ -32,7 +32,7 @@ Here's a list of the metrics supported today
     
 *   [**Correctness**](/galileo/gen-ai-studio-products/guardrail-store/factuality) - Measures whether the facts stated in the response are based on real facts. This metric requires additional LLM calls. Combined with Uncertainty, Factuality is a good way of uncovering Hallucinations.
     
-*   [**Context Relevance**](/galileo/gen-ai-studio-products/guardrail-store/context-relevance) - Measures how relevant the context provided was to the user query. This metric is intended for RAG users. This metric requires {context} and {query} slots in your data, as well as embeddings for them (i.e. {context\_embedding}, {query\_embedding}.
+*   [**Context Relevance**](/galileo/gen-ai-studio-products/guardrail-store/context-relevance) - Measures how relevant the context provided was to the user query. This metric is intended for RAG users. This metric requires {context} and {query} slots in your data, as well as embeddings for them (i.e. {context_embedding}, {query_embedding}.
     
 *   [**Private Identifiable Information**](/galileo/gen-ai-studio-products/guardrail-store/private-identifiable-information) **\-** This Guardrail Metric surfaces any instances of PII in your model's responses. We surface whether your text contains any credit card numbers, social security numbers, phone numbers, street addresses and email addresses.
     

@@ -18,7 +18,7 @@ Using scorers
 
 To use scorers during a prompt run, sweep, or even a more complex workflow, simply pass them in through the scorers argument:
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -49,7 +49,7 @@ Disabling default scorers
 
 By default, we turn on a few scorers for you (PII, Toxicity, BLEU, ROUGE). If you want to disable a default scorer you can pass in a ScorersConfiguration object.
 
-Copy```
+```
 pq.run(...,
 
 pq.run(...,
@@ -84,7 +84,7 @@ False
 
 You can even use the ScorersConfiguration to turn on other scorers, rather than using the scorers argument.
 
-Copy```
+```
 pq.run(..., scorers_config=pq.ScorersConfiguration(latency=False, groundedness=True))
 pq.run(..., scorers_config=pq.ScorersConfiguration(latency=False, groundedness=True))
 pq

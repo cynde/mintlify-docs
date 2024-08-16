@@ -24,7 +24,7 @@ To define a registered scorer, create a Python file that has at least 2 function
 
 1.  <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer_fn</code>: The scorer function is provided the row-wise inputs and is expected to generate outputs for each response. The expected signature for this function is:
     
-    Copy```
+    ```
     def scorer_fn(*, index: Union[int, str], response: str, **kwargs: Any) -> Union[float, int, bool, str, None]:
     
     def scorer_fn(*, index: Union[int, str], response: str, **kwargs: Any) -> Union[float, int, bool, str, None]:
@@ -82,7 +82,7 @@ To define a registered scorer, create a Python file that has at least 2 function
     
 2.  <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator_fn</code>: The aggregator function takes in an array of the row-wise outputs from your scorer and allows you to generate aggregates from those. The expected signature for the aggregator function is:
     
-    Copy```
+    ```
     def aggregator_fn(*, scores: List[Union[float, int, bool, str, None]]) -> Dict[str, Union[float, int, bool, str, None]]:
     
     def aggregator_fn(*, scores: List[Union[float, int, bool, str, None]]) -> Dict[str, Union[float, int, bool, str, None]]:
@@ -96,7 +96,7 @@ To define a registered scorer, create a Python file that has at least 2 function
     
 3.  (Optional, but recommended) <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">score_type</code>: The scorer_type function is used to define the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Type</code> of the score that your scorer generates. The expected signature for this function is:
     
-    Copy```
+    ```
     def score_type() -> Type[float] | Type[int] | Type[str] | Type[bool]:
     
     def score_type() -> Type[float] | Type[int] | Type[str] | Type[bool]:
@@ -138,7 +138,7 @@ To define a registered scorer, create a Python file that has at least 2 function
     
 4.  (Optional) <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scoreable_node_types_fn</code>: If you want to restrict your scorer to only run on specific node types, you can define this function which returns a list of node types that your scorer should run on. The expected signature for this function is:
     
-    Copy```
+    ```
     def scoreable_node_types_fn() -> List[str]:
     
     def scoreable_node_types_fn() -> List[str]:
@@ -169,7 +169,7 @@ Registering Your Scorer
 
 Once you've created your scorer file, you can register it with the name and the scorer file:
 
-Copy```
+```
 registered_scorer = pq.register_scorer(scorer_name="my-scorer", scorer_file="/path/to/scorer/file.py")
 registered_scorer = pq.register_scorer(scorer_name="my-scorer", scorer_file="/path/to/scorer/file.py")
 registered_scorer 
@@ -196,7 +196,7 @@ Using Your Registered Scorer
 
 To use your scorer during a prompt run (or sweep), simply pass it in alongside any of the other scorers:
 
-Copy```
+```
 pq.run(..., scorers=[registered_scorer])
 pq.run(..., scorers=[registered_scorer])
 pq
@@ -209,7 +209,7 @@ run
 
 If you created your registered scorer in a previous session, you can also just pass in the name to the scorer instead of the object as:
 
-Copy```
+```
 pq.run(..., scorers=["my-scorer"])
 pq.run(..., scorers=["my-scorer"])
 pq
@@ -233,7 +233,7 @@ For example, let's say we wanted to create a custom metric that measured the len
 1.  Create a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer.py</code> file:
     
 
-Copy```
+```
 from typing import List, Dict, Type
 
 from typing import List, Dict, Type
@@ -418,7 +418,7 @@ return
 
 1.  Register the scorer:
     
-    Copy```
+    ```
     pq.register_scorer("response_length", "scorer.py")
     pq.register_scorer("response_length", "scorer.py")
     pq
@@ -433,7 +433,7 @@ return
     
 2.  Use the scorer in your prompt run:
     
-    Copy```
+    ```
     pq.run(..., scorers=["response_length"])
     pq.run(..., scorers=["response_length"])
     pq
@@ -457,7 +457,7 @@ Execution Environment
 
 Your scorer will be executed in a Python 3.10 environment. The Python libraries available for your use are:
 
-Copy```
+```
 numpy~=1.26.4
 
 numpy~=1.26.4
@@ -690,7 +690,7 @@ For example, for that registered scorer we created to calculate response length,
 
 Note that the naming of the functions are different: they are <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]"><strong class="font-bold">executor</strong></code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]"><strong class="font-bold">aggregator</strong></code> instead of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer_fn</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator_fn</code>.
 
-Copy```
+```
 def executor(row) -> float:
 
 def executor(row) -> float:
@@ -794,7 +794,7 @@ aggregator)
 
 To register your scorer, you would just pass it through your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorers</code> parameter inside <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.run</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.run_sweep:</code>
 
-Copy```
+```
 template = "Explain {topic} to me like I'm a 5 year old"
 
 template = "Explain {topic} to me like I'm a 5 year old"

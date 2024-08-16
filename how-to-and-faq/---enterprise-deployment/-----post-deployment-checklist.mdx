@@ -18,7 +18,7 @@ Galileo will not set DNS records for your cluster and as such you need to set th
 
 If you are letting Galileo provision Let's Encrypt certificates for you automatically with cert-manager, it's important to make sure that all of cert-manager's http solvers have told Let's Encrypt to provision a certificate with all of the domains specified for the cluster (i.e. <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">api|console|data|grafana.my-cluster.my-domain.com</code> )
 
-Copy```
+```
 kubectl get ingress -n galileo | grep -i http-solver
 kubectl get ingress -n galileo | grep -i http-solver
 ```
@@ -31,7 +31,7 @@ When you run the above command, if you see no output, then the solvers should ha
 
 2\. Check the API's health-check.
 
-Copy```
+```
 curl -I -X GET https://api.<CLUSTER_SUBDOMAIN>.<CLUSTER_DOMAIN>/healthcheck
 curl -I -X GET https://api.<CLUSTER_SUBDOMAIN>.<CLUSTER_DOMAIN>/healthcheck
 ```
@@ -44,7 +44,7 @@ If the response is a 200, then this is a good sign that almost everything is up 
 
 3\. Check for unready pods.
 
-Copy```
+```
 kubectl get pods --all-namespaces -o go-template='{{ range  $item := .items }}{{ range .status.conditions }}{{ if (or (and (eq .type "PodScheduled") (eq .status "False")) (and (eq .type "Ready") (eq .status "False"))) }}{{ $item.metadata.name}} {{ end }}{{ end }}{{ end }}'
 kubectl get pods --all-namespaces -o go-template='{{ range  $item := .items }}{{ range .status.conditions }}{{ if (or (and (eq .type "PodScheduled") (eq .status "False")) (and (eq .type "Ready") (eq .status "False"))) }}{{ $item.metadata.name}} {{ end }}{{ end }}{{ end }}'
 ```
@@ -57,7 +57,7 @@ If any pods are in an unready state, especially in the namespace where the Galil
 
 4\. Check for pending persistent volume claims.
 
-Copy```
+```
 kubectl get pvc --all-namespaces | grep -i pending
 kubectl get pvc --all-namespaces | grep -i pending
 ```

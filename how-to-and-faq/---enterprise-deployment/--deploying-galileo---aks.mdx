@@ -175,7 +175,7 @@ standard
 
 Step 1: \[Optional\] Create a dedicated resource group for Galileo cluster
 
-Copy```
+```
 az group create --name galileo --location eastus
 az group create --name galileo --location eastus
 ```
@@ -186,7 +186,7 @@ az group create --name galileo --location eastus
 
 Step 2: Provision an AKS cluster
 
-Copy```
+```
 az aks create -g galileo -n galileo --enable-managed-identity --node-count 4 --max-count 7 --min-count 4 -s Standard_D4_v4 --nodepool-name gcore --nodepool-labels "galileo-node-type=galileo-core" --enable-cluster-autoscaler
 az aks create -g galileo -n galileo --enable-managed-identity --node-count 4 --max-count 7 --min-count 4 -s Standard_D4_v4 --nodepool-name gcore --nodepool-labels "galileo-node-type=galileo-core" --enable-cluster-autoscaler
 ```
@@ -197,7 +197,7 @@ az aks create -g galileo -n galileo --enable-managed-identity --node-count 4 --m
 
 Step 3: Add Galileo Runner nodepool
 
-Copy```
+```
 Az aks nodepool add -g galileo -n grunner --cluster-name galileo --node-count 1 --max-count 5 --min-count 1 --node-count 1 -s Standard_D8_v4 --labels "galileo-node-type=galileo-runner" --enable-cluster-autoscaler
 Az aks nodepool add -g galileo -n grunner --cluster-name galileo --node-count 1 --max-count 5 --min-count 1 --node-count 1 -s Standard_D8_v4 --labels "galileo-node-type=galileo-runner" --enable-cluster-autoscaler
 ```
@@ -208,7 +208,7 @@ Az aks nodepool add -g galileo -n grunner --cluster-name galileo --node-count 1 
 
 Step 4: Get cluster credentials
 
-Copy```
+```
 az aks get-credentials --resource-group galileo --name galileo
 az aks get-credentials --resource-group galileo --name galileo
 ```
@@ -219,7 +219,7 @@ az aks get-credentials --resource-group galileo --name galileo
 
 Step 5: Apply Galileo manifest
 
-Copy```
+```
 kubectl apply -f galileo.yaml
 kubectl apply -f galileo.yaml
 ```

@@ -40,7 +40,7 @@ Your body should contain:
 
 You'll need the ID of your project to create and log runs.
 
-Copy```
+```
 async function createProject() {
 
 async function createProject() {
@@ -336,7 +336,7 @@ Your body should contain:
 
 You'll need the ID of your run to ingest rows.
 
-Copy```
+```
 async function createRun(projectID, runName) {
 
 async function createRun(projectID, runName) {
@@ -596,7 +596,7 @@ Your body will include two things:
 *   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prompt_scorers_configuration</code>: A dictionary of metrics or scorers to compute as part of your run. E.g.
     
 
-Copy```
+```
 prompt_scorers_config = {       
 
 prompt_scorers_config = {       
@@ -644,7 +644,7 @@ How to structure `rows`:
 
 For each data point in your eval set, you can log a series of _NodeRows_ to represent the steps taken in your workflow. A NodeRow has the following fields:
 
-Copy```
+```
 node_id: A unique ID (more on this below)
 
 node_id: A unique ID (more on this below)
@@ -712,7 +712,7 @@ Each node has 3 IDs that help create the hierarchy of the graph:
 
 These fields establish the hierarchy and allow you to trace your executions. Imagine the following system architecture represented as a DAG:
 
-Copy```
+```
 ├── Agent
 
 ├── Agent
@@ -731,7 +731,7 @@ Copy```
 
 Here's how the IDs would look for this DAG.
 
-Copy```
+```
 ├── Agent (id = foo)
 
 ├── Agent (id = foo)
@@ -750,7 +750,7 @@ Copy```
 
 If a Node has children, set <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">has_children</code> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">true</code>.
 
-Copy```
+```
 const rows = [{
 
 const rows = [{
@@ -1133,7 +1133,7 @@ It's recommended you generate _node\_id_ and _chain\_root\_id_ (e.g. uuid()) and
 
 Once you've created your rows, you can log them via the /ingest endpoint:
 
-Copy```
+```
 
 
 

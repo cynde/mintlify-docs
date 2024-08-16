@@ -20,7 +20,7 @@ While using auto with default settings is as simple as running <code class="py-[
 
 Example
 
-Copy```
+```
 from dataquality.integrations.seq2seq.auto import auto
 
 from dataquality.integrations.seq2seq.auto import auto
@@ -195,7 +195,7 @@ Given either a pandas dataframe, local file path, or huggingface dataset path, t
 
 One of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">hf_data</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train_path</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train_data</code> should be provided.
 
-Copy```
+```
 from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
 
 from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
@@ -304,7 +304,7 @@ Training Config
 
 Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqTrainingConfig()</code> class to set the training parameters for auto training.
 
-Copy```
+```
 from dataquality.integrations.seq2seq.schema import Seq2SeqTrainingConfig
 
 from dataquality.integrations.seq2seq.schema import Seq2SeqTrainingConfig
@@ -394,7 +394,7 @@ Generation Config
 
 Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqGenerationConfig()</code> class to set the training parameters for auto training.
 
-Copy```
+```
 from dataquality.integrations.seq2seq.schema import Seq2SeqGenerationConfig
 
 from dataquality.integrations.seq2seq.schema import Seq2SeqGenerationConfig
@@ -473,7 +473,7 @@ Examples
 
 An example using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code> with a hosted huggingface summarization dataset
 
-Copy```
+```
 import dataquality.integrations.seq2seq.auto as auto
 
 import dataquality.integrations.seq2seq.auto as auto
@@ -505,7 +505,7 @@ auto
 
 An example of using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code> with a local jsonl file
 
-Copy```
+```
 import dataquality.integrations.seq2seq.auto as auto
 
 import dataquality.integrations.seq2seq.auto as auto
@@ -638,7 +638,7 @@ dataset_config,
 
 Where <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train.jsonl</code> might be a file with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prompt</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">completion</code> columns that looks like:
 
-Copy```
+```
 {"prompt": "Write a short story about a curious cat.", "completion": "Once upon a time, in a small town, there lived a curious cat named Whiskers. Whiskers was known for exploring every nook and cranny, always on the lookout for adventure."}
 
 {"prompt": "Write a short story about a curious cat.", "completion": "Once upon a time, in a small town, there lived a curious cat named Whiskers. Whiskers was known for exploring every nook and cranny, always on the lookout for adventure."}

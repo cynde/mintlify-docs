@@ -20,7 +20,7 @@ Creating a Stage
 
 To create a stage, you can use the following code snippet:
 
-Copy```
+```
 import galileo_protect as gp
 
 import galileo_protect as gp
@@ -39,7 +39,7 @@ gp.create_stage(name="my first stage", project_id="<project_id>", description="T
 
 If you're using central stages, we recommend including the ruleset definitions during stage creation. This way, you can manage the rulesets centrally and update them without changing the invocation code.
 
-Copy```
+```
 import galileo_protect as gp
 
 import galileo_protect as gp
@@ -197,7 +197,7 @@ Subscribing to Events for Actions
 
 Actions include configuration for subscriptions which can be set to event destinations (like webhooks) to HTTP POST requests notifications are sent when the ruleset is triggered. Subscriptions can be configured in actions of any type as:
 
-Copy```
+```
 "action": {
 
 "action": {
@@ -259,7 +259,7 @@ Copy```
 
 By default, notifications are sent to the subscription when they are triggered, but notifications can be sent based on any of the execution statuses. In the below example, notifications will be sent to the specified webhook if there's an error or the ruleset is not triggered.
 
-Copy```
+```
 "action": {
 
 "action": {
@@ -331,7 +331,7 @@ Copy```
 
 The subscribers are sent HTTP POST requests with a payload that matches the [response from the Protect invocation](https://protect.docs.rungalileo.io/#galileo_protect.Response) and is of schema:
 
-Copy```
+```
 {
 
 {

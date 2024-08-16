@@ -51,7 +51,7 @@ To authenticate Galileo, perform the following steps
 1.  Add your Galileo Console URL (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GALILEO_CONSOLE_URL</code>) to your environment variables.
     
 
-Copy```
+```
 import os
 
 import os
@@ -82,7 +82,7 @@ environ
 1.  Set your user name and password OR your **API key** (recommended) to your environment variables
     
 
-Copy```
+```
 import os
 
 import os
@@ -171,7 +171,7 @@ PythonTypescript
 
 Integrating into your Python-based Langchain application is the easiest and recommended route. You can just add <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoObserveCallback(project_name="YOUR_PROJECT_NAME")</code> to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">callbacks</code> of your chain invocation.
 
-Copy```
+```
 from galileo_observe import GalileoObserveCallback
 
 from galileo_observe import GalileoObserveCallback
@@ -277,7 +277,7 @@ The GalileoObserveCallback logs your input, output, and relevant statistics back
 
 Integrating into your Typescript-based Langchain application is a very simple process. You can just add a<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoObserveCallback</code> object to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">callbacks</code> of your chain invocation.
 
-Copy```
+```
 import { GalileoObserveCallback } from "@rungalileo/observe";
 
 import { GalileoObserveCallback } from "@rungalileo/observe";
@@ -316,9 +316,9 @@ observe_callback
 ();
 ```
 
-Add the callback <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{callbacks: [observe_callback]}</code> in the invoke step of your application:
+Add the callback <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{[observe_callback]}</code> in the invoke step of your application:
 
-Copy```
+```
 const result = await chain.invoke(
 
 const result = await chain.invoke(
@@ -364,7 +364,7 @@ If you're not using LangChain, you can use our Python Logger to log your data to
 
 Use the **log\_node\_start()** and **log\_node\_completion()** to log your prompt, model, hyperparameters and response respectively, as shown below:
 
-Copy```
+```
 import json
 
 import json

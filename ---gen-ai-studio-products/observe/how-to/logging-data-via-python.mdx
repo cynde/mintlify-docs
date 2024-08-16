@@ -12,7 +12,7 @@ You can use our Python Logger to log your data to Galileo. The Logger automatica
 
 Use the **log\_node\_start()** and **log\_node\_completion()** to log the beginning and end of each step:
 
-Copy```
+```
 import json
 
 import json
@@ -434,7 +434,7 @@ We support logging the following types of nodes: “llm”, “chat”, “chain
 *   Retriever nodes represent your retrievers. To log the output of your retriever, stringify your chunks when logging them as the output of your retriever:
     
 
-Copy```
+```
 example_retriever_output= [
 
 example_retriever_output= [
@@ -537,7 +537,7 @@ When logging a multi-step workflow or chain, each step in your workflow will be 
 
 When you have multiple steps, wrap your steps in a "chain" or "agent" node. Your sub-steps will be children of that node.
 
-Copy```
+```
 # Start a parent chain
 
 # Start a parent chain

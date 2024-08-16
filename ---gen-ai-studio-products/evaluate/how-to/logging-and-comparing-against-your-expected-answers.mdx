@@ -32,7 +32,7 @@ If you're using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justif
 
 If you're logging your runs via pq.chain\_run(), add your expected output in the _target_ field of the root NodeRow of each test.
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow
@@ -196,7 +196,7 @@ Important note: Set the _Target_ on the root node of your workflow. Typically th
 
 If you're using a Langchain Callback, add your expected output by calling <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">add_targets</code> on your callback handler.
 
-Copy```
+```
 my_chain = ... # your langchain chain
 
 my_chain = ... # your langchain chain
@@ -316,7 +316,7 @@ finish
 
 If you're logging Evaluation runs via the [REST endpoint](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/log-evaluate-runs-via-rest-apis), set the _target_ field in the root node of each workflow.
 
-Copy```
+```
 ...    
 
 ...    

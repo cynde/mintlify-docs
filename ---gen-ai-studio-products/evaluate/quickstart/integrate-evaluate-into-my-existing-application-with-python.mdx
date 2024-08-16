@@ -27,7 +27,7 @@ Before creating a run, you'll want to make sure you have an evaluation set (a se
 
 First, we are going to construct a simple RAG chain with Galileo's documentations stored in a vectorDB using Langchain:
 
-Copy```
+```
 from langchain.embeddings import OpenAIEmbeddings
 
 from langchain.embeddings import OpenAIEmbeddings
@@ -375,7 +375,7 @@ StrOutputParser
 
 Next, you can log in with Galileo:
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -394,7 +394,7 @@ login
 
 After that, you can set up the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code>:
 
-Copy```
+```
 from promptquality import Scorers
 
 from promptquality import Scorers
@@ -477,7 +477,7 @@ scorers,
 
 Finally, you can run the chain experiments across multiple intputs with Galileo Callback:
 
-Copy```
+```
 inputs = [
 
 inputs = [
@@ -550,7 +550,7 @@ For more detailed information on Galileo's Langchain integration, check out inst
 
 If you're not using an orchestration library, or using one other than Langchain, we also provide a similar interface for uploading your executions that do not use a callback mechanism.
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq

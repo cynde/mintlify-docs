@@ -248,14 +248,14 @@ Consider this example, from a dataset related to Covid-19 that we use internally
 
 An LLM was given a set of documents describing medical studies, and asked
 
-Copy```
+```
 What important risk factors to infection were found during the second case-controlled study?
 What important risk factors to infection were found during the second case-controlled study?
 ```
 
 It responded:
 
-Copy```
+```
 The important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use.
 The important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use.
 ```
@@ -264,7 +264,7 @@ As it happened, this response was _not_ consistent with the documents. Although 
 
 **Galileo** **Context Adherence** caught this error, assigning the response a score of 0. Here is one of the chain-of-thought explanations it produced:
 
-Copy```
+```
 The response claims that the important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use. 
 
 The response claims that the important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use. 
@@ -281,7 +281,7 @@ But **RAGAS Faithfulness** assigns this response a score of 1.0 (perfect).
 
 To see what went wrong, let's review the 4 statements that RAGAS generated from the response, and its generated reasoning for why each one was consistent.
 
-Copy```
+```
 Statement 1/4
 
 Statement 1/4
@@ -489,14 +489,14 @@ ChainPoll handles these cases gracefully: it assesses them like any other answer
 
 The LLM response was
 
-Copy```
+```
 The provided context does not contain information about where the email was published. Therefore, it is not possible to determine where the email was published based on the given passages.
 The provided context does not contain information about where the email was published. Therefore, it is not possible to determine where the email was published based on the given passages.
 ```
 
 The **Galileo Context Adherence** score was 1, with an explanation of
 
-Copy```
+```
 The provided documents contain titles and passages that do not mention the publication details of an email. Document 1 lists an 'Email address' under the passage, but provides no information about the publication of an email. Documents 2, 3, and 4 describe the coverage of the Ebola Virus Disease outbreak and mention various countries and aspects of newspaper writings, but do not give any details about where an email was published. Hence, the context from these documents does not contain the necessary information to answer the question regarding the publication location of the email. The response from the large language model accurately reflects this lack of information.
 The provided documents contain titles and passages that do not mention the publication details of an email. Document 1 lists an 'Email address' under the passage, but provides no information about the publication of an email. Documents 2, 3, and 4 describe the coverage of the Ebola Virus Disease outbreak and mention various countries and aspects of newspaper writings, but do not give any details about where an email was published. Hence, the context from these documents does not contain the necessary information to answer the question regarding the publication location of the email. The response from the large language model accurately reflects this lack of information.
 ```
@@ -551,7 +551,7 @@ Instead, it is merely asked to give a direct quotation from the context, then (s
 
 For example, here's what TruLens produces for the _second case-controlled study_ example we reviewed above with RAGAS:
 
-Copy```
+```
 Statement Sentence: The important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use. 
 
 Statement Sentence: The important risk factors to infection found during the second case-controlled study were hospitalization in the preceding 90 days, residency in a nursing home, and antibiotic use. 
@@ -616,14 +616,14 @@ In our testing, we noticed that TruLens Groundedness would often generate strang
 
 Here's one example. The response was
 
-Copy```
+```
 Bacilius subtilis can be used as an oral vaccine by expressing the COE antigen of PEDV and delivering it to the GI tract to stimulate mucosal immune responses. It can protect antigens from the harsh digestive environment and enhance immune regulation and gut health in newborn piglets. Additionally, it has adjuvant activity and can deliver heterologous antigens to the GI tract, providing additional immunity stimulation.
 Bacilius subtilis can be used as an oral vaccine by expressing the COE antigen of PEDV and delivering it to the GI tract to stimulate mucosal immune responses. It can protect antigens from the harsh digestive environment and enhance immune regulation and gut health in newborn piglets. Additionally, it has adjuvant activity and can deliver heterologous antigens to the GI tract, providing additional immunity stimulation.
 ```
 
 There are 3 sentences here. TruLens is supposed to assign a score to each one, together with a supporting quotation. But here is what it actually produced:
 
-Copy```
+```
 STATEMENT 0:
 
 STATEMENT 0:

@@ -8,7 +8,7 @@ If you already have a dataset of requests and application responses, and you wan
 
 First, log in via pq.login()
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -27,7 +27,7 @@ login
 
 Then, for each request/response in your eval set, construct a [node row](https://promptquality.docs.rungalileo.io/#promptquality.NodeRow):
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow
@@ -178,7 +178,7 @@ d[
 
 Finally, log your NodeRows to Galileo and specify the list of metrics you'd like to compute for this run:
 
-Copy```
+```
 pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
 pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
 pq
@@ -241,7 +241,7 @@ RAG workflows
 
 To log and recreate a RAG workflow, log your retriever steps, and your LLM steps separately. This will enable Galileo to compute RAG metrics and inspect the documents or chunks returned. <strong class="font-bold">Importantly, also add both of these nodes as children of a</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">'chain'</code> <strong class="font-bold">NodeRow.</strong>
 
-Copy```
+```
 from promptquality import NodeType, NodeRow
 
 from promptquality import NodeType, NodeRow

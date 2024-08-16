@@ -10,7 +10,7 @@ Once your model is in production, it is essential to monitor its health:
 
 Production data monitoring with Galileo
 
-> _Is there training<>production data drift? What unlabeled data should I select for my next training run? Is the model confidence dropping on an existing class in production? ..._
+> Is there training production data drift? What unlabeled data should I select for my next training run? Is the model confidence dropping on an existing class in production?
 
 To answer the above questions and more with Galileo, you will need:
 
@@ -49,7 +49,7 @@ Follow our [**example notebook with Pytorch**](https://colab.research.google.com
 
 After building and training a model, inference allows us to run that model on unseen data, such as deploying that model in production. In text classification, given an unseen set of documents, the task is to predict (as correctly as possible) the class of that document based on the data seen during training.
 
-Copy```
+```
 input = "Perfectly works fine after 10 years, would highly recommend. Great buy!!"
 
 input = "Perfectly works fine after 10 years, would highly recommend. Great buy!!"
@@ -72,7 +72,7 @@ Log your inference dataset. Galileo will join these samples with the model's out
 
 PyTorch
 
-Copy```
+```
 import torch
 
 import torch
@@ -347,7 +347,7 @@ Log model outputs from within your model's forward function.
 
 PyTorch
 
-Copy```
+```
 import torch
 
 import torch
@@ -600,7 +600,7 @@ Note: If you're extending a current training run, the <code class="py-[1px] px-1
 
 PyTorch
 
-Copy```
+```
 import numpy as np
 
 import numpy as np

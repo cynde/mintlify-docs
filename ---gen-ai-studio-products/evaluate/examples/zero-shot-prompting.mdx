@@ -16,7 +16,7 @@ Setup: Install Library and Set Up Variables
 
 We will use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code>, the Python client to interact with Galileo’s GenAI Studio: Evaluate.
 
-Copy```
+```
 ! pip install promptquality
 ! pip install promptquality
 !
@@ -30,7 +30,7 @@ promptquality
 
 Next, we will set our Galileo cluster url, API key, and project name in order to define where we want to log our results.
 
-Copy```
+```
 import os
 
 import os
@@ -139,7 +139,7 @@ We will be using (a subsample of) HotpotQA, a public Q&A dataset with question, 
 
 In lieu of evaluating model responses against the ground truths, we can leverage Galileo's metrics to gauge hallucinations.
 
-Copy```
+```
 import urllib.request
 
 import urllib.request
@@ -367,7 +367,7 @@ Define our Classification Pipeline
 
 We will use a checkpoint for bart-large that has been trained on the MultiNLI (MNLI) dataset, which is a dataset of sentence pairs annotated with textual entailment information. This makes it ideal as an off-the-shelf zero-shot topic classification model.
 
-Copy```
+```
 from transformers import pipeline
 
 from transformers import pipeline
@@ -429,7 +429,7 @@ In this example, I want to publish both the top topic and its score, so my <code
 
 When we invoke our run, the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> will be computed within your Python runtime / notebook / application.
 
-Copy```
+```
 import ast
 
 import ast
@@ -586,7 +586,7 @@ Finally, we will define the metrics we are interested in (Galileo's metrics) as 
 
 We will also define our prompt template with placeholders <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{context}</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{question}.</code> These will be replaced by values with the same keys in our <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataset</code>.
 
-Copy```
+```
 metrics = [
 
 metrics = [

@@ -16,7 +16,7 @@ What do I do with Conditions?
 
 You can build a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Run Report</code> that will evaluate all conditions after a run is processed.
 
-Copy```
+```
 import dataquality as dq
 
 import dataquality as dq
@@ -103,7 +103,7 @@ register_run_report
 
 You can also build and evaluate conditions by accessing the processed DataFrame.
 
-Copy```
+```
 from dataquality import Condition
 
 from dataquality import Condition
@@ -165,7 +165,7 @@ A <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items
 
 \`\`\`
 
-Copy```
+```
 class Condition:
 
 class Condition:
@@ -222,7 +222,7 @@ None
 
 To gain an intuition for what can be accomplished, consider the following examples:
 
-Copy```
+```
 1. Is the average confidence less than 0.3?
 
 1. Is the average confidence less than 0.3?
@@ -285,7 +285,7 @@ Copy```
 
 By adding filters, you can further narrow down the scope of the condition. If the aggregate function is "pct", you don't need to specify a metric, as the filters will determine the percentage of data.
 
-Copy```
+```
 3. Alert if over 80% of the dataset has confidence under 0.1
 
 3. Alert if over 80% of the dataset has confidence under 0.1
@@ -428,7 +428,7 @@ Copy```
 
 Complex conditions can be built when the filter has a different metric than the metric used in the condition.
 
-Copy```
+```
 6. Alert if the min confidence of drifted data is less than 0.15
 
 6. Alert if the min confidence of drifted data is less than 0.15
@@ -539,7 +539,7 @@ Copy```
 
 You can also call conditions directly, which will assert its truth against a DataFrame.
 
-Copy```
+```
 1. Assert that average confidence less than 0.3
 
 1. Assert that average confidence less than 0.3
@@ -578,7 +578,7 @@ Copy```
 
 Aggregate Function
 
-Copy```
+```
 from dataquality import AggregateFunction
 from dataquality import AggregateFunction
 from
@@ -589,7 +589,7 @@ import
 
 The available aggregate functions are:
 
-Copy```
+```
 class AggregateFunction(str, Enum):
 
 class AggregateFunction(str, Enum):
@@ -655,7 +655,7 @@ sum
 
 Operator
 
-Copy```
+```
 from dataquality import Operator
 from dataquality import Operator
 from
@@ -666,7 +666,7 @@ import
 
 The available operators are:
 
-Copy```
+```
 class Operator(str, Enum):
 
 class Operator(str, Enum):

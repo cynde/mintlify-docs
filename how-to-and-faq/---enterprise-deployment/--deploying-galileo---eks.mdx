@@ -87,7 +87,7 @@ Step 0: (Optional) Deploying via AWS CloudShell
 
 To use <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://eksctl.io/introduction/#installation"><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">eksctl</code></a> via CloudShell in the AWS console, open a CloudShell session and do the following:
 
-Copy```
+```
 # Create directory
 
 # Create directory
@@ -309,7 +309,7 @@ Step 1: Creating Roles and Policies for the Cluster
 *   <strong class="font-bold">Galileo IAM Policy:</strong> This policy is attached to the Galileo IAM Role. Add the following to a file called <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo-policy.json</code>
     
 
-Copy```
+```
 {
 
 {
@@ -365,7 +365,7 @@ Copy```
 *   <strong class="font-bold">Galileo IAM Trust Policy:</strong> This trust policy enables an external Galileo user to assume your Galileo IAM Role to deploy changes to your cluster securely. Add the following to a file called <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo-trust-policy.json</code>
     
 
-Copy```
+```
 {
 
 {
@@ -429,7 +429,7 @@ Copy```
 *   <strong class="font-bold">Galileo IAM Role with Policy:</strong> Role should only include the Galileo IAM Policy mentioned in this table. Create a file called <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">create-galileo-role-and-policies.sh</code>, make it executable with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">chmod +x create-galileo-role-and-policies.sh</code> and run it. Make sure to run in the same directory as the json files created in the above steps.
     
 
-Copy```
+```
 #!/bin/sh -ex
 
 #!/bin/sh -ex
@@ -464,7 +464,7 @@ With the role and policies created, the cluster itself can be deployed in a sing
 
 With the yaml file saved, run the following command to deploy the cluster:
 
-Copy```
+```
 eksctl create cluster -f galileo-cluster.yaml
 eksctl create cluster -f galileo-cluster.yaml
 ```
@@ -477,7 +477,7 @@ Step 3: EKS IAM Identity Mapping
 
 This ensures that only users who have access to this role can deploy changes to the cluster. Account owners can also make changes. This is easy to do with [eksctl](https://eksctl.io/usage/iam-identity-mappings/) with the following command:
 
-Copy```
+```
 eksctl create iamidentitymapping
 
 eksctl create iamidentitymapping
@@ -735,7 +735,7 @@ Creating a GPU-enabled Node Pool
 
 1.  <strong class="font-bold">Node Pool Creation</strong>: Use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">eksctl</code> to create a node pool with an Amazon Machine Image (AMI) that supports GPUs. This example uses the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">g4dn.2xlarge</code> instances and specifies a GPU-compatible AMI.
     
-    Copy```
+    ```
     eksctl create nodegroup --cluster your-cluster-name --name galileo-ml --node-type g4dn.2xlarge --nodes-min 1 --nodes-max 5 --node-ami ami-0656ebce2c7921ec0 --node-labels "galileo-node-type=galileo-ml" --region your-region-id
     eksctl create nodegroup --cluster your-cluster-name --name galileo-ml --node-type g4dn.2xlarge --nodes-min 1 --nodes-max 5 --node-ami ami-0656ebce2c7921ec0 --node-labels "galileo-node-type=galileo-ml" --region your-region-id
     ```
@@ -878,7 +878,7 @@ true
 *   <strong class="font-bold">Kubernetes resources:</strong> Add the following to a file called <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo-rds-details.yaml</code>. Update all marker ${xxx} text with appropriate values. Then run <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl apply -f galileo-rds-details.yaml</code>
     
 
-Copy```
+```
 ---
 
 ---

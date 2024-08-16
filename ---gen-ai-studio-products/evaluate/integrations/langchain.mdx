@@ -10,7 +10,7 @@ Galileo supports the logging of chains from <code class="py-[1px] px-1.5 min-w-[
 
 For logging your data, first login:
 
-Copy```
+```
 import promptquality as pq
 
 import promptquality as pq
@@ -29,7 +29,7 @@ login
 
 After that, you can set up the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code>:
 
-Copy```
+```
 from promptquality import Scorers
 
 from promptquality import Scorers
@@ -116,7 +116,7 @@ When you execute your chain (with <code class="py-[1px] px-1.5 min-w-[1.625rem] 
 
 If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.run()</code>:
 
-Copy```
+```
 chain.run(<inputs>, callbacks=[galileo_handler])
 chain.run(<inputs>, callbacks=[galileo_handler])
 chain
@@ -133,7 +133,7 @@ inputs
 
 If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.invoke()</code>:
 
-Copy```
+```
 chain.invoke(inputs, config=dict(callbacks=[galileo_handler]))
 chain.invoke(inputs, config=dict(callbacks=[galileo_handler]))
 chain
@@ -149,7 +149,7 @@ dict
 
 If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.batch()</code>:
 
-Copy```
+```
 .batch(..., config=dict(callbacks=[galileo_handler]))
 .batch(..., config=dict(callbacks=[galileo_handler]))
 .
@@ -164,7 +164,7 @@ dict
 
 **Important**: Once you complete executing for your dataset, tell Galileo the run is complete by:
 
-Copy```
+```
 galileo_handler.finish()
 galileo_handler.finish()
 galileo_handler
