@@ -1,0 +1,119 @@
+---
+title: "  Sso Integration"
+---
+
+# 🔑SSO Integration
+
+This page covers our SSO Integration support with steps we need for integration
+
+### 
+
+[](#single-sign-on)
+
+Single Sign on
+
+Galileo provides Single Sign-on capabilities for various providers using the OIDC protocol. See details below for how to configure each provider.
+
+<table class="w-full grid-area-1-1 table-auto"><tbody class="[&amp;&gt;*+*]:border-t"><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Okta</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Azure Active Directory</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">PingFederate</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Google</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Github</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Custom OIDC provider</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">OIDC</p></div></div></td></tr></tbody></table>
+
+If your provider is not listed above, additional SSO providers can be added on-demand as per customer requirements.
+
+### 
+
+[](#setting-up-sso-with-galileo)
+
+Setting Up SSO with Galileo
+
+#### 
+
+[](#google)
+
+Google
+
+1.  Follow [this guide](https://support.google.com/cloud/answer/6158849?hl=en#zippy=) to set up **OAuth credentials**. **User Type** is **Internal**, **Scopes** are **.../auth/userinfo.profile** and **openid**, **Authorized domains** is your domain for Galileo console.
+    
+2.  When creating new client ID, set <strong class="font-bold">type</strong> to <strong class="font-bold">Web application</strong>, set <strong class="font-bold">Authorized redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}/api/auth/callback/google</code>
+    
+3.  Share **Client ID** and **Client Secret** with Galileo
+    
+
+#### 
+
+[](#okta)
+
+Okta
+
+1.  Follow [this guide](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm) to create a new application. Select **OIDC - OpenID Connect** as the **Sign-in method**, **Web Application** as the application type, **Authorization Code** as the **Grant Type**
+    
+2.  Set <strong class="font-bold">Sign-in redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}/api/auth/callback/okta</code>, and <strong class="font-bold">Sign-out redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}</code>.
+    
+3.  Share **Issuer URL**, **Client ID** and **Client Secret** with Galileo
+    
+    1.  Find <strong class="font-bold">Issuer URL</strong> in Security -&gt; API in admin panel. Audience should be <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">api://default</code>
+        
+    
+
+#### 
+
+[](#microsoft-entra-id-azure-active-directory)
+
+Microsoft Entra ID (Azure Active Directory)
+
+1.  Follow <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app">this guide</a> to create a new application. Under <strong class="font-bold">Redirect URI</strong>, set type to <strong class="font-bold">Web</strong> and URI to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}/api/auth/callback/azure-ad</code>
+    
+2.  Go to **Token configuration** page, **Add Optional Claim**, choose **ID** token and **email** claim.
+    
+    1.  Please ensure each user has the **email** set in the **Contact Information** properties. We will use this email as the account on Galileo.
+        
+    
+3.  Go to **Certificates & secrets** page, click **New Client Secret** and create a new secret.
+    
+4.  Share the **Tenant ID**, **Client ID** and **Client Secret** with Galileo
+    
+
+#### 
+
+[](#pingfederate)
+
+PingFederate
+
+1.  Follow [this guide](https://docs.pingidentity.com/r/en-us/pingone/pingone_edit_application_oidc) to create an application with Application Type **OIDC Web App**
+    
+2.  Go to app <strong class="font-bold">configuration</strong> page, edit it by setting <strong class="font-bold">Redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}/api/auth/callback/ping-federate</code>
+    
+3.  Share the **Environment ID**, **Client ID** and **Client Secret** with Galileo
+    
+
+#### 
+
+[](#custom-oidc-provider)
+
+Custom OIDC Provider
+
+1.  Create an application/client with **OIDC** as the protocol, **Web Application** as the application type, **Authorization Code** as the Grant Type
+    
+2.  Set <strong class="font-bold">Sign-in redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}/api/auth/callback/custom</code>, and <strong class="font-bold">Sign-out redirect URIs</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}</code> , <strong class="font-bold">Web origins</strong> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{CONSOLE_URL}</code>
+    
+3.  Create a **Client Secret**
+    
+4.  Share all these with Galileo:
+    
+    1.  CLIENT\_ID
+        
+    2.  CLIENT\_SECRET
+        
+    3.  TOKEN_URL (like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{BASE_URL}/token</code>)
+        
+    4.  USERINFO_URL (like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{BASE_URL}/userinfo</code>)
+        
+    5.  ISSUER
+        
+    6.  JWKS_URL (like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{BASE_URL}/certs</code>)
+        
+    7.  AUTHORIZATION_URL (like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">https://{BASE_URL}/auth?response_type=code</code>)
+        
+    
+
+[PreviousGCP velero account setup script](/galileo/how-to-and-faq/enterprise-only/scheduling-automatic-backups-for-your-cluster/gcp-velero-account-setup-script)[NextSecurity & Access Control](/galileo/how-to-and-faq/enterprise-only/security-and-access-control)
+
+Last updated 1 month ago

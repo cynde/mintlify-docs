@@ -1,0 +1,318 @@
+---
+title: "Invoking Rulesets"
+---
+
+# Invoking Rulesets
+
+To protect your application from malicious or offensive inputs as well as bad or hallucinatory responses, you need to add Galileo Protect to your application code. You'll need to _invoke_ Protect whenever there's an input or output you want to validate.
+
+You might choose to run multiple validations on different _stages_ of your workflow (e.g. once when you get the query from your user, another time once the model has generated a response for the given task).
+
+## 
+
+[](#projects-and-stages)
+
+Projects and Stages
+
+Before invoking Protect, you need to create a project and a stage. This will be used to associate your invocations and organize them.
+
+To create a new project:
+
+Copy```
+import galileo_protect as gp
+
+import galileo_protect as gp
+
+import
+ galileo_protect 
+as
+ gp
+
+
+
+
+gp.create_project("<project_name>")
+gp.create_project("<project_name>")
+gp
+.
+create_project
+(
+"<project_name>"
+)
+```
+
+And to create a new stage thereafter:
+
+Copy```
+stage = gp.create_stage(name="<stage_name>")
+
+stage = gp.create_stage(name="<stage_name>")
+
+stage 
+=
+ gp
+.
+create_stage
+(name
+=
+"<stage_name>"
+)
+stage_id = stage.id
+stage_id = stage.id
+stage_id 
+=
+ stage
+.
+id
+```
+
+If you want to add a stage to a pre-existing project, please also specify the project ID alongwith your stage creation request:
+
+Copy```
+stage = gp.create_stage(name="<stage_name>", project_id="<project_id>")
+
+stage = gp.create_stage(name="<stage_name>", project_id="<project_id>")
+
+stage 
+=
+ gp
+.
+create_stage
+(name
+=
+"<stage_name>"
+, project_id
+=
+"<project_id>"
+)
+stage_id = stage.id
+stage_id = stage.id
+stage_id 
+=
+ stage
+.
+id
+```
+
+## 
+
+[](#invocations)
+
+Invocations
+
+At invocation time, you can either pass the project ID and stage name or the stage ID directly. These can be set as environment variables or passed directly to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">invoke</code> method as below.
+
+Copy```
+response = gp.invoke(
+
+response = gp.invoke(
+
+response 
+=
+ gp
+.
+invoke
+(
+    payload=gp.Payload(output="here is my SSN 123-45-6789"),
+
+    payload=gp.Payload(output="here is my SSN 123-45-6789"),
+
+    payload
+=
+gp.
+Payload
+(output
+=
+"here is my SSN 123-45-6789"
+),
+    prioritized_rulesets=[
+
+    prioritized_rulesets=[
+
+    prioritized_rulesets
+=
+[
+        gp.Ruleset(
+
+        gp.Ruleset(
+
+        gp.
+Ruleset
+(
+            rules=[
+
+            rules=[
+
+            rules
+=
+[
+                gp.Rule(
+
+                gp.Rule(
+
+                gp.
+Rule
+(
+                    metric=gp.RuleMetrics.pii,
+
+                    metric=gp.RuleMetrics.pii,
+
+                    metric
+=
+gp.RuleMetrics.pii,
+                    operator=gp.RuleOperator.contains,
+
+                    operator=gp.RuleOperator.contains,
+
+                    operator
+=
+gp.RuleOperator.contains,
+                    target_value="ssn",
+
+                    target_value="ssn",
+
+                    target_value
+=
+"ssn"
+,
+                )
+
+                )
+
+                )
+            ],
+
+            ],
+
+            ],
+            action=gp.OverrideAction(
+
+            action=gp.OverrideAction(
+
+            action
+=
+gp.
+OverrideAction
+(
+                choices=["Sorry, I cannot answer that question."]
+
+                choices=["Sorry, I cannot answer that question."]
+
+                choices
+=
+[
+"Sorry, I cannot answer that question."
+]
+            ),
+
+            ),
+
+            ),
+        )
+
+        )
+
+        )
+    ],
+
+    ],
+
+    ],
+    stage_id=stage_id,
+
+    stage_id=stage_id,
+
+    stage_id
+=
+stage_id,
+)
+
+)
+
+)
+
+
+
+
+response.text
+response.text
+response
+.
+text
+```
+
+For more information on how to define Rules and Actions, see [Rules](/galileo/gen-ai-studio-products/galileo-protect/concepts/rule) and [Actions](/galileo/gen-ai-studio-products/galileo-protect/concepts/action).
+
+## 
+
+[](#logging-protect-with-galileo-evaluate)
+
+Logging Protect With Galileo Evaluate
+
+Protect blends nicely within your Galileo Evaluate experiments. To log protect data, you can use [custom chain logging](https://docs.rungalileo.io/galileo/gen-ai-studio-products/galileo-evaluate/integrating-evaluate-into-my-existing-application#custom-logging) as:
+
+Copy```
+from promptquality import NodeRow
+
+from promptquality import NodeRow
+
+from
+ promptquality 
+import
+ NodeRow
+
+
+
+
+
+
+
+
+payload = gp.Payload(output="here is my SSN 123-45-6789")
+
+payload = gp.Payload(output="here is my SSN 123-45-6789")
+
+payload 
+=
+ gp
+.
+Payload
+(output
+=
+"here is my SSN 123-45-6789"
+)
+response = gp.invoke(...)
+
+response = gp.invoke(...)
+
+response 
+=
+ gp
+.
+invoke
+(...)
+
+
+
+
+protect_row = NodeRow.for_protect(payload=payload.model_dump_json(), response=response.model_dump_json(), ...)
+protect_row = NodeRow.for_protect(payload=payload.model_dump_json(), response=response.model_dump_json(), ...)
+protect_row 
+=
+ NodeRow
+.
+for_protect
+(payload
+=
+payload.
+model_dump_json
+(), response
+=
+response.
+model_dump_json
+(), ...)
+```
+
+[PreviousCreating and Using Stages](/galileo/gen-ai-studio-products/galileo-protect/how-to/creating-and-using-stages)[NextDefining Rules](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators)
+
+Last updated 2 months ago

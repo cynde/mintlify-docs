@@ -1,0 +1,161 @@
+---
+title: "Editing Centralized Stages"
+---
+
+# Editing Centralized Stages
+
+The following only applies to [centralized stages](/galileo/gen-ai-studio-products/galileo-protect/concepts/stage).
+
+Once you've created and registered a [centralized stage](/galileo/gen-ai-studio-products/galileo-protect/concepts/stage#different-types-of-stages) you can continue updating your stage configuration. Your changes will immediately be reflected in any further invocations.
+
+To update a stage, you can call <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.update_stage()</code>:
+
+Copy```
+import galileo_protect as gp
+
+import galileo_protect as gp
+
+import
+ galileo_protect 
+as
+ gp
+
+
+
+
+gp.update_stage(project_id="<project_id>", # Alternatively, use project_name
+
+gp.update_stage(project_id="<project_id>", # Alternatively, use project_name
+
+gp
+.
+update_stage
+(project_id
+=
+"<project_id>"
+, 
+# Alternatively, use project_name
+                stage_id="<stage_id>", # Alternatively, use stage_name
+
+                stage_id="<stage_id>", # Alternatively, use stage_name
+
+                stage_id
+=
+"<stage_id>"
+, 
+# Alternatively, use stage_name
+                prioritized_rulesets=[
+
+                prioritized_rulesets=[
+
+                prioritized_rulesets
+=
+[
+    {
+
+    {
+
+    {
+        "rules": [
+
+        "rules": [
+
+        
+"rules"
+: [
+            {
+
+            {
+
+            {
+                "metric": "pii",
+
+                "metric": "pii",
+
+                
+"metric"
+: 
+"pii"
+,
+                "operator": "contains",
+
+                "operator": "contains",
+
+                
+"operator"
+: 
+"contains"
+,
+                "target_value": "ssn",
+
+                "target_value": "ssn",
+
+                
+"target_value"
+: 
+"ssn"
+,
+            },
+
+            },
+
+            },
+        ],
+
+        ],
+
+        ],
+        "action": {
+
+        "action": {
+
+        
+"action"
+: {
+            "type": "OVERRIDE",
+
+            "type": "OVERRIDE",
+
+            
+"type"
+: 
+"OVERRIDE"
+,
+            "choices": [
+
+            "choices": [
+
+            
+"choices"
+: [
+                "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                
+"Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+            ],
+
+            ],
+
+            ],
+        },
+
+        },
+
+        },
+    },
+
+    },
+
+    },
+])
+])
+])
+```
+
+Your changes will immediately be reflected. Any subsequent calls to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.invoke()</code> will use the updated <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prioritized_rulesets.</code>
+
+[PreviousPausing or Resuming a stage](/galileo/gen-ai-studio-products/galileo-protect/how-to/pausing-or-resuming-a-stage)[NextConcepts](/galileo/gen-ai-studio-products/galileo-protect/concepts)
+
+Last updated 1 month ago

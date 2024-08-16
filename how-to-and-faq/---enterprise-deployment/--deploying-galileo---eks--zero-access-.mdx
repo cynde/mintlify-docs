@@ -1,0 +1,430 @@
+---
+title: "  Deploying Galileo   Eks  Zero Access "
+---
+
+# 🦕Deploying Galileo - EKS (Zero Access)
+
+Create a private Kubernetes Cluster with EKS in your AWS Account, upload containers to your container registry, and deploy Galileo.
+
+**⏱ Total time for deployment:** 45-60 minutes
+
+**This deployment requires the use of AWS CLI commands. If you only have cloud console access, follow the optional instructions below to get** [**eksctl**](https://eksctl.io/introduction/#installation) **working with AWS CloudShell.**
+
+### 
+
+[](#step-0-optional-deploying-via-aws-cloudshell)
+
+Step 0: (Optional) Deploying via AWS CloudShell
+
+To use <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://eksctl.io/introduction/#installation"><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">eksctl</code></a> via CloudShell in the AWS console, open a CloudShell session and do the following:
+
+Copy```
+# Create directory
+
+# Create directory
+
+# Create directory
+mkdir -p $HOME/.local/bin
+
+mkdir -p $HOME/.local/bin
+
+mkdir
+ 
+-p
+ $HOME
+/.local/bin
+cd $HOME/.local/bin
+
+cd $HOME/.local/bin
+
+cd
+ $HOME
+/.local/bin
+
+
+
+
+# eksctl
+
+# eksctl
+
+# eksctl
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+sudo mv /tmp/eksctl $HOME/.local/bin
+sudo mv /tmp/eksctl $HOME/.local/bin
+sudo
+ 
+mv
+ 
+/tmp/eksctl
+ $HOME
+/.local/bin
+```
+
+The rest of the installation deployment can now be run from the CloudShell session. You can use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">vim</code> to create/edit the required yaml and json files within the shell session.
+
+### 
+
+[](#recommended-cluster-configuration)
+
+Recommended Cluster Configuration
+
+Galileo recommends the following Kubernetes deployment configuration:
+
+| Configuration | Recommended Value |
+| --- | --- |
+| 
+**Nodes in the cluster’s core nodegroup**
+
+
+
+
+
+ | 
+
+4 (min) 5 (max) 4 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per core node**
+
+
+
+
+
+ | 
+
+4 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per core node**
+
+
+
+
+
+ | 
+
+16 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Number of nodes in the cluster’s runners nodegroup**
+
+
+
+
+
+ | 
+
+1 (min) 5 (max) 1 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per runner node**
+
+
+
+
+
+ | 
+
+8 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per runner node**
+
+
+
+
+
+ | 
+
+32 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Minimum volume size per node**
+
+
+
+
+
+ | 
+
+200 GiB
+
+
+
+
+
+ |
+| 
+
+**Required Kubernetes API version**
+
+
+
+
+
+ | 
+
+1.21
+
+
+
+
+
+ |
+| 
+
+**Storage class**
+
+
+
+
+
+ | 
+
+gp2
+
+
+
+
+
+ |
+
+Here's an [example EKS cluster configuration](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access/eks-cluster-config-example-zero-access).
+
+### 
+
+[](#step-1-deploying-the-eks-cluster)
+
+Step 1: Deploying the EKS Cluster
+
+The cluster itself can be deployed in a single command using <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://eksctl.io/introduction/#installation">eksctl</a>. Using the cluster template <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access/eks-cluster-config-example-zero-access">here</a>, create a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo-cluster.yaml</code> file and edit the contents to replace CLUSTER<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">_NAME</code> with a name for your cluster like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo</code>. Also check and update all <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">availabilityZones</code> as appropriate.
+
+With the yaml file saved, run the following command to deploy the cluster:
+
+Copy```
+eksctl create cluster -f galileo-cluster.yaml
+eksctl create cluster -f galileo-cluster.yaml
+```
+
+### 
+
+[](#step-2-required-configuration-values)
+
+**Step 2: Required Configuration Values**
+
+Customer specific cluster values (e.g. domain name, slack channel for notifications etc) will be placed in a base64 encoded string, stored as a secret in GitHub that Galileo’s deployment automation will read in and use when templating a cluster’s resource files.\\
+
+**Mandatory fields the Galileo team requires:**
+
+| Mandatory Field | Description |
+| --- | --- |
+| 
+**Domain Name**
+
+
+
+
+
+ | 
+
+The customer wishes to deploy the cluster under e.g. google.com
+
+
+
+
+
+ |
+| 
+
+**Root subdomain**
+
+
+
+
+
+ | 
+
+e.g. "**galileo**" as in **galileo**.google.com
+
+
+
+
+
+ |
+| 
+
+**Trusted SSL Certificates**
+
+
+
+
+
+ | 
+
+These certificate should support the provided domain name. You should submit 2 base64 encoded strings;
+
+1.  one for the full certificate chain
+    
+2.  one for the signing key.
+    
+
+
+
+
+
+ |
+
+### 
+
+[](#step-3-deploy-the-galileo-applications)
+
+Step 3: Deploy the Galileo Applications
+
+VPN access is required to connect to the Kubernetes API when interacting with a private cluster. If you do not have appropriate VPN access with private DNS resolution, you can use a bastion machine with public ssh access as a bridge to the private cluster. The bastion will only act as a simple shell environment, so a machine type of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">t3.micro</code> or equivalent will suffice.
+
+Except where specifically noted, these steps are to be performed on a machine with internet access
+
+1.  Download version 1.23 of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl</code> as explained <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html">here</a>, and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scp</code> that file to the working directory of the bastion.
+    
+2.  Generate the cluster config file by running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION</code>
+    
+3.  If using a bastion machine, prepare the required environment with the following:
+    
+    1.  Either <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scp</code> or copy and paste the contents of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">~/.kube/config</code> from your local machine to the same directory on the bastion
+        
+    2.  <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scp</code> the provided <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">deployment-manifest.yaml</code> file to the working directory of the bastion
+        
+    
+4.  With your VPN connected, or if using a bastion, ssh'ing into the bastion's shell:
+    
+    1.  Run <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl cluster-info</code> to verify your cluster config is set appropriately. If the cluster information is returned, you can proceed with the deployment.
+        
+    2.  Run <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl apply -f deployment-manifest.yaml</code> to deploy the Galileo applications. Re-run this command if there are errors related to custom resources not being defined as there are sometimes race conditions when applying large templates.
+        
+    
+
+### 
+
+[](#step-4-customer-dns-configuration)
+
+**Step 4: Customer DNS Configuration**
+
+Galileo has 4 main URLs (shown below). In order to make the URLs accessible across the company, you have to set the following DNS addresses in your DNS provider after the platform is deployed.
+
+**⏱ Time taken :** 5-10 minutes (post the ingress endpoint / load balancer provisioning)
+
+| Service | URL |
+| --- | --- |
+| 
+API
+
+
+
+
+
+ | 
+
+**api.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Data
+
+
+
+
+
+ | 
+
+**data.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+UI
+
+
+
+
+
+ | 
+
+**console.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Grafana
+
+
+
+
+
+ | 
+
+**grafana.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+
+Each URL must be entered as a CNAME record into your DNS management system as the ELB address. You can find this address by running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl -n galileo get svc/ingress-nginx-controller</code> and looking at the value for <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">EXTERNAL-IP</code>.
+
+[PreviousUpdating Galileo EKS cluster](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks/updating-galileo-eks-cluster)[NextEKS Cluster Config Example (Zero Access)](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access/eks-cluster-config-example-zero-access)
+
+Last updated 1 year ago

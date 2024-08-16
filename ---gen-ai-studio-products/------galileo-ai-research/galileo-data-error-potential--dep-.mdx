@@ -1,0 +1,188 @@
+---
+title: "Galileo Data Error Potential  Dep "
+---
+
+# Galileo Data Error Potential (DEP)
+
+It is crucial to quickly identify errors in ML training data and fix them. This is incredibly hard to do at scale when working with millions of data points.
+
+Today teams typically leverage model confidence scores to separate well trained from poorly trained data. This has two major problems:
+
+*   **Confidence scores** are highly model centric. There is high bias towards training performance and very little use of inherent data quality to segregate the good data from the bad (results below)
+    
+*   Even with powerful pre-trained models, confidence scores are unable to capture nuanced sub-categories of data errors (details below)
+    
+
+The **Galileo Data Error Potential (DEP)** score has been built to provide a per sample holistic data quality score to identify samples in the dataset contributing to low or high model performance i.e. ‘pulling’ the model up or down respectively. In other words, the DEP score measures the potential for "misfit" of an observation to the given model.
+
+Categorization of "misfit" data samples includes:
+
+*   Mislabelled samples (annotation mistakes)
+    
+*   Boundary samples or overlapping classes
+    
+*   Outlier samples or Anomalies
+    
+*   Noisy Input
+    
+*   Misclassified samples
+    
+*   Other errors
+    
+
+This sub-categorization is crucial as different dataset actions are required for each category of errors. For example, one can augment the dataset with samples similar to boundary samples to improve classification.
+
+As shown in below, we assign a DEP score to every sample in the data. The _Data Error Potential (DEP) Slider_ can be used to filter samples based on DEP score, allowing you to filter for samples with DEP greater than x, less than y, or within a specific range \[x, y\].
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fd00bEvuZ4LQoTEKfmTFM%252FScreen%2520Shot%25202023-02-12%2520at%252012.39.08%2520PM.png%3Falt%3Dmedia%26token%3D65cfff5d-05de-4c59-a1db-58859231e736&width=768&dpr=4&quality=100&sign=a84efc4d&sv=1)
+
+Galileo Platform surfaces mislabeled, garbage samples by ordering in desc order of DEP score
+
+#### 
+
+[](#dep-score-calculation)
+
+**DEP score calculation**
+
+The base calculation behind the DEP score is a hybrid ‘**Area Under Margin’ (AUM)** mechanism. AUM is the cross-epoch average of the model uncertainty for each data sample (calculated as the difference between the ground truth confidence and the maximum confidence on a non ground truth label).
+
+**AUM = p(y\*) - p(ymax)y^max!=y\***
+
+We then dynamically leverage K-Distinct Neighbors, IH Metrics (multiple weak learners) and Energy Functions on Logits, to clearly separate out annotator mistakes from samples that are confusing to the model or are outliers and noise. The 'dynamic' element comes from the fact that DEP takes into account the level of class imbalance, variability etc to cater to the nuances of each dataset.
+
+#### 
+
+[](#dep-score-efficacy)
+
+**DEP score efficacy**
+
+To measure the efficacy of the DEP score, we performed experiments on a public dataset and induced varying degrees of noise. We observed that unlike Confidence scores, the DEP score was successfully able to separate bad data (red) from the good (green). This demonstrates true data-centricity (model independence) of Galileo’s DEP score. Below are results from experiments on the public Banking Intent dataset. The dotted lines indicate a dynamic thresholding value (adapting to each dataset) that segments noisy (red) and clean (green) samples of the dataset.
+
+| Galileo DEP score | Model confidence score |
+| --- | --- |
+| 
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F8lmYVmZKJK1g5fmOKNJl%252Fimage.png%3Falt%3Dmedia%26token%3Ded44fd6c-52ef-48d4-8c41-83555accd887&width=300&dpr=4&quality=100&sign=889371fd&sv=1)
+
+
+
+
+
+ | 
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F4tNSONqPVHvUSySf9TAN%252Fimage.png%3Falt%3Dmedia%26token%3D7553276d-5c4a-4fc8-a909-4f4a6c9f8ad9&width=300&dpr=4&quality=100&sign=dcd5c690&sv=1)
+
+
+
+
+
+ |
+| 
+
+Noise recall: 99.2%
+
+
+
+
+
+ | 
+
+Noise recall: 87.5%
+
+
+
+
+
+ |
+
+Copy```
+                                                      10% Noise added to the dataset
+                                                      10% Noise added to the dataset
+```
+
+| Galileo DEP score | Model confidence score |
+| --- | --- |
+| 
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FOhIzfTjAqFrZvf722K4P%252Fimage.png%3Falt%3Dmedia%26token%3D28a7dcc1-feda-44d9-8cfd-33d40a2b7708&width=300&dpr=4&quality=100&sign=7ec2cd88&sv=1)
+
+
+
+
+
+ | 
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F3WehEXjfPDJinHtxLFzn%252Fimage.png%3Falt%3Dmedia%26token%3D524fdb2d-49db-47a1-9967-b642733465d9&width=300&dpr=4&quality=100&sign=60daa6a4&sv=1)
+
+
+
+
+
+ |
+| 
+
+Noise recall: 89.0%
+
+
+
+
+
+ | 
+
+Noise recall: 64.9%
+
+
+
+
+
+ |
+
+Copy```
+                                                       20% Noise added to the dataset
+                                                       20% Noise added to the dataset
+```
+
+### 
+
+[](#dep-thresholding)
+
+DEP Thresholding
+
+The goal is to plot AUM scores and highlight the mean AUM and mean F1 of the dataset. Two different thresholds, t\_easy and t\_hard, are marked as follows:
+
+*   t\_easy = mean AUM, so all samples above the mean AUM are considered easy.
+    
+*   t\_hard = \[t\_mean - t\_std, -1\], so samples in this range are considered hard or ambiguous.
+    
+
+The samples between t\_mean and t\_mean - t\_std are considered ambiguous.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FKodfHBY4KYWvn9GuJnkP%252Fimage.png%3Falt%3Dmedia%26token%3D2643f464-8664-4484-b46f-051fb22e7dee&width=768&dpr=4&quality=100&sign=1be124eb&sv=1)
+
+### 
+
+[](#dep-benchmarks)
+
+DEP Benchmarks
+
+To ensure DEP calibrations follow the fundamentals of a good ML metric, it should have more noisy samples in hard section and correspondingly less noisy data in easy region. AUM outperforms prediction confidence as well as similar metrics such as **Ground Truth confidence** as well as **Model uncertainty**, in being able to surface more noisy samples in the hard category.
+
+Below are some benchmarks we calibrated on various well-known and peer reviewed datasets.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FVTPp7bBfnaLjZpb3LzIm%252Fimage.png%3Falt%3Dmedia%26token%3Dd5c9d709-fb25-4820-8a3d-ee2fbdb6b2d5&width=768&dpr=4&quality=100&sign=85843f52&sv=1)
+
+Benchmark (Train): Performance on Noisy Datasets
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fs6gWJiTMJpZZmIV5qbUz%252Fimage.png%3Falt%3Dmedia%26token%3D69bb30bc-9f90-46f1-9d68-7131cb83b64a&width=768&dpr=4&quality=100&sign=7251f878&sv=1)
+
+Benchmark (Train): Final Epoch Train Performance
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FXSnPB9e9DpJO2t087fgC%252Fimage.png%3Falt%3Dmedia%26token%3Db9334a75-d684-4062-a354-3e5bcc893614&width=768&dpr=4&quality=100&sign=56f6f2d1&sv=1)
+
+Benchmark (Train): Average across all epochs
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F6hf1cGJbfSAG6BgorMYa%252Fimage.png%3Falt%3Dmedia%26token%3D1c134b47-81ed-4d9b-b534-51be79a1d6a3&width=768&dpr=4&quality=100&sign=e9fa0c5c&sv=1)
+
+Benchmark (Test): Average across all epochs
+
+[PreviousRAG Quality Metrics using ChainPoll](/galileo/gen-ai-studio-products/ml-research-algorithms/rag-quality-metrics)[NextData Drift Detection](/galileo/gen-ai-studio-products/ml-research-algorithms/data-drift-detection)
+
+Last updated 6 months ago

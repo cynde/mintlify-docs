@@ -1,0 +1,109 @@
+---
+title: "Ruleset"
+---
+
+# Ruleset
+
+A Ruleset is a collection of one or more [Rules](/galileo/gen-ai-studio-products/galileo-protect/concepts/rule) combined with an Action. The Ruleset gets triggered when all of the rules are broken (i.e. all their condition evaluate to True). Rules are AND-ed together, not OR-ed, so all of them have to be True for the Ruleset to _Trigger_.
+
+All of the Rules within a Ruleset are executed in parallel, and the final resolution depends on all of the rules being completed.
+
+For example, a ruleset can be defined as "PII metric contains SSN AND toxicity greater than 0.8". This ruleset would be triggered if the output text was detected to contain an SSN and the toxicity of the output text was greater than 0.8.
+
+The order in which Rulesets appear in the list matters. Only one Action gets taken In the example above, the ruleset is the list of Guardrail metrics stored in <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prioritized_rulesets</code>.
+
+Copy```
+gp.Ruleset(
+
+gp.Ruleset(
+
+gp
+.
+Ruleset
+(
+    rules=[
+
+    rules=[
+
+    rules
+=
+[
+        gp.Rule(
+
+        gp.Rule(
+
+        gp.
+Rule
+(
+            metric=gp.RuleMetrics.pii,
+
+            metric=gp.RuleMetrics.pii,
+
+            metric
+=
+gp.RuleMetrics.pii,
+            operator=gp.RuleOperator.contains,
+
+            operator=gp.RuleOperator.contains,
+
+            operator
+=
+gp.RuleOperator.contains,
+            target_value="ssn"
+
+            target_value="ssn"
+
+            target_value
+=
+"ssn"
+        ),
+
+        ),
+
+        ),
+        gp.Rule(
+
+        gp.Rule(
+
+        gp.
+Rule
+(
+            metric=gp.RuleMetrics.toxicity,
+
+            metric=gp.RuleMetrics.toxicity,
+
+            metric
+=
+gp.RuleMetrics.toxicity,
+            operator=gp.RuleOperator.gt,
+
+            operator=gp.RuleOperator.gt,
+
+            operator
+=
+gp.RuleOperator.gt,
+            target_value=0.8
+
+            target_value=0.8
+
+            target_value
+=
+0.8
+        )
+
+        )
+
+        )
+    ],
+
+    ],
+
+    ],
+)
+)
+)
+```
+
+[PreviousStage](/galileo/gen-ai-studio-products/galileo-protect/concepts/stage)[NextRule](/galileo/gen-ai-studio-products/galileo-protect/concepts/rule)
+
+Last updated 2 months ago

@@ -1,0 +1,29 @@
+---
+title: "Context Adherence"
+---
+
+# Context Adherence
+
+Understand Galileo's Context Adherence Metric
+
+<iframe src="https://cdn.iframe.ly/SmSQBT2" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+_**Definition:**_ _Context Adherence_ is a measurement of _closed-domain_ _hallucinations:_ cases where your model said things that were not provided in the context.
+
+If a response is _adherent_ to the context (i.e. it has a value of 1 or close to 1), it only contains information given in the context. If a response is _not adherent_ (i.e. it has a value of 0 or close to 0), it's likely to contain facts not included in the context provided to the model.
+
+### 
+
+[](#luna-vs-plus)
+
+Luna vs Plus
+
+We offer two ways of calculating Context Adherence: _Luna_ and _Plus_.
+
+[_Context Adherence Luna_](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/context-adherence-basic) is computed using Galileo in-house small language models (Luna). They're free of cost, but lack 'explanations'. Context Adherence Luna is a cost effective way to scale up you RAG evaluation workflows.
+
+[_Context Adherence Plus_](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/groundedness) is computed using the [Chainpoll](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll) technique. It relies on OpenAI models so it incurs an additional cost. Context Adherence Plus has shown better results in internal benchmarks. Additionally, _Plus_ offers explanations for its ratings (i.e. why something was or was not adherent).
+
+[PreviousChunk Relevance Luna](/galileo/gen-ai-studio-products/guardrail-store/chunk-relevance/chunk-relevance-luna)[NextContext Adherence Luna](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/context-adherence-basic)
+
+Last updated 2 months ago

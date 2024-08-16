@@ -1,0 +1,116 @@
+---
+title: "Enabling Scorers In Runs"
+---
+
+# Enabling Scorers in Runs
+
+Learn how to turn on metrics when creating runs in your Python environment.
+
+Galileo provides users the ability to tune which metrics to use for their evaluation.
+
+Check out [Choose your Guardrail Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics) to understand which metrics or scorers apply to your use case.
+
+## 
+
+[](#using-scorers)
+
+Using scorers
+
+To use scorers during a prompt run, sweep, or even a more complex workflow, simply pass them in through the scorers argument:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+
+
+
+
+pq.run(..., scorers=[pq.Scorers.correctness, pq.Scorers.context_adherence])
+pq.run(..., scorers=[pq.Scorers.correctness, pq.Scorers.context_adherence])
+pq
+.
+run
+(..., scorers
+=
+[pq.Scorers.correctness, pq.Scorers.context_adherence])
+```
+
+## 
+
+[](#disabling-default-scorers)
+
+Disabling default scorers
+
+By default, we turn on a few scorers for you (PII, Toxicity, BLEU, ROUGE). If you want to disable a default scorer you can pass in a ScorersConfiguration object.
+
+Copy```
+pq.run(...,
+
+pq.run(...,
+
+pq
+.
+run
+(...,
+       scorers=[pq.Scorers.correctness,pq.Scorers.context_adherence],
+
+       scorers=[pq.Scorers.correctness,pq.Scorers.context_adherence],
+
+       scorers
+=
+[pq.Scorers.correctness,pq.Scorers.context_adherence],
+       scorers_config=pq.ScorersConfiguration(latency=False)
+
+       scorers_config=pq.ScorersConfiguration(latency=False)
+
+       scorers_config
+=
+pq.
+ScorersConfiguration
+(latency
+=
+False
+)
+       )
+       )
+       )
+```
+
+You can even use the ScorersConfiguration to turn on other scorers, rather than using the scorers argument.
+
+Copy```
+pq.run(..., scorers_config=pq.ScorersConfiguration(latency=False, groundedness=True))
+pq.run(..., scorers_config=pq.ScorersConfiguration(latency=False, groundedness=True))
+pq
+.
+run
+(..., scorers_config
+=
+pq.
+ScorersConfiguration
+(latency
+=
+False
+, groundedness
+=
+True
+))
+```
+
+## 
+
+[](#customizing-plus-scorers)
+
+Customizing Plus Scorers
+
+We allow customizing execution parameters for the [Chainpoll](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll)\-powered metrics from our Guardrail Store. Check out [Customizing Chainpoll-powered Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/customize-chainpoll-powered-metrics).
+
+[PreviousChoose your Guardrail Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics)[NextIdentify Hallucinations](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/identifying-hallucinations)
+
+Last updated 14 days ago

@@ -1,0 +1,114 @@
+---
+title: "Programmatically Fetch Logged Data"
+---
+
+# Programmatically fetch logged data
+
+If you want to fetch your logged data and metrics programmatically, you can do so via our Python clients:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+pq.login({YOUR CONSOLE URL})
+
+pq.login({YOUR CONSOLE URL})
+
+pq
+.
+login
+({YOUR CONSOLE URL})
+project = pq.get_project_from_name(project_name="YOUR PROJECT NAME")
+
+project = pq.get_project_from_name(project_name="YOUR PROJECT NAME")
+
+project 
+=
+ pq
+.
+get_project_from_name
+(project_name
+=
+"YOUR PROJECT NAME"
+)
+run = pq.get_run_from_name(run_name='YOUR RUN NAME', project_id=project.id)
+
+run = pq.get_run_from_name(run_name='YOUR RUN NAME', project_id=project.id)
+
+run 
+=
+ pq
+.
+get_run_from_name
+(run_name
+=
+'YOUR RUN NAME'
+, project_id
+=
+project.id)
+rows =  pq.get_rows(project_id = project.id, run_id = run.id)
+rows =  pq.get_rows(project_id = project.id, run_id = run.id)
+rows 
+=
+  pq
+.
+get_rows
+(project_id 
+=
+ project.id, run_id 
+=
+ run.id)
+```
+
+This will return traces (various nodes and node structure relationships) of a chain.
+
+If you want to filter for the output from just the LLM 'chat' node, you can use the code snippet below:
+
+Copy```
+rows = pq.get_rows()
+
+rows = pq.get_rows()
+
+rows 
+=
+ pq
+.
+get_rows
+()
+for r in rows:
+
+for r in rows:
+
+for
+ r 
+in
+ rows
+:
+  if r.node_type=='chat':
+
+  if r.node_type=='chat':
+
+  
+if
+ r
+.
+node_type
+==
+'chat'
+:
+    print(r) 
+    print(r) 
+    
+print
+(r)
+ 
+```
+
+[PreviousExamples with LangChain](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows/examples-with-langchain)[NextCollaborate with other personas](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/collaborate-with-other-personas)
+
+Last updated 1 month ago

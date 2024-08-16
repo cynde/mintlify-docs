@@ -1,0 +1,57 @@
+---
+title: "Completeness"
+---
+
+# Completeness
+
+Understand Galileo's Completeness Metric
+
+This metric is intended for RAG use cases and is only available if you [log your retriever's output](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-rag-or-vector-databases).
+
+<iframe src="https://cdn.iframe.ly/8FcEdmh" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+_**Definition:**_ Measures how thoroughly your model's response covered the relevant information available in the context provided.
+
+Completeness and Context Adherence are closely related, and designed to complement one another:
+
+*   Context Adherence answers the question, "is the model's response _consistent with_ the information in the context?"
+    
+*   Completeness answers the question, "is the relevant information in the context _fully reflected_ in the model's response?"
+    
+
+In other words, if Context Adherence is "precision," then Completeness is "recall."
+
+Consider this simple, stylized example that illustrates the distinction:
+
+*   User query: "Who was Galileo Galilei?"
+    
+*   Context: "Galileo Galilei was an Italian astronomer."
+    
+*   Model response: "Galileo Galilei was Italian."
+    
+
+This response would receive a perfect _Context Adherence_ score: everything the model said is _supported_ by the context.
+
+But this is not an ideal response. The context also specified that Galileo was an astronomer, and the user probably wants to know that information as well.
+
+Hence, this response would receive a low _Completeness_ score. Tracking Completeness alongside Context Adherence allows you to detect cases like this one, where the model is "too reticent" and fails to mention relevant information.
+
+_**What to do when completeness is low?**_
+
+To fix low _Completeness_ values, we recommend adjusting the prompt to tell the model to include all the relevant information it can find in the provided context.
+
+### 
+
+[](#luna-vs-plus)
+
+Luna vs Plus
+
+We offer two ways of calculating Completeness: _Luna_ and _Plus_.
+
+[_Completeness Luna_](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness-basic) is computed using Galileo in-house small language models. They're free of cost, but lack 'explanations'. Completeness Luna is a cost effective way to scale up you RAG evaluation workflows.
+
+[_Completeness Plus_](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness) is computed using the [Chainpoll](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll) technique. It relies on OpenAI models so it incurs an additional cost. Completeness Plus has shown better results in internal benchmarks. Additionally, _Plus_ offers explanations for its ratings (i.e. why a response was or was not complete).
+
+[PreviousCorrectness](/galileo/gen-ai-studio-products/guardrail-store/factuality)[NextCompleteness Luna](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness-basic)
+
+Last updated 2 months ago

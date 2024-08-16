@@ -1,0 +1,735 @@
+---
+title: "Eks Cluster Config Example  Zero Access "
+---
+
+# EKS Cluster Config Example (Zero Access)
+
+Copy```
+---
+
+---
+
+---
+apiVersion: eksctl.io/v1alpha5
+
+apiVersion: eksctl.io/v1alpha5
+
+apiVersion
+:
+ 
+eksctl.io/v1alpha5
+kind: ClusterConfig
+
+kind: ClusterConfig
+
+kind
+:
+ 
+ClusterConfig
+
+
+
+
+metadata:
+
+metadata:
+
+metadata
+:
+  name: CLUSTER_NAME
+
+  name: CLUSTER_NAME
+
+  
+name
+:
+ 
+CLUSTER_NAME
+  region: us-east-2
+
+  region: us-east-2
+
+  
+region
+:
+ 
+us-east-2
+  version: "1.23"
+
+  version: "1.23"
+
+  
+version
+:
+ 
+"1.23"
+  tags:
+
+  tags:
+
+  
+tags
+:
+    env: CLUSTER_NAME
+
+    env: CLUSTER_NAME
+
+    
+env
+:
+ 
+CLUSTER_NAME
+
+
+
+
+vpc:
+
+vpc:
+
+vpc
+:
+  id: VPC_ID
+
+  id: VPC_ID
+
+  
+id
+:
+ 
+VPC_ID
+  subnets:
+
+  subnets:
+
+  
+subnets
+:
+    private:
+
+    private:
+
+    
+private
+:
+      us-east-2a:
+
+      us-east-2a:
+
+      
+us-east-2a
+:
+          id: SUBNET_1_ID
+
+          id: SUBNET_1_ID
+
+          
+id
+:
+ 
+SUBNET_1_ID
+      us-east-2b:
+
+      us-east-2b:
+
+      
+us-east-2b
+:
+          id: SUBNET_2_ID
+
+          id: SUBNET_2_ID
+
+          
+id
+:
+ 
+SUBNET_2_ID
+
+
+
+
+cloudWatch:
+
+cloudWatch:
+
+cloudWatch
+:
+  clusterLogging:
+
+  clusterLogging:
+
+  
+clusterLogging
+:
+    enableTypes: ["*"]
+
+    enableTypes: ["*"]
+
+    
+enableTypes
+:
+ [
+"*"
+]
+
+
+
+
+privateCluster:
+
+privateCluster:
+
+privateCluster
+:
+  enabled: true
+
+  enabled: true
+
+  
+enabled
+:
+ 
+true
+
+
+
+
+addons:
+
+addons:
+
+addons
+:
+- name: vpc-cni
+
+- name: vpc-cni
+
+- 
+name
+:
+ 
+vpc-cni
+  version: 1.11.0
+
+  version: 1.11.0
+
+  
+version
+:
+ 
+1.11.0
+- name: aws-ebs-csi-driver
+
+- name: aws-ebs-csi-driver
+
+- 
+name
+:
+ 
+aws-ebs-csi-driver
+  version: 1.11.4
+
+  version: 1.11.4
+
+  
+version
+:
+ 
+1.11.4
+
+
+
+
+managedNodeGroups:
+
+managedNodeGroups:
+
+managedNodeGroups
+:
+  - name: galileo-core
+
+  - name: galileo-core
+
+  - 
+name
+:
+ 
+galileo-core
+    privateNetworking: true
+
+    privateNetworking: true
+
+    
+privateNetworking
+:
+ 
+true
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    
+availabilityZones
+:
+ [
+"us-east-2a"
+,
+ 
+"us-east-2b"
+]
+    labels: { galileo-node-type: galileo-core }
+
+    labels: { galileo-node-type: galileo-core }
+
+    
+labels
+:
+ { 
+galileo-node-type
+:
+ 
+galileo-core
+ }
+    tags:
+
+    tags:
+
+    
+tags
+:
+      {
+
+      {
+
+      {
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        
+"k8s.io/cluster-autoscaler/CLUSTER_NAME"
+:
+ 
+"owned"
+,
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        
+"k8s.io/cluster-autoscaler/enabled"
+:
+ 
+"true"
+,
+      }
+
+      }
+
+      }
+    amiFamily: AmazonLinux2
+
+    amiFamily: AmazonLinux2
+
+    
+amiFamily
+:
+ 
+AmazonLinux2
+    instanceType: m5a.xlarge
+
+    instanceType: m5a.xlarge
+
+    
+instanceType
+:
+ 
+m5a.xlarge
+    minSize: 4
+
+    minSize: 4
+
+    
+minSize
+:
+ 
+4
+    maxSize: 5
+
+    maxSize: 5
+
+    
+maxSize
+:
+ 
+5
+    desiredCapacity: 4
+
+    desiredCapacity: 4
+
+    
+desiredCapacity
+:
+ 
+4
+    volumeSize: 200 # GiB
+
+    volumeSize: 200 # GiB
+
+    
+volumeSize
+:
+ 
+200
+ 
+# GiB
+    volumeType: gp2
+
+    volumeType: gp2
+
+    
+volumeType
+:
+ 
+gp2
+    iam:
+
+    iam:
+
+    
+iam
+:
+      attachPolicyARNs:
+
+      attachPolicyARNs:
+
+      
+attachPolicyARNs
+:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - 
+arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - 
+arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - 
+arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      withAddonPolicies:
+
+      withAddonPolicies:
+
+      
+withAddonPolicies
+:
+        autoScaler: true
+
+        autoScaler: true
+
+        
+autoScaler
+:
+ 
+true
+        cloudWatch: true
+
+        cloudWatch: true
+
+        
+cloudWatch
+:
+ 
+true
+        ebs: true
+
+        ebs: true
+
+        
+ebs
+:
+ 
+true
+    updateConfig:
+
+    updateConfig:
+
+    
+updateConfig
+:
+      maxUnavailable: 2
+
+      maxUnavailable: 2
+
+      
+maxUnavailable
+:
+ 
+2
+  - name: galileo-runner
+
+  - name: galileo-runner
+
+  - 
+name
+:
+ 
+galileo-runner
+    privateNetworking: true
+
+    privateNetworking: true
+
+    
+privateNetworking
+:
+ 
+true
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    
+availabilityZones
+:
+ [
+"us-east-2a"
+,
+ 
+"us-east-2b"
+]
+    labels: { galileo-node-type: galileo-runner }
+
+    labels: { galileo-node-type: galileo-runner }
+
+    
+labels
+:
+ { 
+galileo-node-type
+:
+ 
+galileo-runner
+ }
+    tags:
+
+    tags:
+
+    
+tags
+:
+      {
+
+      {
+
+      {
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        
+"k8s.io/cluster-autoscaler/CLUSTER_NAME"
+:
+ 
+"owned"
+,
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        
+"k8s.io/cluster-autoscaler/enabled"
+:
+ 
+"true"
+,
+      }
+
+      }
+
+      }
+    amiFamily: AmazonLinux2
+
+    amiFamily: AmazonLinux2
+
+    
+amiFamily
+:
+ 
+AmazonLinux2
+    instanceType: m5a.2xlarge
+
+    instanceType: m5a.2xlarge
+
+    
+instanceType
+:
+ 
+m5a.2xlarge
+    minSize: 1
+
+    minSize: 1
+
+    
+minSize
+:
+ 
+1
+    maxSize: 5
+
+    maxSize: 5
+
+    
+maxSize
+:
+ 
+5
+    desiredCapacity: 1
+
+    desiredCapacity: 1
+
+    
+desiredCapacity
+:
+ 
+1
+    volumeSize: 200 # GiB
+
+    volumeSize: 200 # GiB
+
+    
+volumeSize
+:
+ 
+200
+ 
+# GiB
+    volumeType: gp2
+
+    volumeType: gp2
+
+    
+volumeType
+:
+ 
+gp2
+    iam:
+
+    iam:
+
+    
+iam
+:
+      attachPolicyARNs:
+
+      attachPolicyARNs:
+
+      
+attachPolicyARNs
+:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - 
+arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - 
+arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - 
+arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      withAddonPolicies:
+
+      withAddonPolicies:
+
+      
+withAddonPolicies
+:
+        autoScaler: true
+
+        autoScaler: true
+
+        
+autoScaler
+:
+ 
+true
+        cloudWatch: true
+
+        cloudWatch: true
+
+        
+cloudWatch
+:
+ 
+true
+        ebs: true
+
+        ebs: true
+
+        
+ebs
+:
+ 
+true
+    updateConfig:
+
+    updateConfig:
+
+    
+updateConfig
+:
+      maxUnavailable: 2
+
+      maxUnavailable: 2
+
+      
+maxUnavailable
+:
+ 
+2
+
+
+```
+
+[PreviousDeploying Galileo - EKS (Zero Access)](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access)[NextDeploying Galileo – GKE](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-gke)
+
+Last updated 1 year ago

@@ -1,0 +1,153 @@
+---
+title: "Action"
+---
+
+# Action
+
+Actions are user-defined actions that are taken as a result of the [ruleset](/galileo/gen-ai-studio-products/galileo-protect/concepts/ruleset) being triggered. Galileo will provide a set of action types (override, passthrough), that the user can use, along with a configuration for each action type.
+
+An Action can be defined as:
+
+Copy```
+gp.OverrideAction(
+
+gp.OverrideAction(
+
+gp
+.
+OverrideAction
+(
+    choices=["Sorry, I cannot answer that question."]
+
+    choices=["Sorry, I cannot answer that question."]
+
+    choices
+=
+[
+"Sorry, I cannot answer that question."
+]
+)
+)
+)
+```
+
+The action would be included in the ruleset definition as:
+
+Copy```
+gp.Ruleset(
+
+gp.Ruleset(
+
+gp
+.
+Ruleset
+(
+    rules=[
+
+    rules=[
+
+    rules
+=
+[
+        gp.Rule(
+
+        gp.Rule(
+
+        gp.
+Rule
+(
+            metric=gp.RuleMetrics.pii,
+
+            metric=gp.RuleMetrics.pii,
+
+            metric
+=
+gp.RuleMetrics.pii,
+            operator=gp.RuleOperator.contains,
+
+            operator=gp.RuleOperator.contains,
+
+            operator
+=
+gp.RuleOperator.contains,
+            target_value="ssn"
+
+            target_value="ssn"
+
+            target_value
+=
+"ssn"
+        ),
+
+        ),
+
+        ),
+        gp.Rule(
+
+        gp.Rule(
+
+        gp.
+Rule
+(
+            metric=gp.RuleMetrics.toxicity,
+
+            metric=gp.RuleMetrics.toxicity,
+
+            metric
+=
+gp.RuleMetrics.toxicity,
+            operator=gp.RuleOperator.gt,
+
+            operator=gp.RuleOperator.gt,
+
+            operator
+=
+gp.RuleOperator.gt,
+            target_value=0.8
+
+            target_value=0.8
+
+            target_value
+=
+0.8
+        )
+
+        )
+
+        )
+    ],
+
+    ],
+
+    ],
+    action=gp.OverrideAction(
+
+    action=gp.OverrideAction(
+
+    action
+=
+gp.
+OverrideAction
+(
+        choices=["Sorry, I cannot answer that question."]
+
+        choices=["Sorry, I cannot answer that question."]
+
+        choices
+=
+[
+"Sorry, I cannot answer that question."
+]
+    )
+
+    )
+
+    )
+)
+)
+)
+```
+
+[PreviousRule](/galileo/gen-ai-studio-products/galileo-protect/concepts/rule)[NextFine-Tune](/galileo/gen-ai-studio-products/galileo-llm-fine-tune)
+
+Last updated 2 months ago

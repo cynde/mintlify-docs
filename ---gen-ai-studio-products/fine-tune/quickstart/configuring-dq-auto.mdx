@@ -1,0 +1,675 @@
+---
+title: "Configuring Dq Auto"
+---
+
+# Configuring DQ Auto
+
+Automatic Data Insights on your Seq2Seq dataset
+
+### 
+
+[](#auto)
+
+auto
+
+While using auto with default settings is as simple as running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.auto()</code>, you can also set granular control over dataset settings, training parameters, and generation configuration. The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code> function takes in optional parameters for <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataset_config</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">training_config</code>, and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">generation_config</code>. If a configuration parameter is omitted, default values from below will be used.
+
+#### 
+
+[](#example)
+
+Example
+
+Copy```
+from dataquality.integrations.seq2seq.auto import auto
+
+from dataquality.integrations.seq2seq.auto import auto
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+auto 
+import
+ auto
+from dataquality.integrations.seq2seq.schema import (
+
+from dataquality.integrations.seq2seq.schema import (
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ (
+    Seq2SeqDatasetConfig,
+
+    Seq2SeqDatasetConfig,
+
+    Seq2SeqDatasetConfig
+,
+    Seq2SeqGenerationConfig,
+
+    Seq2SeqGenerationConfig,
+
+    Seq2SeqGenerationConfig
+,
+    Seq2SeqTrainingConfig
+
+    Seq2SeqTrainingConfig
+
+    Seq2SeqTrainingConfig
+)
+
+)
+
+)
+
+
+
+
+# Config parameters can be found below
+
+# Config parameters can be found below
+
+# Config parameters can be found below
+dataset_config = Seq2SeqDatasetConfig(...)
+
+dataset_config = Seq2SeqDatasetConfig(...)
+
+dataset_config 
+=
+ 
+Seq2SeqDatasetConfig
+(...)
+training_config = Seq2SeqTrainingConfig(...)
+
+training_config = Seq2SeqTrainingConfig(...)
+
+training_config 
+=
+ 
+Seq2SeqTrainingConfig
+(...)
+generation_config = Seq2SeqGenerationConfig(...)
+
+generation_config = Seq2SeqGenerationConfig(...)
+
+generation_config 
+=
+ 
+Seq2SeqGenerationConfig
+(...)
+
+
+
+
+auto(
+
+auto(
+
+auto
+(
+    project_name="s2s_auto",
+
+    project_name="s2s_auto",
+
+    project_name
+=
+"s2s_auto"
+,
+    run_name="my_run",
+
+    run_name="my_run",
+
+    run_name
+=
+"my_run"
+,
+    dataset_config=dataset_config,
+
+    dataset_config=dataset_config,
+
+    dataset_config
+=
+dataset_config,
+    training_config=training_config
+
+    training_config=training_config
+
+    training_config
+=
+training_config
+    generation_config=generation_config
+
+    generation_config=generation_config
+
+    generation_config
+=
+generation_config
+)
+)
+)
+```
+
+### 
+
+[](#parameters)
+
+Parameters
+
+*   **Parameters**
+    
+    *   <strong class="font-bold">project_name</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional project name. If not set, a default name will be used. Default "s2s_auto"
+        
+    *   <strong class="font-bold">run_name</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional run name. If not set, a random name will be generated
+        
+    *   <strong class="font-bold">train_path</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional training data to use. Must be a path to a local file of type <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.csv</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.json</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.jsonl</code>.
+        
+    *   <strong class="font-bold">dataset_config</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqDatasetConfig</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional config for loading the dataset. See <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqDatasetConfig</code> for more details
+        
+    *   <strong class="font-bold">training_config</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqTrainingConfig</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional config for training the model. See <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqTrainingConfig</code> for more details
+        
+    *   <strong class="font-bold">generation_config</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqGenerationConfig</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional config for post training model generation. See <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqGenerationConfig</code> for more details
+        
+    *   <strong class="font-bold">wait</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">bool</code>) -- Whether to wait for Galileo to complete processing your run. Default True
+        
+    
+
+### 
+
+[](#dataset-config)
+
+Dataset Config
+
+Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqGenerationConfig()</code> class to set the dataset for auto training.
+
+Given either a pandas dataframe, local file path, or huggingface dataset path, this function will load the data, train a huggingface transformer model, and provide Galileo insights via a link to the Galileo Console.
+
+One of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">hf_data</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train_path</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train_data</code> should be provided.
+
+Copy```
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ Seq2SeqDatasetConfig
+
+
+
+
+dataset_config = Seq2SeqDatasetConfig(
+
+dataset_config = Seq2SeqDatasetConfig(
+
+dataset_config 
+=
+ 
+Seq2SeqDatasetConfig
+(
+    train_path="/Home/Datasets/train.csv",
+
+    train_path="/Home/Datasets/train.csv",
+
+    train_path
+=
+"/Home/Datasets/train.csv"
+,
+    val_path="/Home/Datasets/val.csv",
+
+    val_path="/Home/Datasets/val.csv",
+
+    val_path
+=
+"/Home/Datasets/val.csv"
+,
+    test_path="/Home/Datasets/test.csv",
+
+    test_path="/Home/Datasets/test.csv",
+
+    test_path
+=
+"/Home/Datasets/test.csv"
+,
+    input_col="text",
+
+    input_col="text",
+
+    input_col
+=
+"text"
+,
+    target_col="label",
+
+    target_col="label",
+
+    target_col
+=
+"label"
+,
+)
+)
+)
+```
+
+### 
+
+[](#parameters-1)
+
+Parameters
+
+*   **Parameters**
+    
+    *   <strong class="font-bold">hf_data</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">DatasetDict</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Use this param if you have huggingface data in the hub or in memory. Otherwise see train_path or train_data, val_path or val_data, and test_path or test_data. If provided, other dataset parameters are ignored.
+        
+    *   <strong class="font-bold">train_path</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional training data to use. Must be a path to a local file of type <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.csv</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.json</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.jsonl</code>.
+        
+    *   <strong class="font-bold">val_path</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional validation data to use. Must be a path to a local file of type <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.csv</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.json</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.jsonl</code>. If not provided, but test_path is, that will be used as the evaluation set. If neither val nor test are available, the train data will be randomly split 80/20 for use as evaluation data.
+        
+    *   <strong class="font-bold">test_path</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional test data to use. Must be a path to a local file of type <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.csv</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.json</code>, or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.jsonl</code>. The test data, if provided with val, will be used after training is complete, as the hold-out set. If no validation data is provided, this will instead be used as the evaluation set.
+        
+    *   <strong class="font-bold">train_data</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">DataFrame</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Dataset</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional training data to use. Can be one of * Pandas dataframe * Huggingface dataset * Huggingface dataset hub path
+        
+    *   <strong class="font-bold">val_data</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">DataFrame</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Dataset</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional validation data to use. The validation data is what is used for the evaluation dataset in huggingface, and what is used for early stopping. If not provided, but test_data is, that will be used as the evaluation set. If neither val nor test are available, the train data will be randomly split 80/20 for use as evaluation data. Can be one of * Pandas dataframe * Huggingface dataset * Huggingface dataset hub path
+        
+    *   <strong class="font-bold">test_data</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">DataFrame</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Dataset</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">None</code>]) -- Optional test data to use. The test data, if provided with val, will be used after training is complete, as the hold-out set. If no validation data is provided, this will instead be used as the evaluation set. Can be one of * Pandas dataframe * Huggingface dataset * Huggingface dataset hub path
+        
+    *   <strong class="font-bold">input_col</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>) -- Column name of the model input in the provided dataset. Default <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">text</code>
+        
+    *   <strong class="font-bold">target_col</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">str</code>) -- Column name of the model target output in the provided dataset. Default <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">label</code>
+        
+    
+
+### 
+
+[](#training-config)
+
+Training Config
+
+Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqTrainingConfig()</code> class to set the training parameters for auto training.
+
+Copy```
+from dataquality.integrations.seq2seq.schema import Seq2SeqTrainingConfig
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqTrainingConfig
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ Seq2SeqTrainingConfig
+
+
+
+
+training_config = Seq2SeqTrainingConfig(
+
+training_config = Seq2SeqTrainingConfig(
+
+training_config 
+=
+ 
+Seq2SeqTrainingConfig
+(
+    epochs=3
+
+    epochs=3
+
+    epochs
+=
+3
+    learning_rate=3e-4,
+
+    learning_rate=3e-4,
+
+    learning_rate
+=
+3e-4
+,
+    batch_size=4,
+
+    batch_size=4,
+
+    batch_size
+=
+4
+,
+)
+)
+)
+```
+
+### 
+
+[](#parameters-2)
+
+Parameters
+
+*   **Parameters**
+    
+    *   <strong class="font-bold">model</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- The pretrained AutoModel from huggingface that will be used to tokenize and train on the provided data. Default <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">google/flan-t5-base</code>
+        
+    *   <strong class="font-bold">epochs</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- The number of epochs to train. Defaults to 3. If set to 0, training/fine-tuning will be skipped and auto will only do a forward pass with the data to gather all the necessary info to display it in the console.
+        
+    *   <strong class="font-bold">learning_rate</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code>) -- Optional learning rate. Defaults to 3e-4
+        
+    *   <strong class="font-bold">batch_size</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- Optional batch size. Default 4
+        
+    *   <strong class="font-bold">accumulation_steps</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- Optional accumulation steps. Default 4
+        
+    *   <strong class="font-bold">max_input_tokens</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- Optional the maximum length in number of tokens for the inputs to the transformer model. If not set, will use tokenizer default or default 512 if tokenizer has no default
+        
+    *   <strong class="font-bold">max_target_tokens</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- Optional the maximum length in number of tokens for the target outputs to the transformer model. If not set, will use tokenizer default or default 128 if tokenizer has no default
+        
+    *   <strong class="font-bold">create_data_embs</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Optional</code>[<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">bool</code>]) -- Whether to create data embeddings for this run. If True, Sentence-Transformers will be used to generate data embeddings for this dataset and uploaded with this run. You can access these embeddings via dq.metrics.get_data_embeddings in the emb column or dq.metrics.get_dataframe(..., include_data_embs=True) in the data_emb col. Default True if a GPU is available, else default False.
+        
+    
+
+### 
+
+[](#generation-config)
+
+Generation Config
+
+Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Seq2SeqGenerationConfig()</code> class to set the training parameters for auto training.
+
+Copy```
+from dataquality.integrations.seq2seq.schema import Seq2SeqGenerationConfig
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqGenerationConfig
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ Seq2SeqGenerationConfig
+
+
+
+
+generation_config = Seq2SeqGenerationConfig(
+
+generation_config = Seq2SeqGenerationConfig(
+
+generation_config 
+=
+ 
+Seq2SeqGenerationConfig
+(
+    max_new_tokens=16,
+
+    max_new_tokens=16,
+
+    max_new_tokens
+=
+16
+,
+    temperature=0.2,
+
+    temperature=0.2,
+
+    temperature
+=
+0.2
+,
+)
+)
+)
+```
+
+### 
+
+[](#parameters-3)
+
+Parameters
+
+*   **Parameters**
+    
+    *   <strong class="font-bold">max_new_tokens</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- The maximum numbers of tokens to generate, ignoring the number of tokens in the prompt. Default 16
+        
+    *   <strong class="font-bold">temperature</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code>) -- The value used to modulate the next token probabilities. Default 0.2
+        
+    *   <strong class="font-bold">do_sample</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code>) -- Whether or not to use sampling ; use greedy decoding otherwise. Default False
+        
+    *   <strong class="font-bold">top_p</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code>) -- If set to float &lt; 1, only the smallest set of most probable tokens with probabilities that add up to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">top_p</code> or higher are kept for generation. Default 1.0
+        
+    *   <strong class="font-bold">top_k</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">int</code>) -- The number of highest probability vocabulary tokens to keep for top-k-filtering. Default 50
+        
+    *   <strong class="font-bold">generation_splits</strong> (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Union[List[str], None]</code>) -- Optional list of splits to perform generation on after training the model. These generated outputs will show up in the console for specified splits. Default ["test"]
+        
+    
+
+### 
+
+[](#examples)
+
+Examples
+
+An example using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code> with a hosted huggingface summarization dataset
+
+Copy```
+import dataquality.integrations.seq2seq.auto as auto
+
+import dataquality.integrations.seq2seq.auto as auto
+
+import
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+auto 
+as
+ auto
+
+
+
+
+dq.auto(hf_data="tatsu-lab/alpaca")
+dq.auto(hf_data="tatsu-lab/alpaca")
+dq
+.
+auto
+(hf_data
+=
+"tatsu-lab/alpaca"
+)
+```
+
+An example of using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code> with a local jsonl file
+
+Copy```
+import dataquality.integrations.seq2seq.auto as auto
+
+import dataquality.integrations.seq2seq.auto as auto
+
+import
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+auto 
+as
+ auto
+
+
+
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ Seq2SeqDatasetConfig
+
+
+
+
+dataset_config = Seq2SeqDatasetConfig(
+
+dataset_config = Seq2SeqDatasetConfig(
+
+dataset_config 
+=
+ 
+Seq2SeqDatasetConfig
+(
+    train_path="./train.jsonl",
+
+    train_path="./train.jsonl",
+
+    train_path
+=
+"./train.jsonl"
+,
+    val_path="./val.jsonl",
+
+    val_path="./val.jsonl",
+
+    val_path
+=
+"./val.jsonl"
+,
+    test_path="./test.jsonl",
+
+    test_path="./test.jsonl",
+
+    test_path
+=
+"./test.jsonl"
+,
+    input_col="text",
+
+    input_col="text",
+
+    input_col
+=
+"text"
+,
+    target_col="label",
+
+    target_col="label",
+
+    target_col
+=
+"label"
+,
+)
+
+)
+
+)
+
+
+
+
+dq.auto(
+
+dq.auto(
+
+dq
+.
+auto
+(
+    project_name="data_from_local",
+
+    project_name="data_from_local",
+
+    project_name
+=
+"data_from_local"
+,
+    run_name="run_1_raw_data",
+
+    run_name="run_1_raw_data",
+
+    run_name
+=
+"run_1_raw_data"
+,
+    dataset_config=dataset_config,
+
+    dataset_config=dataset_config,
+
+    dataset_config
+=
+dataset_config,
+)
+)
+)
+```
+
+Where <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">train.jsonl</code> might be a file with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prompt</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">completion</code> columns that looks like:
+
+Copy```
+{"prompt": "Write a short story about a curious cat.", "completion": "Once upon a time, in a small town, there lived a curious cat named Whiskers. Whiskers was known for exploring every nook and cranny, always on the lookout for adventure."}
+
+{"prompt": "Write a short story about a curious cat.", "completion": "Once upon a time, in a small town, there lived a curious cat named Whiskers. Whiskers was known for exploring every nook and cranny, always on the lookout for adventure."}
+
+{"prompt": "Describe your favorite vacation destination.", "completion": "My favorite vacation destination is a remote tropical island. The crystal-clear waters, white sandy beaches, and lush green forests make it a paradise on Earth."}
+
+{"prompt": "Describe your favorite vacation destination.", "completion": "My favorite vacation destination is a remote tropical island. The crystal-clear waters, white sandy beaches, and lush green forests make it a paradise on Earth."}
+
+{"prompt": "List your top 5 favorite books.", "completion": "1. 'To Kill a Mockingbird' by Harper Lee\n2. 'The Great Gatsby' by F. Scott Fitzgerald\n3. 'Harry Potter and the Sorcerer's Stone' by J.K. Rowling\n4. 'Pride and Prejudice' by Jane Austen\n5. 'The Catcher in the Rye' by J.D. Salinger"}
+
+{"prompt": "List your top 5 favorite books.", "completion": "1. 'To Kill a Mockingbird' by Harper Lee\n2. 'The Great Gatsby' by F. Scott Fitzgerald\n3. 'Harry Potter and the Sorcerer's Stone' by J.K. Rowling\n4. 'Pride and Prejudice' by Jane Austen\n5. 'The Catcher in the Rye' by J.D. Salinger"}
+
+{"prompt": "Explain the concept of time travel.", "completion": "Time travel is a theoretical concept that involves moving between different points in time. While it remains a popular subject in science fiction, it has not been achieved in reality."}
+
+{"prompt": "Explain the concept of time travel.", "completion": "Time travel is a theoretical concept that involves moving between different points in time. While it remains a popular subject in science fiction, it has not been achieved in reality."}
+
+{"prompt": "Share your favorite recipe.", "completion": "One of my favorite recipes is for homemade lasagna. It's a comforting dish made with layers of pasta, ricotta cheese, marinara sauce, ground beef, and melted mozzarella. It's a family favorite!"}
+{"prompt": "Share your favorite recipe.", "completion": "One of my favorite recipes is for homemade lasagna. It's a comforting dish made with layers of pasta, ricotta cheese, marinara sauce, ground beef, and melted mozzarella. It's a family favorite!"}
+```
+
+### 
+
+[](#get-started-with-a-notebook)
+
+Get started with a notebook 📘
+
+*   [Auto Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/sequence_to_sequence/LLM_Fine_Tuning_chat_data_with_DQ_auto_using_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [Auto Notebook for Chat Data](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/sequence_to_sequence/LLM_Fine_Tuning_chat_data_with_DQ_auto_using_%F0%9F%94%AD_Galileo.ipynb)
+    
+
+[PreviousQuickstart](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started)[NextConsole Walkthrough](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/uncovering-data-issues)
+
+Last updated 5 months ago

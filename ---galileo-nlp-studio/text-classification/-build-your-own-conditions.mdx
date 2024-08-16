@@ -1,0 +1,749 @@
+---
+title: " Build Your Own Conditions"
+---
+
+# ➗Build your own Conditions
+
+A class to build custom conditions for DataFrame assertions and alerting.
+
+A <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Condition</code> is a class for building custom data quality checks. Simply create a condition, and after the run is processed your conditions will be evaluated. Integrate with email or slack to have condition results alerting via a Run Report. Use Conditions to answer questions such as "Is the average confidence for my training data below 0.25" or "Has over 20% of my inference data drifted".
+
+### 
+
+[](#what-do-i-do-with-conditions)
+
+What do I do with Conditions?
+
+You can build a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Run Report</code> that will evaluate all conditions after a run is processed.
+
+Copy```
+import dataquality as dq
+
+import dataquality as dq
+
+import
+ dataquality 
+as
+ dq
+
+
+
+
+dq.init("text_classification")
+
+dq.init("text_classification")
+
+dq
+.
+init
+(
+"text_classification"
+)
+
+
+
+
+cond1 = dq.Condition(...)
+
+cond1 = dq.Condition(...)
+
+cond1 
+=
+ dq
+.
+Condition
+(...)
+cond2 = dq.Condition(...)
+
+cond2 = dq.Condition(...)
+
+cond2 
+=
+ dq
+.
+Condition
+(...)
+dq.register_run_report(conditions=[cond1, cond2])
+
+dq.register_run_report(conditions=[cond1, cond2])
+
+dq
+.
+register_run_report
+(conditions
+=
+[cond1, cond2])
+
+
+
+
+# By default we email the logged in user
+
+# By default we email the logged in user
+
+# By default we email the logged in user
+# Optionally pass in additional emails to receive Run Reports
+
+# Optionally pass in additional emails to receive Run Reports
+
+# Optionally pass in additional emails to receive Run Reports
+dq.register_run_report(conditions=[cond1], emails=["foo@bar.com"]
+dq.register_run_report(conditions=[cond1], emails=["foo@bar.com"]
+dq
+.
+register_run_report
+(conditions
+=
+[cond1], emails
+=
+[
+"foo@bar.com"
+]
+```
+
+You can also build and evaluate conditions by accessing the processed DataFrame.
+
+Copy```
+from dataquality import Condition
+
+from dataquality import Condition
+
+from
+ dataquality 
+import
+ Condition
+
+
+
+
+df = dq.metrics.get_dataframe("proj_name", "run_name", "training")
+
+df = dq.metrics.get_dataframe("proj_name", "run_name", "training")
+
+df 
+=
+ dq
+.
+metrics
+.
+get_dataframe
+(
+"proj_name"
+, 
+"run_name"
+, 
+"training"
+)
+cond = Condition(...)
+
+cond = Condition(...)
+
+cond 
+=
+ 
+Condition
+(...)
+passes, ground_truth = cond.evaluate(df)
+passes, ground_truth = cond.evaluate(df)
+passes
+,
+ ground_truth 
+=
+ cond
+.
+evaluate
+(df)
+```
+
+### 
+
+[](#how-do-i-build-a-condition)
+
+How do I build a Condition?
+
+A <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Condition</code> is defined as follows:
+
+\`\`\`
+
+Copy```
+class Condition:
+
+class Condition:
+
+class
+ 
+Condition
+:
+    agg: AggregateFunction # An aggregate function to apply to the metric
+
+    agg: AggregateFunction # An aggregate function to apply to the metric
+
+    agg
+:
+ AggregateFunction 
+# An aggregate function to apply to the metric
+    threshold: float # Threshold value for evaluating the condition
+
+    threshold: float # Threshold value for evaluating the condition
+
+    threshold
+:
+ 
+float
+ 
+# Threshold value for evaluating the condition
+    operator: Operator # The operator to use for comparing the agg to the threshold
+
+    operator: Operator # The operator to use for comparing the agg to the threshold
+
+    operator
+:
+ Operator 
+# The operator to use for comparing the agg to the threshold
+    metric: Optional[str] = None # The DF column for evaluating the condition
+
+    metric: Optional[str] = None # The DF column for evaluating the condition
+
+    metric
+:
+ Optional
+[
+str
+]
+ 
+=
+ 
+None
+ 
+# The DF column for evaluating the condition
+    filters: Optional[List[ConditionFilter]] = [] # Optional filter to apply to the DataFrame before evaluating the Condition
+    filters: Optional[List[ConditionFilter]] = [] # Optional filter to apply to the DataFrame before evaluating the Condition
+```
+
+To gain an intuition for what can be accomplished, consider the following examples:
+
+Copy```
+1. Is the average confidence less than 0.3?
+
+1. Is the average confidence less than 0.3?
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     agg=AggregateFunction.avg,
+
+    ...     agg=AggregateFunction.avg,
+
+    ...     metric="confidence",
+
+    ...     metric="confidence",
+
+    ...     operator=Operator.lt,
+
+    ...     operator=Operator.lt,
+
+    ...     threshold=0.3,
+
+    ...     threshold=0.3,
+
+    ... )
+
+    ... )
+
+
+
+
+
+2. Is the max DEP greater or equal to 0.45?
+
+2. Is the max DEP greater or equal to 0.45?
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     agg=AggregateFunction.max,
+
+    ...     agg=AggregateFunction.max,
+
+    ...     metric="data_error_potential",
+
+    ...     metric="data_error_potential",
+
+    ...     operator=Operator.gte,
+
+    ...     operator=Operator.gte,
+
+    ...     threshold=0.45,
+
+    ...     threshold=0.45,
+
+    ... )
+    ... )
+```
+
+By adding filters, you can further narrow down the scope of the condition. If the aggregate function is "pct", you don't need to specify a metric, as the filters will determine the percentage of data.
+
+Copy```
+3. Alert if over 80% of the dataset has confidence under 0.1
+
+3. Alert if over 80% of the dataset has confidence under 0.1
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gt,
+
+    ...     operator=Operator.gt,
+
+    ...     threshold=0.8,
+
+    ...     threshold=0.8,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="confidence", operator=Operator.lt, value=0.1
+
+    ...             metric="confidence", operator=Operator.lt, value=0.1
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+
+    ... )
+
+
+
+
+
+4. Alert if at least 20% of the dataset has drifted (Inference DataFrames only)
+
+4. Alert if at least 20% of the dataset has drifted (Inference DataFrames only)
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gte,
+
+    ...     operator=Operator.gte,
+
+    ...     threshold=0.2,
+
+    ...     threshold=0.2,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+
+    ... )
+
+
+
+
+
+5. Alert 5% or more of the dataset contains PII
+
+5. Alert 5% or more of the dataset contains PII
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gte,
+
+    ...     operator=Operator.gte,
+
+    ...     threshold=0.05,
+
+    ...     threshold=0.05,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+    ... )
+```
+
+Complex conditions can be built when the filter has a different metric than the metric used in the condition.
+
+Copy```
+6. Alert if the min confidence of drifted data is less than 0.15
+
+6. Alert if the min confidence of drifted data is less than 0.15
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     agg=AggregateFunction.min,
+
+    ...     agg=AggregateFunction.min,
+
+    ...     metric="confidence",
+
+    ...     metric="confidence",
+
+    ...     operator=Operator.lt,
+
+    ...     operator=Operator.lt,
+
+    ...     threshold=0.15,
+
+    ...     threshold=0.15,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...         )
+
+    ...         )
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+
+    ... )
+
+
+
+
+
+7. Alert if over 50% of high DEP (>=0.7) data contains PII
+
+7. Alert if over 50% of high DEP (>=0.7) data contains PII
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gt,
+
+    ...     operator=Operator.gt,
+
+    ...     threshold=0.5,
+
+    ...     threshold=0.5,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="data_error_potential", operator=Operator.gte, value=0.7
+
+    ...             metric="data_error_potential", operator=Operator.gte, value=0.7
+
+    ...         ),
+
+    ...         ),
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+    ... )
+```
+
+You can also call conditions directly, which will assert its truth against a DataFrame.
+
+Copy```
+1. Assert that average confidence less than 0.3
+
+1. Assert that average confidence less than 0.3
+
+>>> c = Condition(
+
+>>> c = Condition(
+
+...     agg=AggregateFunction.avg,
+
+...     agg=AggregateFunction.avg,
+
+...     metric="confidence",
+
+...     metric="confidence",
+
+...     operator=Operator.lt,
+
+...     operator=Operator.lt,
+
+...     threshold=0.3,
+
+...     threshold=0.3,
+
+... )
+
+... )
+
+>>> c(df)  # Will raise an AssertionError if False
+>>> c(df)  # Will raise an AssertionError if False
+```
+
+### 
+
+[](#aggregate-function)
+
+Aggregate Function
+
+Copy```
+from dataquality import AggregateFunction
+from dataquality import AggregateFunction
+from
+ dataquality 
+import
+ AggregateFunction
+```
+
+The available aggregate functions are:
+
+Copy```
+class AggregateFunction(str, Enum):
+
+class AggregateFunction(str, Enum):
+
+class
+ 
+AggregateFunction
+(
+str
+,
+ 
+Enum
+):
+    avg = "avg"
+
+    avg = "avg"
+
+    avg 
+=
+ 
+"avg"
+    min = "min"
+
+    min = "min"
+
+    
+min
+ 
+=
+ 
+"min"
+    max = "max"
+
+    max = "max"
+
+    
+max
+ 
+=
+ 
+"max"
+    sum = "sum"
+
+    sum = "sum"
+
+    
+sum
+ 
+=
+ 
+"sum"
+    pct = "pct"
+    pct = "pct"
+    pct 
+=
+ 
+"pct"
+```
+
+### 
+
+[](#operator)
+
+Operator
+
+Copy```
+from dataquality import Operator
+from dataquality import Operator
+from
+ dataquality 
+import
+ Operator
+```
+
+The available operators are:
+
+Copy```
+class Operator(str, Enum):
+
+class Operator(str, Enum):
+
+class
+ 
+Operator
+(
+str
+,
+ 
+Enum
+):
+    eq = "eq"
+
+    eq = "eq"
+
+    eq 
+=
+ 
+"eq"
+    neq = "neq"
+
+    neq = "neq"
+
+    neq 
+=
+ 
+"neq"
+    gt = "gt"
+
+    gt = "gt"
+
+    gt 
+=
+ 
+"gt"
+    lt = "lt"
+
+    lt = "lt"
+
+    lt 
+=
+ 
+"lt"
+    gte = "gte"
+
+    gte = "gte"
+
+    gte 
+=
+ 
+"gte"
+    lte = "lte"
+    lte = "lte"
+    lte 
+=
+ 
+"lte"
+```
+
+### 
+
+[](#metric-and-treshold)
+
+Metric & Treshold
+
+The metric must be the name of a column in the DataFrame. Threshold is a numeric value for comparison in the Condition.
+
+### 
+
+[](#alerting)
+
+Alerting
+
+Alerting via email, slack in development. Please reach out to Galileo at team@rungalileo.io for more information.
+
+[PreviousModel Monitoring and Data Drift](/galileo/galileo-nlp-studio/text-classification/model-monitoring-and-data-drift-on-unlabeled-data)[NextAutomated Production Monitoring](/galileo/galileo-nlp-studio/text-classification/automated-nlp-production-monitoring-powered-by-galileo-conditions)
+
+Last updated 5 months ago

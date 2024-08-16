@@ -1,0 +1,65 @@
+---
+title: "Evaluate And Optimize Agents  Chains Or Multi Step Workflows"
+---
+
+# Evaluate and Optimize Agents, Chains or multi-step workflows
+
+How to use Galileo Evaluate with Chains and Agents
+
+Galileo Evaluate helps you evaluate and optimize Agents, Chains, and any other multi-step workflows with out-of-the-box Tracing and Analytics. Galileo allows you to run and log experiments, trace all the steps taken by your Agent or Chain, and use [Guardrail](/galileo/gen-ai-studio-products/guardrail-store) or [Custom Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics) to assess the quality of the end-to-end system.
+
+## 
+
+[](#getting-started)
+
+**Getting Started**
+
+The first step in evaluating your application is creating an evaluation run. To do this, run your evaluation set (e.g. a set of inputs that mimic the inputs you expect to get from users) through your Agent or Chain system and create a run.
+
+Follow our instructions on how to [integrate Evaluate into your existing application](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/integrating-evaluate-into-my-existing-application).
+
+#### 
+
+[](#keeping-track-of-what-changed-in-your-experiment)
+
+**Keeping track of what changed in your experiment**
+
+As you start experimenting, you're going to want to keep track of what you're attempting with each experiment. To do so, use Prompt Tags. Prompt Tags are tags you can add to the run (e.g. "embedding\_model" = "voyage-2", "embedding\_model" = "text-embedding-ada-002").
+
+Prompt Tags will help you remember what you tried with each experiment. Read more about [how to add Prompt Tags here](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/adding-tags-to-prompt-runs).
+
+## 
+
+[](#tracing-and-visualizing-your-agent-and-chain-executions)
+
+Tracing and Visualizing your Agent and Chain executions
+
+Once you log your evaluation runs, you can go to the Galileo Console to analyze your Chain and Agent executions. For each execution, you'll be able to see what the input into the workflow was and what the final response was, as well as any steps of decisions taken to get to the final result.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FPuiguDDf32H3iKazludv%252Fimage.png%3Falt%3Dmedia%26token%3D129be0ce-aaec-4203-b319-a9226e0f50f0&width=768&dpr=4&quality=100&sign=e0fdd0c3&sv=1)
+
+Clicking on any row will open the Expanded View for that node. The Retriever Node will show you all the chunks that your retriever returned. Once you start debugging your executions, this will allow you to trace poor-quality responses back to the step that went wrong.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FpNbE9f8mSkyhIHZowxbR%252Fimage.png%3Falt%3Dmedia%26token%3D9db3f1a5-228a-4f76-9904-e2902bdab8cc&width=768&dpr=4&quality=100&sign=deac2ecb&sv=1)
+
+## 
+
+[](#evaluating-and-optimizing-the-performance-of-your-rag-application)
+
+**Evaluating and Optimizing the performance of your RAG application**
+
+Galileo has out-of-the-box [Guardrail Metrics](/galileo/gen-ai-studio-products/guardrail-store) to help you assess and evaluate the quality of your application. In addition, Galileo supports user-defined [custom metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics). When logging your evaluation run, make sure to include the metrics you want computed for your run.
+
+More information on how to [evaluate and debug them on the console](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows/evaluating-and-debugging-chains).
+
+## 
+
+[](#iterative-experimentation)
+
+Iterative Experimentation
+
+Now that you've identified something wrong with your Chain or Agent, try to change your chain or agent configuration, prompt template, or model settings and re-run your evaluation under the same project. Your project view will allow you to quickly compare evaluation runs and see which [configuration](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows#keeping-track-of-what-changed-in-your-experiment) of your system worked best.
+
+[PreviousLog Evaluate Runs via REST APIs](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/log-evaluate-runs-via-rest-apis)[NextEvaluate and Debug Chains](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows/evaluating-and-debugging-chains)
+
+Last updated 3 months ago

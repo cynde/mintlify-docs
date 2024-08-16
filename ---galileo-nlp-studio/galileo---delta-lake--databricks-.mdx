@@ -1,0 +1,208 @@
+---
+title: "Galileo   Delta Lake  Databricks "
+---
+
+# Galileo + Delta Lake (Databricks)
+
+This page shows how to export data directly into Delta Lake from the Galileo UI and then reading the same data using Galileo's Python SDK and executing a Galileo Run.
+
+### 
+
+[](#setting-up-a-databricks-connection)
+
+Setting Up a Databricks Connection
+
+First, go to the Integrations Page and set up your Databricks connection.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FdiMiWdubRT9FfWvNRpab%252Fimage.png%3Falt%3Dmedia%26token%3D4fd810db-6a6c-480e-8145-bb7fb30337e4&width=768&dpr=4&quality=100&sign=fcdb0c40&sv=1)
+
+Setting up Databricks connection in Galileo
+
+### 
+
+[](#using-galileo-to-read-from-delta-lake-and-execute-a-run)
+
+Using Galileo to Read from Delta Lake and Execute a Run
+
+The following code snippet shows how to read labeled data from Delta Lake and execute a Galileo training run.
+
+Copy```
+import os
+
+import os
+
+import
+ os
+
+
+
+
+import pandas as pd
+
+import pandas as pd
+
+import
+ pandas 
+as
+ pd
+from deltalake import DeltaTable, write_deltalake
+
+from deltalake import DeltaTable, write_deltalake
+
+from
+ deltalake 
+import
+ DeltaTable
+,
+ write_deltalake
+
+
+
+
+# Dataframe with 2 columns: text and label
+
+# Dataframe with 2 columns: text and label
+
+# Dataframe with 2 columns: text and label
+df_train = pd.DataFrame({"text": newsgroups_train.data, "label": newsgroups_train.target})
+
+df_train = pd.DataFrame({"text": newsgroups_train.data, "label": newsgroups_train.target})
+
+df_train 
+=
+ pd
+.
+DataFrame
+({
+"text"
+: newsgroups_train.data, 
+"label"
+: newsgroups_train.target})
+df_test = pd.DataFrame({"text": newsgroups_test.data, "label": newsgroups_test.target})
+
+df_test = pd.DataFrame({"text": newsgroups_test.data, "label": newsgroups_test.target})
+
+df_test 
+=
+ pd
+.
+DataFrame
+({
+"text"
+: newsgroups_test.data, 
+"label"
+: newsgroups_test.target})
+
+
+
+
+write_deltalake("tmp/delta_lake_path", df_train)
+
+write_deltalake("tmp/delta_lake_path", df_train)
+
+write_deltalake
+(
+"tmp/delta_lake_path"
+, df_train)
+write_deltalake("tmp/delta_lake_path", df_test)
+
+write_deltalake("tmp/delta_lake_path", df_test)
+
+write_deltalake
+(
+"tmp/delta_lake_path"
+, df_test)
+
+
+
+
+df_train_from_deltalake = DeltaTable("tmp/delta_lake_path").to_pandas()
+
+df_train_from_deltalake = DeltaTable("tmp/delta_lake_path").to_pandas()
+
+df_train_from_deltalake 
+=
+ 
+DeltaTable
+(
+"tmp/delta_lake_path"
+).
+to_pandas
+()
+df_test_from_deltalake = DeltaTable("tmp/delta_lake_path").to_pandas()
+
+df_test_from_deltalake = DeltaTable("tmp/delta_lake_path").to_pandas()
+
+df_test_from_deltalake 
+=
+ 
+DeltaTable
+(
+"tmp/delta_lake_path"
+).
+to_pandas
+()
+
+
+
+
+dq.auto(
+
+dq.auto(
+
+dq
+.
+auto
+(
+     train_data=df_test_from_deltalake, 
+
+     train_data=df_test_from_deltalake, 
+
+     train_data
+=
+df_test_from_deltalake, 
+     test_data=df_test_from_deltalake, 
+
+     test_data=df_test_from_deltalake, 
+
+     test_data
+=
+df_test_from_deltalake, 
+     labels=newsgroups_train.target_names,
+
+     labels=newsgroups_train.target_names,
+
+     labels
+=
+newsgroups_train.target_names,
+     project_name="my_newsgroups_project", 
+
+     project_name="my_newsgroups_project", 
+
+     project_name
+=
+"my_newsgroups_project"
+, 
+     run_name="run_1"
+
+     run_name="run_1"
+
+     run_name
+=
+"run_1"
+)
+)
+)
+```
+
+### 
+
+[](#exporting-data-from-galileo-ui-into-delta-lake)
+
+Exporting Data from Galileo UI into Delta Lake
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FYjBo4YL6JzLje3oUVkS1%252Fimage.png%3Falt%3Dmedia%26token%3D357f3c61-8a2f-4150-acd3-c490647e0a33&width=768&dpr=4&quality=100&sign=6bc767cb&sv=1)
+
+[PreviousModel Monitoring and Data Drift](/galileo/galileo-nlp-studio/natural-language-inference/model-monitoring-and-data-drift-on-unlabeled-data)[NextProduct Features](/galileo/how-to-and-faq/galileo-product-features)
+
+Last updated 3 months ago

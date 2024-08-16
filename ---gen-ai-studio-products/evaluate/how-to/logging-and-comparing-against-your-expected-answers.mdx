@@ -1,0 +1,392 @@
+---
+title: "Logging And Comparing Against Your Expected Answers"
+---
+
+# Logging and Comparing against your Expected Answers
+
+Expected outputs are a key element for evaluating LLM applications. They provide benchmarks to measure model accuracy, identify errors, and ensure consistent assessments. By comparing model responses to these predefined targets, you can pinpoint areas of improvement and track performance changes over time.
+
+Including expected outputs in your evaluation process also aids in benchmarking your application, ensuring fair and replicable evaluations.
+
+### 
+
+[](#logging-expected-output)
+
+**Logging Expected Output**
+
+There are a few ways to create runs, and each way has a slightly different way of logging your Expected Output:
+
+#### 
+
+[](#pq.run-or-playground-ui)
+
+**PQ.run() or Playground UI**
+
+If you're using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.run()</code> or creating runs through the <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/getting-started">Playground UI</a>, simply include your expected answers in a column called <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">target</code> in your evaluation set.
+
+#### 
+
+[](#custom-python-logger)
+
+**Custom Python Logger**
+
+If you're logging your runs via pq.chain\_run(), add your expected output in the _target_ field of the root NodeRow of each test.
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+
+
+
+
+# Your previously generated requests & responses
+
+# Your previously generated requests & responses
+
+# Your previously generated requests & responses
+data = [{'request': 'What is 2+2?', 'response': '2', 'expected_output': '4'},
+
+data = [{'request': 'What is 2+2?', 'response': '2', 'expected_output': '4'},
+
+data 
+=
+ [
+{
+'request'
+:
+ 
+'What is 2+2?'
+,
+ 
+'response'
+:
+ 
+'2'
+,
+ 
+'expected_output'
+:
+ 
+'4'
+},
+        {'request': 'Which city is the Golden Gate Bridge in?', 'response': 'Sausalito', 'expected_output': 'San Francisco'}]
+
+        {'request': 'Which city is the Golden Gate Bridge in?', 'response': 'Sausalito', 'expected_output': 'San Francisco'}]
+
+
+
+
+
+rows = []
+
+rows = []
+
+rows = []
+
+
+
+
+for d in data:
+
+for d in data:
+
+for
+ d 
+in
+ data
+:
+    chain_id = uuid.uuid4()
+
+    chain_id = uuid.uuid4()
+
+    chain_id = uuid
+.
+uuid4
+()
+    rows.append(
+
+    rows.append(
+
+    rows
+.
+append
+(
+        NodeRow.for_llm(
+
+        NodeRow.for_llm(
+
+        NodeRow.
+for_llm
+(
+            id=chain_id,
+
+            id=chain_id,
+
+            id
+=
+chain_id,
+            root_id=chain_id,
+
+            root_id=chain_id,
+
+            root_id
+=
+chain_id,
+            step=0,
+
+            step=0,
+
+            step
+=
+0
+,
+            prompt=d['request'],
+
+            prompt=d['request'],
+
+            prompt
+=
+d[
+'request'
+],
+            response=d['response'],
+
+            response=d['response'],
+
+            response
+=
+d[
+'response'
+],
+            target= d['expected_output'] #expected output optional to enable Bleu and Rouge scores
+
+            target= d['expected_output'] #expected output optional to enable Bleu and Rouge scores
+
+            target
+=
+ d[
+'expected_output'
+] 
+#expected output optional to enable Bleu and Rouge scores
+        )
+
+        )
+
+        )
+    )
+    )
+    )
+```
+
+Important note: Set the _Target_ on the root node of your workflow. Typically this will be the sole LLM node in your workflow or a "chain" node with other children nodes.
+
+#### 
+
+[](#langchain-callback)
+
+**Langchain Callback**
+
+If you're using a Langchain Callback, add your expected output by calling <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">add_targets</code> on your callback handler.
+
+Copy```
+my_chain = ... # your langchain chain
+
+my_chain = ... # your langchain chain
+
+my_chain 
+=
+ ... 
+# your langchain chain
+
+
+
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler 
+=
+ pq
+.
+GalileoPromptCallback
+(
+    project_name="my_project", scorers=scorers,
+
+    project_name="my_project", scorers=scorers,
+
+    project_name
+=
+"my_project"
+, scorers
+=
+scorers,
+)
+
+)
+
+)
+
+
+
+
+inputs = ['What is 2+2?', 'Which city is the Golden Gate Bridge in?']
+
+inputs = ['What is 2+2?', 'Which city is the Golden Gate Bridge in?']
+
+inputs 
+=
+ [
+'What is 2+2?'
+,
+ 
+'Which city is the Golden Gate Bridge in?'
+]
+expected_putputs = ['4', 'San Francisco']
+
+expected_putputs = ['4', 'San Francisco']
+
+expected_putputs 
+=
+ [
+'4'
+,
+ 
+'San Francisco'
+]
+
+
+
+
+my_chain.batch(inputs, config=dict(callbacks=[galileo_handler]))
+
+my_chain.batch(inputs, config=dict(callbacks=[galileo_handler]))
+
+my_chain
+.
+batch
+(inputs, config
+=
+dict
+(callbacks
+=
+[galileo_handler]))
+
+
+
+
+# Sets the expected output from each of the inputs.
+
+# Sets the expected output from each of the inputs.
+
+# Sets the expected output from each of the inputs.
+galileo_handler.add_targets(expected_outputs)
+
+galileo_handler.add_targets(expected_outputs)
+
+galileo_handler
+.
+add_targets
+(expected_outputs)
+
+
+
+
+galileo_handler.finish()
+galileo_handler.finish()
+galileo_handler
+.
+finish
+()
+```
+
+#### 
+
+[](#rest-endpoint)
+
+**REST Endpoint**
+
+If you're logging Evaluation runs via the [REST endpoint](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/log-evaluate-runs-via-rest-apis), set the _target_ field in the root node of each workflow.
+
+Copy```
+...    
+
+...    
+
+    {
+
+    {
+
+        node_id: "A_UNIQUE_ID",
+
+        node_id: "A_UNIQUE_ID",
+
+        node_type: "chain",
+
+        node_type: "chain",
+
+        node_name: "Chain",
+
+        node_name: "Chain",
+
+        node_input: "What is 2+2?",
+
+        node_input: "What is 2+2?",
+
+        node_output: "3",
+
+        node_output: "3",
+
+        chain_root_id: "A_UNIQUE_ID",
+
+        chain_root_id: "A_UNIQUE_ID",
+
+        step: 0,
+
+        step: 0,
+
+        has_children: true,
+
+        has_children: true,
+
+        creation_timestamp: 0,
+
+        creation_timestamp: 0,
+
+        target: "4" <--- EXPECTED OUTPUT
+
+        target: "4" <--- EXPECTED OUTPUT
+
+    },
+
+    },
+
+...    
+...    
+```
+
+Important note: Set the _Target_ on the root node of your workflow. Typically this will be the sole LLM node in your workflow or a "chain" node with other children nodes.
+
+## 
+
+[](#comparing-output-and-expected-output)
+
+Comparing Output and Expected Output
+
+When Expected Output gets logged, it'll appear next to your Output wherever your output is shown.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FSnx3deOy735XOJk8jnRv%252Fimage.png%3Falt%3Dmedia%26token%3D74190225-bbdf-4865-939f-b69cc3b2e560&width=768&dpr=4&quality=100&sign=6decd3d2&sv=1)
+
+Additionally, [BLEU and ROUGE-1](/galileo/gen-ai-studio-products/guardrail-store/bleu-and-rouge-1) will automatically be computed and appear on the UI.
+
+[PreviousUnderstand your metric's values](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/understand-your-metrics-values)[NextCustomize Chainpoll-powered Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/customize-chainpoll-powered-metrics)
+
+Last updated 14 days ago

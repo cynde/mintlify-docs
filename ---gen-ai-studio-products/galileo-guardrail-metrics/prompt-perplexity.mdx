@@ -1,0 +1,19 @@
+---
+title: "Prompt Perplexity"
+---
+
+# Prompt Perplexity
+
+Understanding Galileo's Prompt Perplexity Metrics
+
+_**Definition**__:_ Measures the Prompt _Perplexity_, using the log probability's provided by most models of the prompt.
+
+_**Calculation**__: Prompt Perplexity_ is calculated using OpenAI's Davinci models. It is calculated as the exponential of the negative average of the log probability's over the entire prompt. Thus it ranges from 0-infinity with lower values indicating the model on average was more certain of the next token in a sequence.
+
+_**What to do when Prompt Perplexity is low?**_
+
+Lower perplexity indicates your model is better tuned towards your data, as it can better predict the next token. Furthermore, the paper [Demystifying Prompts in Language Models via Perplexity Estimation](https://arxiv.org/abs/2212.04037) has shown that lower perplexity values in the input (aka. prompt) also lead to better outcomes in the generations (aka. results).
+
+[PreviousUncertainty](/galileo/gen-ai-studio-products/guardrail-store/uncertainty)[NextContext Relevance](/galileo/gen-ai-studio-products/guardrail-store/context-relevance)
+
+Last updated 2 months ago

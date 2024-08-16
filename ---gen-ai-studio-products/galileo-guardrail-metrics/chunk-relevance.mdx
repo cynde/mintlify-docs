@@ -1,0 +1,19 @@
+---
+title: "Chunk Relevance"
+---
+
+# Chunk Relevance
+
+Understand Galileo's Chunk Relevance Metric
+
+_**Definition:**_ For each chunk retrieved in a RAG pipeline, Chunk Relevance measures the fraction of the text in that chunk that contains useful information that can be used to answer the query.
+
+Chunk Relevance ranges from 0 to 1. A value of 1 means that the entire chunk is useful for answering the query, while a lower value like 0.5 means that the chunk contained some unnecessary text that is not relevant to the query.
+
+_**What to do when Chunk Relevance is low?**_
+
+Low Chunk Relevance scores indicate that your chunks are probably longer than they need to be. In this case, we recommend tuning your retriever to return shorter chunks, which will improve the efficiency of the system (lower cost and latency).
+
+[PreviousGalileo Guardrail Metrics](/galileo/gen-ai-studio-products/guardrail-store)[NextChunk Relevance Luna](/galileo/gen-ai-studio-products/guardrail-store/chunk-relevance/chunk-relevance-luna)
+
+Last updated 2 months ago

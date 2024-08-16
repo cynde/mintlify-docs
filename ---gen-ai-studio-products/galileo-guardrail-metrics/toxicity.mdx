@@ -1,0 +1,26 @@
+---
+title: "Toxicity"
+---
+
+# Toxicity
+
+Understand Galileo's Toxicity Metric
+
+_**Definition:**_ Flags whether a response contains hateful or toxic information. Output is a binary classification of whether a response is toxic or not.
+
+_**Calculation:**_ We leverage a Small Language Model (SLM) trained on open-source and internal datasets.
+
+The accuracy on the below open-source datasets averages 96% on the validation set:
+
+*   [Toxic Comment Classification Challenge](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge)
+    
+*   [Jigsaw Unintended Bias in Toxicity Classification](https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification)
+    
+*   [Jigsaw Multilingual Toxic Comment Classification](https://www.kaggle.com/c/jigsaw-multilingual-toxic-comment-classification)
+    
+
+_**Usefulness:**_ Identify responses that contain toxic comments and take preventative measure such as fine-tuning or implementing guardrails that flag responses to prevent future occurrences.
+
+[PreviousPrivate Identifiable Information](/galileo/gen-ai-studio-products/guardrail-store/private-identifiable-information)[NextTone](/galileo/gen-ai-studio-products/guardrail-store/tone)
+
+Last updated 2 months ago

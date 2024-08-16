@@ -1,0 +1,151 @@
+---
+title: "  Automated Production Monitoring"
+---
+
+# 🧪Automated Production Monitoring
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-d9285107aa2954b0aba357f117f7288c20e37c8b%252FScreen%2520Shot%25202022-09-15%2520at%252011.12.03%2520PM.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=231ce848&sv=1)
+
+Leverage all the Galileo 'building blocks' that are logged and stored for you to create Tests using Galileo Conditions -- a class for building custom data quality checks.
+
+Conditions are simple and flexible, allowing you to author powerful data/model tests.
+
+### 
+
+[](#run-report)
+
+Run Report
+
+Integrate with email or slack to automatically receive a report of Condition outcomes after a run finishes processing.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-e89ec6f0d49ebd5dbe2d68599927534cb9df9d37%252FScreen%2520Shot%25202022-11-29%2520at%252012.37.30%2520PM.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=b76906ec&sv=1)
+
+### 
+
+[](#examples)
+
+Examples
+
+Copy```
+Example 1: Alert if over 50% of high DEP (>=0.7) data contains PII
+
+Example 1: Alert if over 50% of high DEP (>=0.7) data contains PII
+
+
+
+
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gt,
+
+    ...     operator=Operator.gt,
+
+    ...     threshold=0.5,
+
+    ...     threshold=0.5,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="data_error_potential", operator=Operator.gte, value=0.7
+
+    ...             metric="data_error_potential", operator=Operator.gte, value=0.7
+
+    ...         ),
+
+    ...         ),
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...             metric="galileo_pii", operator=Operator.neq, value="None"
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+
+    ... )
+
+    >>> dq.register_run_report(conditions=[c])
+    >>> dq.register_run_report(conditions=[c])
+```
+
+Copy```
+Example 2: Alert if at least 20% of the dataset has drifted (Inference DataFrames only)
+
+Example 2: Alert if at least 20% of the dataset has drifted (Inference DataFrames only)
+
+
+
+
+
+    >>> c = Condition(
+
+    >>> c = Condition(
+
+    ...     operator=Operator.gte,
+
+    ...     operator=Operator.gte,
+
+    ...     threshold=0.2,
+
+    ...     threshold=0.2,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     agg=AggregateFunction.pct,
+
+    ...     filters=[
+
+    ...     filters=[
+
+    ...         ConditionFilter(
+
+    ...         ConditionFilter(
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...             metric="is_drifted", operator=Operator.eq, value=True
+
+    ...         ),
+
+    ...         ),
+
+    ...     ],
+
+    ...     ],
+
+    ... )
+
+    ... )
+
+    >>> dq.register_run_report(conditions=[c])
+    >>> dq.register_run_report(conditions=[c])
+```
+
+⚡️ [Get started](/galileo/galileo-nlp-studio/text-classification/build-your-own-conditions) building your own Reports with Galileo Conditions
+
+[PreviousBuild your own Conditions](/galileo/galileo-nlp-studio/text-classification/build-your-own-conditions)[NextMulti Label Text Classification](/galileo/galileo-nlp-studio/multi-label-text-classification)
+
+Last updated 5 months ago

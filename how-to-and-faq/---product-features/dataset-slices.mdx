@@ -1,0 +1,49 @@
+---
+title: "Dataset Slices"
+---
+
+# Dataset Slices
+
+"Slices" is a powerful Galileo feature that allows you to monitor, across training runs, a sub-population of the dataset based on metadata filters.
+
+### 
+
+[](#creating-your-first-simple-slice)
+
+Creating Your First Simple Slice
+
+Imagine you want to monitor model performance on samples containing the keyword "star wars." To do so, you can simply type "star wars" into the search panel and save the resulting data as a new custom **Slice** (see Figure below).
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-1eba962977bfa52bd71aaee3b11d41882a0cf481%252FScreen%2520Shot%25202021-12-14%2520at%25207.57.06%2520AM.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=de8f4264&sv=1)
+
+Fig. Slice for reviews with "star wars" in it
+
+When creating a new slice you are presented a pop up that allows you to give a **custom name** to your slice and displays slice level details: 1) Slice project scope, 2) Slice Recipe (filter rules to create the slice). Your newly created slice will be available across all training runs within the selected project.
+
+Copy```
+                                            ![](<../../.gitbook/assets/image (16).png>)
+                                            ![](<../../.gitbook/assets/image (16).png>)
+```
+
+### 
+
+[](#complex-slices)
+
+Complex Slices
+
+You can create a custom slice in many different ways e.g. using [similarity search](/galileo/how-to-and-faq/galileo-product-features/similarity-search), using subsets etc. Moreover, you can create complex slices based on multiple filtering criteria. For example, the figure below walks through creating a slice by first using similarity search and then filtering for samples that contain the keyword "worst."
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-4d91857e8469d8d9a33781414481ddb3c8fba934%252FComplex_Slice.gif%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=1d9c249f&sv=1)
+
+Fig. Creation of complex slice (Recipe: Similar to (with 880 samples) + Search keyword(s) = "worst")
+
+The final "Slice Recipe" is as follows:
+
+Copy```
+                                           ![](<../../.gitbook/assets/image (9).png>)
+                                           ![](<../../.gitbook/assets/image (9).png>)
+```
+
+[PreviousSimilarity Search](/galileo/how-to-and-faq/galileo-product-features/similarity-search)[NextActions](/galileo/how-to-and-faq/galileo-product-features/actions)
+
+Last updated 1 year ago

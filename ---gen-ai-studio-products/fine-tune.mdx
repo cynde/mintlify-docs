@@ -1,0 +1,29 @@
+---
+title: "Fine Tune"
+---
+
+# Fine-Tune
+
+Galileo Fine-Tune is in beta. If you're interested in trying out this module, reach out to join our Early Access Program.
+
+<iframe src="https://cdn.iframe.ly/V1Xs7LL" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+Fine Tuning an LLM with the famous Alpaca Dataset and using Galileo to find errors
+
+Using Galileo Fine-Tune you can improve the quality of your fine-tuned LLMs by improving the quality of your training data. Research has shown that small high-quality datasets can lead to powerful LLMs. Galileo Fine-Tune helps you achieve that.
+
+Galileo integrates into your training workflow through its <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataquality</code> Python library. During Training, Galileo sees your samples and your model's output to find errors in your data. Galileo uses <strong class="font-bold">Guardrail Metrics</strong> as well as its <strong class="font-bold">Data Error Potential</strong> score to help you find your most problematic samples.
+
+The **Galileo Data Error Potential (DEP)** score has been built to provide a per-sample holistic data quality score to identify samples in the dataset contributing to low or high model performance i.e. ‘pulling’ the model up or down respectively. In other words, the DEP score measures the potential for "misfit" of an observation to the given model.
+
+Galileo surfaces token-level DEP scores to understand which parts of your Target Output or Ground Truth your model is struggling with.
+
+**Getting Started**
+
+See the [Quickstart](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started) section to get started.
+
+There are a few ways to get started using Galileo Finetune. You can choose between hooking into your model training, or uploading your data via Galileo Auto.
+
+[PreviousAction](/galileo/gen-ai-studio-products/galileo-protect/concepts/action)[NextQuickstart](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started)
+
+Last updated 5 months ago

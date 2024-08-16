@@ -1,0 +1,41 @@
+---
+title: "Chunk Utilization"
+---
+
+# Chunk Utilization
+
+Understand Galileo's Chunk Utilization Metric
+
+This metric is intended for RAG use cases and is only available if you [log your retriever's output](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-rag-or-vector-databases).
+
+<iframe src="https://cdn.iframe.ly/6WQtsx4" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+_**Definition:**_ For each chunk retrieved in a RAG pipeline, Chunk Utilization measures the fraction of the text in that chunk that had an impact on the model's response.
+
+Chunk Utilization ranges from 0 to 1. A value of 1 means that the entire chunk affected the response, while a lower value like 0.5 means that the chunk contained some "extraneous" text which did not affect the response.
+
+Chunk Utilization is closely related to Chunk Attribution: Attribution measures whether or not a chunk affected the response, and Utilization measures how much of the chunk text was involved in the effect. Only chunks that were Attributed can have Utilization scores greater than zero.
+
+_**What to do when Chunk Utilization is low?**_
+
+Low Chunk Utilization scores could mean one of two things: (1) your chunks are probably longer than they need to be, or (2) the LLM generator model is failing at incorporating all the relevant information in the chunks. You can differentiate between the two scenarios by checking the [Chunk Relevance](/galileo/gen-ai-studio-products/guardrail-store/chunk-relevance) score. If Chunk Relevance is also low, then you are likely experiencing scenario (1). If Chunk Relevance is high, you are likely experiencing scenario (2).
+
+In case (1), we recommend tuning your retriever to return shorter chunks, which will improve the efficiency of the system (lower cost and latency). In case (2), we recommend exploring a different LLM that may leverage the relevant information in the chunks more efficiently.
+
+### 
+
+[](#luna-vs-plus)
+
+Luna vs Plus
+
+We offer two ways of calculating Completeness: _Luna_ and _Plus_.
+
+[_Chunk Utilization Luna_](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization-basic) is computed using Galileo in-house small language models. They're free of cost. Completeness Luna is a cost effective way to scale up you RAG evaluation workflows.
+
+[_Chunk Utilization Plus_](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization) is computed by sending an additional request to your LLM. It relies on OpenAI models so it incurs an additional cost. _Chunk Utilization Plus_ has shown better results in internal benchmarks.
+
+**Chunk Attribution** and **Chunk Utilization** are closely related and rely on the same models for computation. The "**chunk\_attribution\_utilization\_{luna/plus}**" scorer will compute both.
+
+[PreviousChunk Attribution Plus](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution)[NextChunk Utilization Luna](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization-basic)
+
+Last updated 2 months ago

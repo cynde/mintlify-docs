@@ -1,0 +1,151 @@
+---
+title: "Quickstart"
+---
+
+# Quickstart
+
+**Galileo Fine-Tune** is design to automatically surface insights and errors in your data that drag your fine tuned LLM's performance down.
+
+You have two options to use Fine-tune.
+
+*   You are training your fine tuned LLM, you can hook Galileo into your model training loop
+    
+*   You don't have a model yet, and simply have training and evaluation data.
+    
+
+### 
+
+[](#use-galileo-with-your-fine-tuned-llm)
+
+**Use Galileo with your Fine-tuned LLM**
+
+If you already have a model, we recommend hooking Galileo into it during training. This will allow Galileo to tailor its insights to your own model.
+
+To integrate into your model training, use our dataquality library. We have built easy-to-use [watch](https://docs.rungalileo.io/galileo/python-clients/python-sdk/watch#pytorch-sequence-to-sequence) functions for the most popular model frameworks. To learn about how watch works, have a look at our documentation or follow the notebook below.
+
+Once you train a model with Galileo (either manually or with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.auto</code>), your data will appear in Galileo's Fine-Tune Console.
+
+### 
+
+[](#use-galileo-without-a-fine-tuned-llm-no-model-just-data)
+
+Use Galileo without a Fine-tuned LLM (No Model, Just Data)
+
+If you need insights on your data, you can use **Galileo Auto**.
+
+This takes your dataset as a parameter and all you need to do is run the following:
+
+Copy```
+from dataquality.integrations.seq2seq.auto import auto
+
+from dataquality.integrations.seq2seq.auto import auto
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+auto 
+import
+ auto
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from dataquality.integrations.seq2seq.schema import Seq2SeqDatasetConfig
+
+from
+ dataquality
+.
+integrations
+.
+seq2seq
+.
+schema 
+import
+ Seq2SeqDatasetConfig
+
+
+
+
+dataset_config = Seq2SeqDatasetConfig(train_path="train.jsonl", eval_path="eval.jsonl")
+
+dataset_config = Seq2SeqDatasetConfig(train_path="train.jsonl", eval_path="eval.jsonl")
+
+dataset_config 
+=
+ 
+Seq2SeqDatasetConfig
+(train_path
+=
+"train.jsonl"
+, eval_path
+=
+"eval.jsonl"
+)
+
+
+
+
+auto(
+
+auto(
+
+auto
+(
+    project_name="s2s_auto",
+
+    project_name="s2s_auto",
+
+    project_name
+=
+"s2s_auto"
+,
+    run_name="completion_dataset",
+
+    run_name="completion_dataset",
+
+    run_name
+=
+"completion_dataset"
+,
+    dataset_config=dataset_config,
+
+    dataset_config=dataset_config,
+
+    dataset_config
+=
+dataset_config,
+)
+)
+)
+```
+
+To surface data insights and data errors, Galileo runs a lightweight model behind the scenes. To display the data as fast as possible in the console and avoid fine-tuning entirely, simply create <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">training_config = Seq2SeqTrainingConfig(epochs=0)</code> and pass it to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">auto</code>.
+
+See [dq.auto configuration](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started/dq.auto) for more details.
+
+### 
+
+[](#data-upload-via-the-ui)
+
+**Data Upload via the UI**
+
+Uploading the data directly into the Galileo UI will be coming soon.
+
+### 
+
+[](#ic-notebooks)
+
+Get started with a notebook 📘
+
+*   [PyTorch/HuggingFace Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/sequence_to_sequence/LLM_Fine_Tuning_using_%F0%9F%A4%97Encoder_Decoder_Models%F0%9F%A4%97_and_%F0%9F%94%AD_Galileo.ipynb) (FlanT5 encoder-decoder model)
+    
+*   [Auto Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/sequence_to_sequence/LLM_Fine_Tuning_chat_data_with_DQ_auto_using_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [Auto Notebook for Chat Data](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/sequence_to_sequence/LLM_Fine_Tuning_chat_data_with_DQ_auto_using_%F0%9F%94%AD_Galileo.ipynb)
+    
+
+[PreviousFine-Tune](/galileo/gen-ai-studio-products/galileo-llm-fine-tune)[NextConfiguring DQ Auto](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started/dq.auto)
+
+Last updated 5 months ago

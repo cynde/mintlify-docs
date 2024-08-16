@@ -1,0 +1,758 @@
+---
+title: "Rag Q A  Langchain   Chromadb "
+---
+
+# RAG Q&A (LangChain + ChromaDB)
+
+Clone this notebook to create this run in your Galileo cluster: https://colab.research.google.com/drive/18Yw7dKuuF1eB3r9h0sOOQ4WrmsfGoBIO?usp=sharing
+
+In this example, we will demonstrate how to create a Galileo Evaluate run for a Q&A workflow.
+
+## 
+
+[](#setup-install-libraries)
+
+Setup: Install Libraries
+
+Copy```
+! pip install promptquality
+
+! pip install promptquality
+
+!
+ 
+pip
+ 
+install
+ 
+promptquality
+! pip install --upgrade --quiet langchain langchain-openai langchain-community chromadb langchainhub
+! pip install --upgrade --quiet langchain langchain-openai langchain-community chromadb langchainhub
+!
+ 
+pip
+ 
+install
+ 
+--upgrade
+ 
+--quiet
+ 
+langchain
+ 
+langchain-openai
+ 
+langchain-community
+ 
+chromadb
+ 
+langchainhub
+```
+
+## 
+
+[](#construct-dataset-and-embed-documents)
+
+Construct Dataset and Embed Documents
+
+For our RAG application, we will have the following pieces.
+
+*   Dataset: Galileo blog post
+    
+*   Chunking: LangChain RecursiveCharacterTextSplitter
+    
+*   Embeddings: text-embedding-ada-002
+    
+*   Vector Store: ChromaDB in-memory
+    
+*   Retriever: Chroma document retriever with k=3 docs
+    
+
+Copy```
+from langchain_openai import OpenAIEmbeddings
+
+from langchain_openai import OpenAIEmbeddings
+
+from
+ langchain_openai 
+import
+ OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+
+from langchain.vectorstores import Chroma
+
+from
+ langchain
+.
+vectorstores 
+import
+ Chroma
+from langchain.document_loaders import WebBaseLoader
+
+from langchain.document_loaders import WebBaseLoader
+
+from
+ langchain
+.
+document_loaders 
+import
+ WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from
+ langchain
+.
+text_splitter 
+import
+ RecursiveCharacterTextSplitter
+from google.colab import userdata
+
+from google.colab import userdata
+
+from
+ google
+.
+colab 
+import
+ userdata
+import os
+
+import os
+
+import
+ os
+
+
+
+
+# Load sample data (text) from webpage
+
+# Load sample data (text) from webpage
+
+# Load sample data (text) from webpage
+loader = WebBaseLoader("https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks")
+
+loader = WebBaseLoader("https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks")
+
+loader 
+=
+ 
+WebBaseLoader
+(
+"https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks"
+)
+data = loader.load()
+
+data = loader.load()
+
+data 
+=
+ loader
+.
+load
+()
+
+
+
+
+# Split text into documents
+
+# Split text into documents
+
+# Split text into documents
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+
+text_splitter 
+=
+ 
+RecursiveCharacterTextSplitter
+(chunk_size
+=
+500
+, chunk_overlap
+=
+0
+)
+splits = text_splitter.split_documents(data)
+
+splits = text_splitter.split_documents(data)
+
+splits 
+=
+ text_splitter
+.
+split_documents
+(data)
+
+
+
+
+# Define key to embed docs via OpenAI embeddings
+
+# Define key to embed docs via OpenAI embeddings
+
+# Define key to embed docs via OpenAI embeddings
+os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY = userdata.get('OPENAI_API_KEY')
+
+os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY = userdata.get('OPENAI_API_KEY')
+
+os
+.
+environ
+[
+'OPENAI_API_KEY'
+]
+ 
+=
+ OPENAI_API_KEY 
+=
+ userdata
+.
+get
+(
+'OPENAI_API_KEY'
+)
+
+
+
+
+# Embed split text and insert into vector db
+
+# Embed split text and insert into vector db
+
+# Embed split text and insert into vector db
+embedding = OpenAIEmbeddings()
+
+embedding = OpenAIEmbeddings()
+
+embedding 
+=
+ 
+OpenAIEmbeddings
+()
+vectordb = Chroma.from_documents(documents=splits, embedding=embedding)
+
+vectordb = Chroma.from_documents(documents=splits, embedding=embedding)
+
+vectordb 
+=
+ Chroma
+.
+from_documents
+(documents
+=
+splits, embedding
+=
+embedding)
+
+
+
+
+# Create our retriever
+
+# Create our retriever
+
+# Create our retriever
+retriever = vectordb.as_retriever(search_kwargs={'k': 3})
+retriever = vectordb.as_retriever(search_kwargs={'k': 3})
+retriever 
+=
+ vectordb
+.
+as_retriever
+(search_kwargs
+=
+{
+'k'
+: 
+3
+})
+```
+
+## 
+
+[](#define-the-pieces-of-our-chain)
+
+Define the Pieces of Our Chain
+
+Now we have the retriever, we can build our chain. The chain will:
+
+1.  Take in a question.
+    
+2.  Feed that question to our retriever for some context based on distance in embedding space.
+    
+3.  Fill out the prompt template with the question and context.
+    
+4.  Feed the prompt to our chat model.
+    
+5.  Output and parse the answer from the model.
+    
+
+Copy```
+from langchain.prompts import ChatPromptTemplate
+
+from langchain.prompts import ChatPromptTemplate
+
+from
+ langchain
+.
+prompts 
+import
+ ChatPromptTemplate
+from langchain.schema import StrOutputParser
+
+from langchain.schema import StrOutputParser
+
+from
+ langchain
+.
+schema 
+import
+ StrOutputParser
+from langchain.schema.document import Document
+
+from langchain.schema.document import Document
+
+from
+ langchain
+.
+schema
+.
+document 
+import
+ Document
+from langchain.schema.runnable import RunnablePassthrough
+
+from langchain.schema.runnable import RunnablePassthrough
+
+from
+ langchain
+.
+schema
+.
+runnable 
+import
+ RunnablePassthrough
+from langchain_openai import ChatOpenAI
+
+from langchain_openai import ChatOpenAI
+
+from
+ langchain_openai 
+import
+ ChatOpenAI
+from typing import List
+
+from typing import List
+
+from
+ typing 
+import
+ List
+
+
+
+
+def format_docs(docs: List[Document]) -> str:
+
+def format_docs(docs: List[Document]) -> str:
+
+def
+ 
+format_docs
+(
+docs
+:
+ List
+[
+Document
+]
+) 
+->
+ 
+str
+:
+    return "\n\n".join([d.page_content for d in docs])
+
+    return "\n\n".join([d.page_content for d in docs])
+
+    
+return
+ 
+"\n\n"
+.
+join
+([d.page_content 
+for
+ d 
+in
+ docs])
+
+
+
+
+template = """Answer the question based only on the following context:
+
+template = """Answer the question based only on the following context:
+
+template 
+=
+ 
+"""Answer the question based only on the following context:
+
+
+
+
+    {context}
+
+    {context}
+
+    
+{context}
+
+
+
+
+    Question: {question}
+
+    Question: {question}
+
+    Question: 
+{question}
+    """
+
+    """
+
+    """
+prompt = ChatPromptTemplate.from_template(template)
+
+prompt = ChatPromptTemplate.from_template(template)
+
+prompt 
+=
+ ChatPromptTemplate
+.
+from_template
+(template)
+model = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+
+model = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+
+model 
+=
+ 
+ChatOpenAI
+(model_name
+=
+'gpt-3.5-turbo'
+, temperature
+=
+0
+)
+
+
+
+
+chain = (
+
+chain = (
+
+chain 
+=
+ (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+
+    
+{
+"context"
+:
+ retriever 
+|
+ format_docs
+,
+ 
+"question"
+:
+ 
+RunnablePassthrough
+()}
+    | prompt
+
+    | prompt
+
+    
+|
+ prompt
+    | model
+
+    | model
+
+    
+|
+ model
+    | StrOutputParser()
+
+    | StrOutputParser()
+
+    
+|
+ 
+StrOutputParser
+()
+)
+)
+)
+```
+
+## 
+
+[](#run-our-chain-and-submit-callback-to-galileo)
+
+Run Our Chain and Submit Callback to Galileo
+
+Next, we will set our Galileo cluster url, API key, and project name in order to define where we want to log our results.
+
+Finally, we can run our chain and configure a callback to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code> to log our results.
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+
+
+
+
+# Environment variable 'GALILEO_API_KEY' will be retrieved by the login() sequence to the Galileo cluster url
+
+# Environment variable 'GALILEO_API_KEY' will be retrieved by the login() sequence to the Galileo cluster url
+
+# Environment variable 'GALILEO_API_KEY' will be retrieved by the login() sequence to the Galileo cluster url
+os.environ['GALILEO_API_KEY'] = userdata.get('GALILEO_API_KEY_DEMO')
+
+os.environ['GALILEO_API_KEY'] = userdata.get('GALILEO_API_KEY_DEMO')
+
+os
+.
+environ
+[
+'GALILEO_API_KEY'
+]
+ 
+=
+ userdata
+.
+get
+(
+'GALILEO_API_KEY_DEMO'
+)
+os.environ['GALILEO_CONSOLE_URL'] = 'https://console.demo.rungalileo.io/'
+
+os.environ['GALILEO_CONSOLE_URL'] = 'https://console.demo.rungalileo.io/'
+
+os
+.
+environ
+[
+'GALILEO_CONSOLE_URL'
+]
+ 
+=
+ 
+'https://console.demo.rungalileo.io/'
+GALILEO_PROJECT_NAME = 'galileoblog-rag'
+
+GALILEO_PROJECT_NAME = 'galileoblog-rag'
+
+GALILEO_PROJECT_NAME 
+=
+ 
+'galileoblog-rag'
+config = pq.login(os.environ['GALILEO_CONSOLE_URL'])
+
+config = pq.login(os.environ['GALILEO_CONSOLE_URL'])
+
+config 
+=
+ pq
+.
+login
+(os.environ[
+'GALILEO_CONSOLE_URL'
+])
+
+
+
+
+q_list = [
+
+q_list = [
+
+q_list 
+=
+ [
+    "What are hallucinations in LLMs?",
+
+    "What are hallucinations in LLMs?",
+
+    
+"What are hallucinations in LLMs?"
+,
+    "What is the difference between intrinsic and extrinsic hallucinations?",
+
+    "What is the difference between intrinsic and extrinsic hallucinations?",
+
+    
+"What is the difference between intrinsic and extrinsic hallucinations?"
+,
+    "How do hallucinations impact abstractive summarization?",
+
+    "How do hallucinations impact abstractive summarization?",
+
+    
+"How do hallucinations impact abstractive summarization?"
+,
+    "What are some examples of hallucinations in dialogue generation?",
+
+    "What are some examples of hallucinations in dialogue generation?",
+
+    
+"What are some examples of hallucinations in dialogue generation?"
+,
+    "How does generative question answering lead to hallucinations?",
+
+    "How does generative question answering lead to hallucinations?",
+
+    
+"How does generative question answering lead to hallucinations?"
+,
+    "What intrinsic and extrinsic errors occur in neural machine translation?",
+
+    "What intrinsic and extrinsic errors occur in neural machine translation?",
+
+    
+"What intrinsic and extrinsic errors occur in neural machine translation?"
+,
+    "How does data-to-text generation exhibit hallucinations?",
+
+    "How does data-to-text generation exhibit hallucinations?",
+
+    
+"How does data-to-text generation exhibit hallucinations?"
+,
+    "What are intrinsic and extrinsic object hallucinations in vision-language models?",
+
+    "What are intrinsic and extrinsic object hallucinations in vision-language models?",
+
+    
+"What are intrinsic and extrinsic object hallucinations in vision-language models?"
+,
+    "Why is addressing hallucinations important for AI applications?",
+
+    "Why is addressing hallucinations important for AI applications?",
+
+    
+"Why is addressing hallucinations important for AI applications?"
+,
+    "What methods are suggested to mitigate hallucinations in LLMs?"
+
+    "What methods are suggested to mitigate hallucinations in LLMs?"
+
+    
+"What methods are suggested to mitigate hallucinations in LLMs?"
+]
+
+]
+
+]
+
+
+
+
+# Create callback handler
+
+# Create callback handler
+
+# Create callback handler
+prompt_handler = pq.GalileoPromptCallback(
+
+prompt_handler = pq.GalileoPromptCallback(
+
+prompt_handler 
+=
+ pq
+.
+GalileoPromptCallback
+(
+    project_name=GALILEO_PROJECT_NAME, scorers=[pq.Scorers.latency, pq.Scorers.groundedness, pq.Scorers.factuality]
+
+    project_name=GALILEO_PROJECT_NAME, scorers=[pq.Scorers.latency, pq.Scorers.groundedness, pq.Scorers.factuality]
+
+    project_name
+=
+GALILEO_PROJECT_NAME, scorers
+=
+[pq.Scorers.latency, pq.Scorers.groundedness, pq.Scorers.factuality]
+)
+
+)
+
+)
+
+
+
+
+# Run your chain experiments across multiple inputs with the galileo callback
+
+# Run your chain experiments across multiple inputs with the galileo callback
+
+# Run your chain experiments across multiple inputs with the galileo callback
+chain.batch(q_list, config=dict(callbacks=[prompt_handler]))
+
+chain.batch(q_list, config=dict(callbacks=[prompt_handler]))
+
+chain
+.
+batch
+(q_list, config
+=
+dict
+(callbacks
+=
+[prompt_handler]))
+
+
+
+
+# publish the results of your run
+
+# publish the results of your run
+
+# publish the results of your run
+prompt_handler.finish()
+prompt_handler.finish()
+prompt_handler
+.
+finish
+()
+```
+
+The callback will return a URL for you to inspect your run in the Galileo Evaluate UI.
+
+In the below run view, you can see each question in our Q&A example. To dive deeper into the retrieved documents and metrics, simply click into any one of the samples in your UI.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F6FA1YfHBdcrmI09nu50k%252Fimage.png%3Falt%3Dmedia%26token%3D2a5ea679-a6a0-419c-8314-b944af1078be&width=768&dpr=4&quality=100&sign=7e73159c&sv=1)
+
+[PreviousZero-Shot Prompting](/galileo/gen-ai-studio-products/galileo-evaluate/examples/zero-shot-prompting)[NextFAQ](/galileo/gen-ai-studio-products/galileo-evaluate/faq)
+
+Last updated 2 months ago

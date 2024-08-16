@@ -1,0 +1,249 @@
+---
+title: "Quickstart"
+---
+
+# Quickstart
+
+## 
+
+[](#how-to-get-started-with-galileo-evaluate)
+
+How to get started with Galileo Evaluate
+
+### 
+
+[](#create-a-galileo-account)
+
+Create a Galileo Account
+
+1.  Go to your **Galileo console page** (a link that looks something like "console.galileo.yourcompany.com"). Speak to your **Galileo Admin**, or send a Slack on your shared Galileo slack channel if you don't know the URL.
+    
+2.  Create an account by asking your Admin to send you an invite or directly via the Console homepage.
+    
+
+### 
+
+[](#install-the-galileo-python-client)
+
+Install the Galileo Python Client
+
+1.  Open a Python notebook or any python environment where you want to install Galileo
+    
+2.  Install the python client via <strong class="font-bold">pip install </strong><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code>
+    
+3.  Next, run the following code to create your first run
+    
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+
+
+
+
+pq.login({YOUR_GALILEO_URL})
+
+pq.login({YOUR_GALILEO_URL})
+
+pq
+.
+login
+({YOUR_GALILEO_URL})
+
+
+
+
+template = "Explain {topic} to me like I'm a 5 year old"
+
+template = "Explain {topic} to me like I'm a 5 year old"
+
+template 
+=
+ 
+"Explain 
+{topic}
+ to me like I'm a 5 year old"
+
+
+
+
+data = {"topic": ["Quantum Physics", "Politics", "Large Language Models"]}
+
+data = {"topic": ["Quantum Physics", "Politics", "Large Language Models"]}
+
+data 
+=
+ 
+{
+"topic"
+:
+ [
+"Quantum Physics"
+,
+ 
+"Politics"
+,
+ 
+"Large Language Models"
+]
+}
+
+
+
+
+pq.run(project_name='my_first_project',
+
+pq.run(project_name='my_first_project',
+
+pq
+.
+run
+(project_name
+=
+'my_first_project'
+,
+       template=template,
+
+       template=template,
+
+       template
+=
+template,
+       dataset=data,
+
+       dataset=data,
+
+       dataset
+=
+data,
+       settings=pq.Settings(model_alias='ChatGPT (16K context)',
+
+       settings=pq.Settings(model_alias='ChatGPT (16K context)',
+
+       settings
+=
+pq.
+Settings
+(model_alias
+=
+'ChatGPT (16K context)'
+,
+                            temperature=0.8,
+
+                            temperature=0.8,
+
+                            temperature
+=
+0.8
+,
+                            max_tokens=400)) 
+                            max_tokens=400)) 
+                            max_tokens
+=
+400
+))
+ 
+```
+
+### 
+
+[](#authentication)
+
+**Authentication**
+
+By default, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.login()</code> will take the user to the Galileo console to copy and paste a short term token.
+
+Alternatively, it is possible to programmatically authenticate a user by setting the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GALILEO_API_KEY</code> environment variable.
+
+Copy```
+import os
+
+import os
+
+import
+ os
+
+
+
+
+os.environ['GALILEO_API_KEY']="Your Galileo API key"
+
+os.environ['GALILEO_API_KEY']="Your Galileo API key"
+
+os
+.
+environ
+[
+'GALILEO_API_KEY'
+]
+=
+"Your Galileo API key"
+
+
+
+
+pq.login({YOUR_GALILEO_URL})
+
+pq.login({YOUR_GALILEO_URL})
+
+pq
+.
+login
+({YOUR_GALILEO_URL})
+
+
+
+
+template = ...
+template = ...
+template 
+=
+ ...
+```
+
+### 
+
+[](#getting-an-api-key)
+
+Getting an API Key
+
+To create an API key:
+
+1.  Go to your **Galileo Console settings** and select **API Keys**
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FThJQIf8Y0tjYd67Ns0Cg%252FScreenshot%25202024-03-27%2520at%25202.41.06%25E2%2580%25AFPM.png%3Falt%3Dmedia%26token%3D5548a1a3-6ad7-4f29-85d1-a8abefb87593&width=768&dpr=4&quality=100&sign=e2ab531e&sv=1)
+    
+2.  Select **Create a new key**
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FVA688mTRoqAh1nhPfS1Q%252Fimage.png%3Falt%3Dmedia%26token%3D1a77c740-4d1f-4780-a1e6-a18713fd5187&width=768&dpr=4&quality=100&sign=be13a22a&sv=1)
+    
+3.  Give your key a distinct name and hit **Create**
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FOq86yJEy2QU7QB54sdSj%252Fimage.png%3Falt%3Dmedia%26token%3D19892d72-f61f-4ecf-90e0-04b03f2f94a8&width=768&dpr=4&quality=100&sign=45145836&sv=1)
+    
+
+### 
+
+[](#running-your-first-eval)
+
+**Running your first eval**
+
+First, create an [eval set](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/creating-an-evaluation-set). Once you have your eval set, you're ready to start your first evaluation run:
+
+*   If you have not written any code yet and are looking to evaluate a model and template for your use case, check out [Creating Prompt Runs](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/getting-started).
+    
+    *   If you want to try multiple templates or model combinations in one go, check out [Prompt Sweeps](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/prompt-sweeps)
+        
+    
+*   If you have an application or prototype you'd like to evaluate, check out [Integrating Evaluate into my existing application](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/integrating-evaluate-into-my-existing-application).
+    
+
+[PreviousEvaluate](/galileo/gen-ai-studio-products/galileo-evaluate)[NextIntegrate Evaluate into my existing application with Python](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/integrating-evaluate-into-my-existing-application)
+
+Last updated 3 months ago

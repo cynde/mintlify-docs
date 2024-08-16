@@ -1,0 +1,100 @@
+---
+title: "Natural Language Inference"
+---
+
+# Natural Language Inference
+
+<a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="http://nlpprogress.com/english/natural_language_inference.html">Natural Language Inference (NLI)</a>, also known as Recognizing Textual Entailment (RTE), is a sequence classification problem, where given two (short, ordered) documents -- <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">premise</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">hypothesis</code>, the task is to determine the inference relation between them.
+
+Samples are classified into one of the three labels depending on whether a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">hypothesis</code> is true (entailment), false (contradiction), or undetermined (neutral) given a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">premise</code>. Here's an example:
+
+Copy```
+Premise: A man inspects the uniform of a figure in some East Asian country.
+
+Premise: A man inspects the uniform of a figure in some East Asian country.
+
+Hypothesis: The man is sleeping.
+
+Hypothesis: The man is sleeping.
+
+Label: contradiction
+
+Label: contradiction
+
+
+
+
+
+
+
+
+
+Premise: An older and younger man smiling.
+
+Premise: An older and younger man smiling.
+
+Hypothesis: Two men are smiling and laughing at the cats playing on the floor.
+
+Hypothesis: Two men are smiling and laughing at the cats playing on the floor.
+
+Label: neutral
+
+Label: neutral
+
+
+
+
+
+
+
+
+
+Premise: A soccer game with multiple males playing.
+
+Premise: A soccer game with multiple males playing.
+
+Hypothesis: Some men are playing a sport.
+
+Hypothesis: Some men are playing a sport.
+
+Label: entailment
+Label: entailment
+```
+
+<strong class="font-bold">Note</strong>: For NLI you must combine the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">premise</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">hypothesis</code> documents for logging. We recommend joining the document text with a separator such as <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">&lt;&gt;</code> to help visualization in the Galileo console.
+
+### 
+
+[](#get-started-with-a-notebook)
+
+Get started with a notebook 📘
+
+*   [PyTorch Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/natural_language_inference/Natural_Language_Inference_using_Pytorch_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [TensorFlow Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/natural_language_inference/Natural_Language_Inference_using_TensorFlow_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+
+### 
+
+[](#watch-our-nli-tutorials)
+
+Watch our [NLI tutorials](https://www.loom.com/share/4fada6038bd04e5e8e8017d7661aa41d?sid=d2fb9fdd-4845-4bb6-863a-da208985788f) 📼
+
+### 
+
+[](#start-integrating-galileo-with-our-supported-frameworks)
+
+Start integrating Galileo with our supported frameworks 💻
+
+*   HuggingFace 🤗
+    
+*   PyTorch
+    
+*   TensorFlow
+    
+*   Keras
+    
+
+[PreviousModel Monitoring and Data Drift](/galileo/galileo-nlp-studio/named-entity-recognition/model-monitoring-and-data-drift-on-unlabeled-data)[NextGetting Started](/galileo/galileo-nlp-studio/natural-language-inference/getting-started)
+
+Last updated 2 months ago

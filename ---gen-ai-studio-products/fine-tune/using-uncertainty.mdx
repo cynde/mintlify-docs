@@ -1,0 +1,26 @@
+---
+title: "Using Uncertainty"
+---
+
+# Using Uncertainty
+
+On dataset splits where generations are enabled (e.g. the _Test split_), you'll be seeing Uncertainty Scores and Token-level Uncertainty highlighting.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FRVFAbEVR7hD3xNhsShTa%252Fimage.png%3Falt%3Dmedia%26token%3D30dac98a-0f84-49ff-abac-84280d24789d&width=768&dpr=4&quality=100&sign=71c96420&sv=1)
+
+_Uncertainty_ measures how much the model is deciding randomly between multiple ways of continuing the output.
+
+_Uncertainty_ is measured at both the token level and the response level. At the token level:
+
+*   Low _Uncertainty_ means the model is fairly confident about what to say next, given the preceding tokens
+    
+*   High _Uncertainty_ means the model is unsure what to say next, given the preceding tokens
+    
+
+_Uncertainty_ at the response level is simply the maximum token-level _Uncertainty,_ over all the tokens in the model's response.
+
+Some types of LLM hallucinations – particularly made-up names, citations, and URLs – are strongly correlated with _Uncertainty._ Monitoring _Uncertainty_ can help you pinpoint these types of errors.
+
+[PreviousUsing Data Error Potential](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/using-data-error-potential)[NextFinding Similar Samples](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/finding-similar-samples)
+
+Last updated 10 months ago

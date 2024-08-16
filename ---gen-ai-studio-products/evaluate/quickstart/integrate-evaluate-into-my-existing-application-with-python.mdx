@@ -1,0 +1,773 @@
+---
+title: "Integrate Evaluate Into My Existing Application With Python"
+---
+
+# Integrate Evaluate into my existing application with Python
+
+If you already have a prototype or an application you're looking to run experiments and evaluations over, Galileo Evaluate allows you to hook into it and log the inputs, outputs, and any intermediate steps to Galileo for further analysis.
+
+In this QuickStart, we'll show you how to:
+
+*   Integrate with your Langchain apps
+    
+*   Integrate with your custom chain apps
+    
+
+Let's dive in!
+
+### 
+
+[](#langchain)
+
+**Langchain**
+
+Galileo supports the logging of chains from <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">langchain</code>. To log these chains, we require using the callback from our Python client <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://docs.rungalileo.io/galileo/python-clients/index"><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code></a>.
+
+Before creating a run, you'll want to make sure you have an evaluation set (a set of questions / sample inputs you want to run through your prototype for evaluation). Your evaluation set should be consistent across runs.
+
+First, we are going to construct a simple RAG chain with Galileo's documentations stored in a vectorDB using Langchain:
+
+Copy```
+from langchain.embeddings import OpenAIEmbeddings
+
+from langchain.embeddings import OpenAIEmbeddings
+
+from
+ langchain
+.
+embeddings 
+import
+ OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+
+from langchain.vectorstores import Chroma
+
+from
+ langchain
+.
+vectorstores 
+import
+ Chroma
+from langchain.chat_models import ChatOpenAI
+
+from langchain.chat_models import ChatOpenAI
+
+from
+ langchain
+.
+chat_models 
+import
+ ChatOpenAI
+from langchain.document_loaders import WebBaseLoader
+
+from langchain.document_loaders import WebBaseLoader
+
+from
+ langchain
+.
+document_loaders 
+import
+ WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from
+ langchain
+.
+text_splitter 
+import
+ RecursiveCharacterTextSplitter
+from typing import List
+
+from typing import List
+
+from
+ typing 
+import
+ List
+from langchain.prompts import ChatPromptTemplate
+
+from langchain.prompts import ChatPromptTemplate
+
+from
+ langchain
+.
+prompts 
+import
+ ChatPromptTemplate
+from langchain.schema import StrOutputParser
+
+from langchain.schema import StrOutputParser
+
+from
+ langchain
+.
+schema 
+import
+ StrOutputParser
+from langchain.schema.runnable import RunnablePassthrough
+
+from langchain.schema.runnable import RunnablePassthrough
+
+from
+ langchain
+.
+schema
+.
+runnable 
+import
+ RunnablePassthrough
+from langchain.schema.document import Document
+
+from langchain.schema.document import Document
+
+from
+ langchain
+.
+schema
+.
+document 
+import
+ Document
+
+
+
+
+# Load text from webpage
+
+# Load text from webpage
+
+# Load text from webpage
+loader = WebBaseLoader("https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks")
+
+loader = WebBaseLoader("https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks")
+
+loader 
+=
+ 
+WebBaseLoader
+(
+"https://www.rungalileo.io/blog/deep-dive-into-llm-hallucinations-across-generative-tasks"
+)
+data = loader.load()
+
+data = loader.load()
+
+data 
+=
+ loader
+.
+load
+()
+
+
+
+
+# Split text into documents
+
+# Split text into documents
+
+# Split text into documents
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+
+text_splitter 
+=
+ 
+RecursiveCharacterTextSplitter
+(chunk_size
+=
+500
+, chunk_overlap
+=
+0
+)
+splits = text_splitter.split_documents(data)
+
+splits = text_splitter.split_documents(data)
+
+splits 
+=
+ text_splitter
+.
+split_documents
+(data)
+
+
+
+
+# Add text to vector db
+
+# Add text to vector db
+
+# Add text to vector db
+embedding = OpenAIEmbeddings()
+
+embedding = OpenAIEmbeddings()
+
+embedding 
+=
+ 
+OpenAIEmbeddings
+()
+vectordb = Chroma.from_documents(documents=splits, embedding=embedding)
+
+vectordb = Chroma.from_documents(documents=splits, embedding=embedding)
+
+vectordb 
+=
+ Chroma
+.
+from_documents
+(documents
+=
+splits, embedding
+=
+embedding)
+
+
+
+
+# Create a retriever
+
+# Create a retriever
+
+# Create a retriever
+retriever = vectordb.as_retriever()
+
+retriever = vectordb.as_retriever()
+
+retriever 
+=
+ vectordb
+.
+as_retriever
+()
+
+
+
+
+def format_docs(docs: List[Document]) -> str:
+
+def format_docs(docs: List[Document]) -> str:
+
+def
+ 
+format_docs
+(
+docs
+:
+ List
+[
+Document
+]
+) 
+->
+ 
+str
+:
+    return "\n\n".join([d.page_content for d in docs])
+
+    return "\n\n".join([d.page_content for d in docs])
+
+    
+return
+ 
+"\n\n"
+.
+join
+([d.page_content 
+for
+ d 
+in
+ docs])
+    
+
+    
+
+    
+template = """Answer the question based only on the following context:
+
+template = """Answer the question based only on the following context:
+
+template 
+=
+ 
+"""Answer the question based only on the following context:
+
+
+
+
+    {context}
+
+    {context}
+
+    
+{context}
+
+
+
+
+    Question: {question}
+
+    Question: {question}
+
+    Question: 
+{question}
+    """
+
+    """
+
+    """
+prompt = ChatPromptTemplate.from_template(template)
+
+prompt = ChatPromptTemplate.from_template(template)
+
+prompt 
+=
+ ChatPromptTemplate
+.
+from_template
+(template)
+model = ChatOpenAI()
+
+model = ChatOpenAI()
+
+model 
+=
+ 
+ChatOpenAI
+()
+
+
+
+
+chain = {"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | model | StrOutputParser()
+chain = {"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | model | StrOutputParser()
+chain 
+=
+ 
+{
+"context"
+:
+ retriever 
+|
+ format_docs
+,
+ 
+"question"
+:
+ 
+RunnablePassthrough
+()}
+ 
+|
+ prompt 
+|
+ model 
+|
+ 
+StrOutputParser
+()
+```
+
+Next, you can log in with Galileo:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+pq.login({YOUR_GALILEO_URL})
+pq.login({YOUR_GALILEO_URL})
+pq
+.
+login
+({YOUR_GALILEO_URL})
+```
+
+After that, you can set up the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code>:
+
+Copy```
+from promptquality import Scorers
+
+from promptquality import Scorers
+
+from
+ promptquality 
+import
+ Scorers
+scorers = [Scorers.context_adherence_basic, 
+
+scorers = [Scorers.context_adherence_basic, 
+
+scorers 
+=
+ [Scorers
+.
+context_adherence_basic
+,
+ 
+           Scorers.completeness_basic, 
+
+           Scorers.completeness_basic, 
+
+           Scorers
+.
+completeness_basic
+,
+ 
+           Scorers.pii,
+
+           Scorers.pii,
+
+           Scorers
+.
+pii
+,
+           ...]
+
+           ...]
+
+           ...]
+#This is the list of metrics you want to evaluate your run over.
+
+#This is the list of metrics you want to evaluate your run over.
+
+#This is the list of metrics you want to evaluate your run over.
+
+
+
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler 
+=
+ pq
+.
+GalileoPromptCallback
+(
+    project_name="quickstart_project", scorers=scorers,
+
+    project_name="quickstart_project", scorers=scorers,
+
+    project_name
+=
+"quickstart_project"
+, scorers
+=
+scorers,
+)
+
+)
+
+)
+#Each "run" will appear under this project. Choose a name that'll help you identify what you're evaluating
+#Each "run" will appear under this project. Choose a name that'll help you identify what you're evaluating
+#Each "run" will appear under this project. Choose a name that'll help you identify what you're evaluating
+```
+
+Finally, you can run the chain experiments across multiple intputs with Galileo Callback:
+
+Copy```
+inputs = [
+
+inputs = [
+
+inputs 
+=
+ [
+    "What are hallucinations?",
+
+    "What are hallucinations?",
+
+    
+"What are hallucinations?"
+,
+    "What are intrinsic hallucinations?",
+
+    "What are intrinsic hallucinations?",
+
+    
+"What are intrinsic hallucinations?"
+,
+    "What are extrinsic hallucinations?"
+
+    "What are extrinsic hallucinations?"
+
+    
+"What are extrinsic hallucinations?"
+]
+
+]
+
+]
+chain.batch(inputs, config=dict(callbacks=[galileo_handler]))
+
+chain.batch(inputs, config=dict(callbacks=[galileo_handler]))
+
+chain
+.
+batch
+(inputs, config
+=
+dict
+(callbacks
+=
+[galileo_handler]))
+
+
+
+
+# publish the results of your run
+
+# publish the results of your run
+
+# publish the results of your run
+galileo_handler.finish()
+galileo_handler.finish()
+galileo_handler
+.
+finish
+()
+```
+
+For more detailed information on Galileo's Langchain integration, check out instructions [here](/galileo/gen-ai-studio-products/galileo-evaluate/integrations/langchain).
+
+### 
+
+[](#custom-chains)
+
+**Custom Chains**
+
+If you're not using an orchestration library, or using one other than Langchain, we also provide a similar interface for uploading your executions that do not use a callback mechanism.
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+import uuid
+
+import uuid
+
+import
+ uuid
+
+
+
+
+
+
+
+
+def my_llm_app(input):
+
+def my_llm_app(input):
+
+def
+ 
+my_llm_app
+(
+input
+):
+   return <generated_response>
+
+   return <generated_response>
+
+   
+return
+ 
+<
+generated_response
+>
+   
+
+   
+
+   
+eval_set = [
+
+eval_set = [
+
+eval_set 
+=
+ [
+    "What are hallucinations?",
+
+    "What are hallucinations?",
+
+    
+"What are hallucinations?"
+,
+    "What are intrinsic hallucinations?",
+
+    "What are intrinsic hallucinations?",
+
+    
+"What are intrinsic hallucinations?"
+,
+    "What are extrinsic hallucinations?"
+
+    "What are extrinsic hallucinations?"
+
+    
+"What are extrinsic hallucinations?"
+]   
+
+]   
+
+]   
+   
+
+   
+
+   
+rows = []
+
+rows = []
+
+rows 
+=
+ []
+for data_point in eval_set:
+
+for data_point in eval_set:
+
+for
+ data_point 
+in
+ eval_set
+:
+    chain_id = uuid.uuid4()
+
+    chain_id = uuid.uuid4()
+
+    chain_id 
+=
+ uuid
+.
+uuid4
+()
+    rows.append(
+
+    rows.append(
+
+    rows
+.
+append
+(
+        NodeRow.for_llm(
+
+        NodeRow.for_llm(
+
+        NodeRow.
+for_llm
+(
+            id=chain_id,
+
+            id=chain_id,
+
+            id
+=
+chain_id,
+            root_id=chain_id,
+
+            root_id=chain_id,
+
+            root_id
+=
+chain_id,
+            step=0,
+
+            step=0,
+
+            step
+=
+0
+,
+            prompt=data_point,
+
+            prompt=data_point,
+
+            prompt
+=
+data_point,
+            response=my_llm_app(data_point)
+
+            response=my_llm_app(data_point)
+
+            response
+=
+my_llm_app
+(data_point)
+        )
+
+        )
+
+        )
+    )
+
+    )
+
+    )
+
+
+
+
+pq.login({YOUR_GALILEO_URL})
+
+pq.login({YOUR_GALILEO_URL})
+
+pq
+.
+login
+({YOUR_GALILEO_URL})
+pq.chain_run(rows, project_name="my_first_project")
+pq.chain_run(rows, project_name="my_first_project")
+pq
+.
+chain_run
+(rows, project_name
+=
+"my_first_project"
+)
+```
+
+Please check out this page [here](https://app.gitbook.com/o/-MO05cVyQ2tmzGFt9tky/s/4jVWiQpRqmi04OnqZmn2/~/changes/1243/gen-ai-studio-products/galileo-evaluate/integrations/custom-chain) for more information on logging experiments with custom Python logger.
+
+## 
+
+[](#running-multiple-experiments-in-one-go)
+
+Running multiple experiments in one go
+
+If you want to run multiple experiments in one go (e.g. use different templates, experiment with different retriever params, etc.), check out [Chain Sweeps](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/chain-sweeps).
+
+Next, run your chain over your Evaluation set and log the results to Galileo.
+
+[PreviousQuickstart](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart)[NextPrompt Engineering from a UI](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/getting-started)
+
+Last updated 2 months ago

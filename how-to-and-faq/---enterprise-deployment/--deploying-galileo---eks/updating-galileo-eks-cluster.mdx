@@ -1,0 +1,138 @@
+---
+title: "Updating Galileo Eks Cluster"
+---
+
+# Updating Galileo EKS cluster
+
+Galileo EKS cluster update from 1.21 -> 1.23
+
+### 
+
+[](#prerequisites)
+
+Prerequisites:
+
+The AWS EBS CSI plugin has to be installed. This can be added to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">addons</code> sections in the eksctl config file.
+
+Copy```
+addons:
+
+addons:
+
+  - name: aws-ebs-csi-driver
+
+  - name: aws-ebs-csi-driver
+
+    version: 1.11.4
+    version: 1.11.4
+```
+
+The Amazon EBS CSI plugin requires IAM permissions to make calls to AWS APIs on your behalf, additional EBS policy has to be attached to the existing Galileo node groups This can be added in the ekscstl config file:
+
+Copy```
+withAddonPolicies:
+
+withAddonPolicies:
+
+- ebs: true
+- ebs: true
+```
+
+Apply changes to node-groups:
+
+Copy```
+eksctl update nodegroup -f cluster-config.yaml
+eksctl update nodegroup -f cluster-config.yaml
+```
+
+### 
+
+[](#upgrade-to-1.23)
+
+Upgrade to 1.23
+
+Because Amazon EKS runs a highly available control plane, you can update only one minor version at a time. Current cluster version is 1.21 and you want to update to 1.23. You must first update your cluster to 1.22 and then update your 1.22 cluster to 1.23.
+
+#### 
+
+[](#upgrade-controle-plane-to-1.22)
+
+Upgrade controle plane to 1.22
+
+Copy```
+eksctl upgrade cluster --name CLUSTER_NAME --version 1.22 --approve
+eksctl upgrade cluster --name CLUSTER_NAME --version 1.22 --approve
+```
+
+#### 
+
+[](#upgrade-node-groups-to-1.22)
+
+Upgrade node groups to 1.22
+
+Copy```
+eksctl upgrade nodegroup --name=galileo-runner --cluster=CLUSTER_NAME --kubernetes-version=1.22
+
+eksctl upgrade nodegroup --name=galileo-runner --cluster=CLUSTER_NAME --kubernetes-version=1.22
+
+
+
+
+
+eksctl upgrade nodegroup --name=galileo-core --cluster=CLUSTER_NAME --kubernetes-version=1.22
+eksctl upgrade nodegroup --name=galileo-core --cluster=CLUSTER_NAME --kubernetes-version=1.22
+```
+
+#### 
+
+[](#upgrade-controle-plane-to-1.23)
+
+Upgrade controle plane to 1.23
+
+Copy```
+eksctl upgrade cluster --name CLUSTER_NAME --version 1.23 --approve
+eksctl upgrade cluster --name CLUSTER_NAME --version 1.23 --approve
+```
+
+#### 
+
+[](#upgrade-node-groups-to-1.23)
+
+Upgrade node groups to 1.23
+
+Copy```
+eksctl upgrade nodegroup --name=galileo-core --cluster=CLUSTER_NAME --kubernetes-version=1.23
+
+eksctl upgrade nodegroup --name=galileo-core --cluster=CLUSTER_NAME --kubernetes-version=1.23
+
+
+
+
+
+eksctl upgrade nodegroup --name=galileo-runner --cluster=CLUSTER_NAME --kubernetes-version=1.23
+eksctl upgrade nodegroup --name=galileo-runner --cluster=CLUSTER_NAME --kubernetes-version=1.23
+```
+
+#### 
+
+[](#post-upgrade-checks)
+
+Post upgrade checks
+
+Check if all pods are in ready state:
+
+Copy```
+kubectl get pods --all-namespaces -o go-template='{{ range  $item := .items }}{{ range .status.conditions }}{{ if (or (and (eq .type "PodScheduled") (eq .status "False")) (and (eq .type "Ready") (eq .status "False"))) }}{{ $item.metadata.name}} {{ end }}{{ end }}{{ end }}'
+kubectl get pods --all-namespaces -o go-template='{{ range  $item := .items }}{{ range .status.conditions }}{{ if (or (and (eq .type "PodScheduled") (eq .status "False")) (and (eq .type "Ready") (eq .status "False"))) }}{{ $item.metadata.name}} {{ end }}{{ end }}{{ end }}'
+```
+
+Check for pending persistance volumes:
+
+Copy```
+kubectl get pvc --all-namespaces | grep -i pending
+kubectl get pvc --all-namespaces | grep -i pending
+```
+
+[PreviousEKS Cluster Config Example](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks/eks-cluster-config-example)[NextDeploying Galileo - EKS (Zero Access)](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access)
+
+Last updated 1 year ago

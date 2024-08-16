@@ -1,0 +1,54 @@
+---
+title: "Chunk Attribution"
+---
+
+# Chunk Attribution
+
+Understand Galileo's Chunk Attribution Metric
+
+This metric is intended for RAG use cases and is only available if you [log your retriever's output](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-rag-or-vector-databases).
+
+<iframe src="https://cdn.iframe.ly/ScPpa09" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+_**Definition:**_ For each chunk retrieved in a RAG pipeline, Chunk Attribution measures whether or not that chunk had an effect on the model's response.
+
+Chunk Attribution is a binary metric: each chunk is either Attributed or Not Attributed.
+
+Chunk Attribution is closely related to Chunk Utilization: Attribution measures whether or not a chunk affected the response, and Utilization measures how much of the chunk text was involved in the effect. Only chunks that were Attributed can have Utilization scores greater than zero.
+
+_**What to do when Chunk Attribution is low?**_
+
+Chunk Attribution can help you iterate on your RAG pipeline in several different ways:
+
+*   _Tuning the number of retrieved chunks._
+    
+    *   If your system is producing satisfactory responses, but many chunks are Not Attributed, then you may be able to reduce the number of chunks retrieved per example without adversely impacting response quality.
+        
+    *   This will improve the efficiency of the system, resulting in lower cost and latency.
+        
+    
+*   _"Debugging"_ _anomalous model behavior in individual examples._
+    
+    *   If a specific model response is unsatisfactory or unusual, and you want to understand why, Attribution can help you zero in on the chunks that affected the response.
+        
+    *   This lets you get to the root of the issue more quickly when inspecting individual examples.
+        
+    
+
+### 
+
+[](#luna-vs-plus)
+
+Luna vs Plus
+
+We offer two ways of calculating Completeness: _Luna_ and _Plus_.
+
+[_Chunk Attribution Luna_](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution-basic) is computed using Galileo in-house small language models. They're free of cost. Completeness Luna is a cost-effective way to scale up you RAG evaluation workflows.
+
+[_Chunk Attribution Plus_](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution) is computed by sending an additional request to your LLM. It relies on OpenAI models so it incurs an additional cost. _Chunk Attribution Plus_ has shown better results in internal benchmarks.
+
+**Chunk Attribution** and **Chunk Utilization** are closely related and rely on the same models for computation. The "**chunk\_attribution\_utilization\_{luna/plus}**" scorer will compute both.
+
+[PreviousCompleteness Plus](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness)[NextChunk Attribution Luna](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution-basic)
+
+Last updated 2 months ago

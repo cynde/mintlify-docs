@@ -1,0 +1,21 @@
+---
+title: "Context Relevance"
+---
+
+# Context Relevance
+
+Understand Galileo's Context Relevance Metric
+
+_**Definition:**_ Measures how relevant (or similar) the context provided was to the user query. Higher context relevance means your retrieived context is relevant to your query.
+
+_**Calculation:**_ We measure the cosine similarity from a user's respective vector database between the given query embedding and the context embedding.
+
+_**What to do when Context Relevance is low?**_
+
+Examine certain query's where your vector database lacks relevant documents and take preventative measures like augmenting your knowledge base or vector DB with additional documents, modifying your retrieval strategy or using better embeddings.
+
+This metric requires {context} and {query} slots in your data, as well as embeddings for them (i.e. {context\_embedding}, {query\_embedding}).
+
+[PreviousPrompt Perplexity](/galileo/gen-ai-studio-products/guardrail-store/prompt-perplexity)[NextPrivate Identifiable Information](/galileo/gen-ai-studio-products/guardrail-store/private-identifiable-information)
+
+Last updated 2 months ago

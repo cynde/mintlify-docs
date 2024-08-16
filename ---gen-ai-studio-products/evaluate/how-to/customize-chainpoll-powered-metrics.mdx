@@ -1,0 +1,102 @@
+---
+title: "Customize Chainpoll Powered Metrics"
+---
+
+# Customize Chainpoll-powered Metrics
+
+Improve metric accuracy by customizing your Chainpoll-powered metrics
+
+[**ChainPoll**](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll) is a powerful, flexible technique for LLM-based evaluation built by Galileo's Research team. It is used to power multiple Guardrail Metrics across the Galileo platform:
+
+*   Context Adherence Plus
+    
+*   Chunk Attribution & Utilization
+    
+*   Completeness Plus
+    
+*   Correctness
+    
+
+Chainpoll leverages a chain-of-thought prompting technique and prompting an LLM multiple times to calculate metric values. There are two levers one can customize for a Chainpoll metric:
+
+*   The model that gets queried
+    
+*   The number of times we prompt that model
+    
+
+Generally, better models will provide more accurate metric values, and a higher number of judges will increase the accuracy and stability of metric values. We've configured our Chainpoll-powered metrics to balance the trade-off of Cost and Accuracy.
+
+### 
+
+[](#changing-the-model-or-number-of-judges-of-a-chainpoll-metric)
+
+Changing the model or number of judges of a Chainpoll metric
+
+We allow customizing execution parameters for the [AI-powered metrics](/galileo/gen-ai-studio-products/guardrail-store) from our Guardrail Store. By default, these metrics use gpt-3.5-turbo for the model and 3 judges. To customize this, when creating your run you can customize these metrics as:
+
+Copy```
+pq.run(..., scorers=[
+
+pq.run(..., scorers=[
+
+pq
+.
+run
+(..., scorers
+=
+[
+            pq.CustomizedChainPollScorer(
+
+            pq.CustomizedChainPollScorer(
+
+            pq.
+CustomizedChainPollScorer
+(
+                        scorer_name=pq.CustomizedScorerName.context_adherence_plus,
+
+                        scorer_name=pq.CustomizedScorerName.context_adherence_plus,
+
+                        scorer_name
+=
+pq.CustomizedScorerName.context_adherence_plus,
+                        model_alias=pq.Models.gpt_4o_mini,
+
+                        model_alias=pq.Models.gpt_4o_mini,
+
+                        model_alias
+=
+pq.Models.gpt_4o_mini,
+                        num_judges=7)
+
+                        num_judges=7)
+
+                        num_judges
+=
+7
+)
+        ]
+
+        ]
+
+        ]
+      )
+      )
+      )
+```
+
+The metrics that can be customized are:
+
+1.  Chunk attribution + utilization: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.CustomizedScorerName.chunk_attribution_utilization_plus</code>
+    
+2.  Completeness: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.CustomizedScorerName.completeness_plus</code>
+    
+3.  Context Adherence: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.CustomizedScorerName.context_adherence_plus</code>
+    
+4.  Correctness: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pq.CustomizedScorerName.correctness</code>
+    
+
+These can be used alongside any OpenAI or Azure models that use the Chat Completions API and set to use anywhere between 1 and 10 judges.
+
+[PreviousLogging and Comparing against your Expected Answers](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/logging-and-comparing-against-your-expected-answers)[NextConcepts](/galileo/gen-ai-studio-products/galileo-evaluate/concepts)
+
+Last updated 14 days ago

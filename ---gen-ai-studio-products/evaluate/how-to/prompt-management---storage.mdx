@@ -1,0 +1,132 @@
+---
+title: "Prompt Management   Storage"
+---
+
+# Prompt Management & Storage
+
+Galileo Prompt also includes a production-ready Prompt Store that can store various versions of your Prompt Templates. Prompt Templates are associated with your project to help organize them into a single place.
+
+Prompt templates can be created from the Galileo Console or the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code> Python client and are available for experiments or production workflows through either interaction mechanisms.
+
+## 
+
+[](#prompt-versioning)
+
+Prompt Versioning
+
+In the video below, you see an example of a summarization template, and how Galileo helps auto-track the changes made to the template via internal versioning.
+
+<iframe src="https://cdn.iframe.ly/f47hplq" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+## 
+
+[](#prompt-management)
+
+Prompt Management
+
+As you experiment with and evolve your prompt, newer versions of your template are created automatically. Prompt Versions are auto-incrementing integers. We also provide a simple way to version new prompts as you edit the template in the Galileo Console.
+
+<iframe src="https://cdn.iframe.ly/QbSHEmE" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+Selecting or Retrieving Prompts
+
+## 
+
+[](#mark-version-as-selected)
+
+Mark Version as 'Selected'
+
+Once you've experimented with a few different prompt templates and have evaluated them, you can mark one version as the 'Selected' version. This can be done from the UI, by using the dropdown next to the template name:
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-0fa634ed0dc1073088b6236730c57faaa2da31dd%252FScreenshot%25202023-11-21%2520at%252011.39.47%25E2%2580%25AFPM.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=84cfa15e&sv=1)
+
+or from the Python client:
+
+Copy```
+from promptquality.helpers import select_template_version
+
+from promptquality.helpers import select_template_version
+
+from
+ promptquality
+.
+helpers 
+import
+ select_template_version
+
+
+
+
+select_template_version(version=<version-number>, project_id=<project-id>, template_id=<template-id>)
+select_template_version(version=<version-number>, project_id=<project-id>, template_id=<template-id>)
+select_template_version
+(version
+=<
+version
+-
+number
+>
+, project_id
+=<
+project
+-
+id
+>
+, template_id
+=<
+template
+-
+id
+>
+)
+```
+
+## 
+
+[](#fetch-selected-prompt)
+
+Fetch 'Selected' Prompt
+
+If you want to use this template version outside the experimentation setting, you can do so by fetching the prompt using the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code> Python client.
+
+Copy```
+from promptquality.helpers import get_template
+
+from promptquality.helpers import get_template
+
+from
+ promptquality
+.
+helpers 
+import
+ get_template
+
+
+
+
+template = get_template(project_id=<project-id>, template_id=<template-id>)
+template = get_template(project_id=<project-id>, template_id=<template-id>)
+template 
+=
+ 
+get_template
+(project_id
+=<
+project
+-
+id
+>
+, template_id
+=<
+template
+-
+id
+>
+)
+```
+
+The returned <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">template</code> will be of type <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://docs.rungalileo.io/galileo/python-clients/index/promptquality.types#pydantic-model-basetemplateresponse"><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">BaseTemplateResponse</code></a>, which includes the 'Selected' versions text in the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">template</code> attribute.
+
+[PreviousRegister Custom Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/registering-and-using-custom-metrics)[NextA/B Compare Prompts](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/a-b-compare-prompts)
+
+Last updated 2 months ago

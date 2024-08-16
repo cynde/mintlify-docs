@@ -1,0 +1,186 @@
+---
+title: "Langchain"
+---
+
+# Langchain
+
+Galileo allows you to integrate with your Langchain application natively through callbacks
+
+Galileo supports the logging of chains from <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">langchain</code>. To log these chains, we require using the callback from our Python client <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://docs.rungalileo.io/galileo/python-clients/index"><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code></a>.
+
+For logging your data, first login:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+pq.login({YOUR_GALILEO_URL})
+pq.login({YOUR_GALILEO_URL})
+pq
+.
+login
+({YOUR_GALILEO_URL})
+```
+
+After that, you can set up the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoPromptCallback</code>:
+
+Copy```
+from promptquality import Scorers
+
+from promptquality import Scorers
+
+from
+ promptquality 
+import
+ Scorers
+scorers = [Scorers.context_adherence_luna, 
+
+scorers = [Scorers.context_adherence_luna, 
+
+scorers 
+=
+ [Scorers
+.
+context_adherence_luna
+,
+ 
+           Scorers.completeness_luna, 
+
+           Scorers.completeness_luna, 
+
+           Scorers
+.
+completeness_luna
+,
+ 
+           Scorers.pii,
+
+           Scorers.pii,
+
+           Scorers
+.
+pii
+,
+           ...]
+
+           ...]
+
+           ...]
+
+
+
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler = pq.GalileoPromptCallback(
+
+galileo_handler 
+=
+ pq
+.
+GalileoPromptCallback
+(
+    project_name=<project-name>, scorers=scorers,
+
+    project_name=<project-name>, scorers=scorers,
+
+    project_name
+=<
+project
+-
+name
+>
+, scorers
+=
+scorers,
+)
+)
+)
+```
+
+*   project\_name: each "run" will appear under this project. Choose a name that'll help you identify what you're evaluating
+    
+*   scorers: This is the list of metrics you want to evaluate your run over. Check out [Galileo Guardrail Metrics](/galileo/gen-ai-studio-products/guardrail-store) and [Custom Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/registering-and-using-custom-metrics) for more information.
+    
+
+**Executing and Logging**
+
+Next, run your chain over your Evaluation set and log the results to Galileo.
+
+When you execute your chain (with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">run</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">invoke</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">batch</code>), just include the callback instance created earlier in the callbacks as:
+
+If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.run()</code>:
+
+Copy```
+chain.run(<inputs>, callbacks=[galileo_handler])
+chain.run(<inputs>, callbacks=[galileo_handler])
+chain
+.
+run
+(
+<
+inputs
+>
+, callbacks
+=
+[galileo_handler])
+```
+
+If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.invoke()</code>:
+
+Copy```
+chain.invoke(inputs, config=dict(callbacks=[galileo_handler]))
+chain.invoke(inputs, config=dict(callbacks=[galileo_handler]))
+chain
+.
+invoke
+(inputs, config
+=
+dict
+(callbacks
+=
+[galileo_handler]))
+```
+
+If using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.batch()</code>:
+
+Copy```
+.batch(..., config=dict(callbacks=[galileo_handler]))
+.batch(..., config=dict(callbacks=[galileo_handler]))
+.
+batch
+(..., config
+=
+dict
+(callbacks
+=
+[galileo_handler]))
+```
+
+**Important**: Once you complete executing for your dataset, tell Galileo the run is complete by:
+
+Copy```
+galileo_handler.finish()
+galileo_handler.finish()
+galileo_handler
+.
+finish
+()
+```
+
+The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">finish</code> step uploads the run to Galileo and starts the execution of the scorers server-side. This step will also display the link you can use to interact with the run on the Galileo console.
+
+A full example can be found [here](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows/examples-with-langchain).
+
+_**Note 1:**_ Please make sure to set the callback at _execution_ time, not at definition time so that the callback is invoked for all nodes of the chain.
+
+<i class="font-italic"><strong class="font-bold">Note 2:</strong></i> We recommend using <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.invoke</code> instead of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">.batch</code> because <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">langchain</code> reports latencies for the <i class="font-italic">entire</i> batch instead of each individual chain execution.
+
+[PreviousAdding Custom LLM APIs / Fine Tuned LLMs](/galileo/gen-ai-studio-products/galileo-evaluate/integrations/setting-up-your-llms/adding-custom-llm-apis-fine-tuned-llms)[NextCustom Chain](/galileo/gen-ai-studio-products/galileo-evaluate/integrations/custom-chain)
+
+Last updated 1 month ago

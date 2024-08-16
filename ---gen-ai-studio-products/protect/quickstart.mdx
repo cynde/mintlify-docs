@@ -1,0 +1,323 @@
+---
+title: "Quickstart"
+---
+
+# Quickstart
+
+## 
+
+[](#why-use-galileo-protect)
+
+Why use Galileo Protect?
+
+Galileo Protect acts as an LLM Firewall proactively protecting your system from bad inputs, and your users from bad outputs. It empowers you to harden your GenAI system against malicious activities, such as prompt injections or offensive inputs, and allows you to take control of your application's outputs and avoid hallucinations, data leakage, or off-brand responses.
+
+## 
+
+[](#how-to-get-started-with-galileo-protect)
+
+How to get started with Galileo Protect?
+
+### 
+
+[](#step-1-getting-your-galileo-api-key)
+
+Step 1: Getting your Galileo API key
+
+Please follow the "Getting an API key" section [here](https://docs.rungalileo.io/galileo/gen-ai-studio-products/galileo-evaluate/quickstart) to get your API key.
+
+### 
+
+[](#step-2-install-the-necessary-python-client)
+
+Step 2: Install the necessary Python Client
+
+*   Open a Python notebook or the Python environment where you want to install Galileo
+    
+*   Install the python client via <strong class="font-bold">pip install</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">galileo-protect</code>
+    
+*   Next, run the following code to create a project and get <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">project_id</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">stage_id</code> to set up integration.
+    
+
+Copy```
+import galileo_protect as gp
+
+import galileo_protect as gp
+
+import
+ galileo_protect 
+as
+ gp
+import os
+
+import os
+
+import
+ os
+
+
+
+
+os.environ['GALILEO_API_KEY']="Your Galileo API key"
+
+os.environ['GALILEO_API_KEY']="Your Galileo API key"
+
+os
+.
+environ
+[
+'GALILEO_API_KEY'
+]
+=
+"Your Galileo API key"
+os.environ['GALILEO_CONSOLE_URL']="Your Galileo Console Url"
+
+os.environ['GALILEO_CONSOLE_URL']="Your Galileo Console Url"
+
+os
+.
+environ
+[
+'GALILEO_CONSOLE_URL'
+]
+=
+"Your Galileo Console Url"
+
+
+
+
+project = gp.create_project('my first protect project')
+
+project = gp.create_project('my first protect project')
+
+project 
+=
+ gp
+.
+create_project
+(
+'my first protect project'
+)
+project_id = project.id
+
+project_id = project.id
+
+project_id 
+=
+ project
+.
+id
+
+
+
+
+stage = gp.create_stage(name="my first stage", project_id=project_id)
+
+stage = gp.create_stage(name="my first stage", project_id=project_id)
+
+stage 
+=
+ gp
+.
+create_stage
+(name
+=
+"my first stage"
+, project_id
+=
+project_id)
+stage_id = stage.id
+stage_id = stage.id
+stage_id 
+=
+ stage
+.
+id
+```
+
+### 
+
+[](#step-3-integrate-galileo-protect-with-your-app)
+
+Step 3: Integrate Galileo Protect with your app
+
+Galileo Protect can be embedded in your production application through <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.invoke()</code> like below:
+
+Copy```
+USER_QUERY = 'What\'s my SSN? Hint: my SSN is 123-45-6789'
+
+USER_QUERY = 'What\'s my SSN? Hint: my SSN is 123-45-6789'
+
+USER_QUERY 
+=
+ 
+'What\'s my SSN? Hint: my SSN is 123-45-6789'
+MODEL_RESPONSE = 'Your SSN is 123-45-6789' #replace this string with the actual model response
+
+MODEL_RESPONSE = 'Your SSN is 123-45-6789' #replace this string with the actual model response
+
+MODEL_RESPONSE 
+=
+ 
+'Your SSN is 123-45-6789'
+ 
+#replace this string with the actual model response
+
+
+
+
+response = gp.invoke(
+
+response = gp.invoke(
+
+response 
+=
+ gp
+.
+invoke
+(
+        payload={"input":USER_QUERY, "output":MODEL_RESPONSE},
+
+        payload={"input":USER_QUERY, "output":MODEL_RESPONSE},
+
+        payload
+=
+{
+"input"
+:USER_QUERY, 
+"output"
+:MODEL_RESPONSE},
+        prioritized_rulesets=[
+
+        prioritized_rulesets=[
+
+        prioritized_rulesets
+=
+[
+            {
+
+            {
+
+            {
+                "rules": [
+
+                "rules": [
+
+                
+"rules"
+: [
+                    {
+
+                    {
+
+                    {
+                        "metric": "pii",
+
+                        "metric": "pii",
+
+                        
+"metric"
+: 
+"pii"
+,
+                        "operator": "contains",
+
+                        "operator": "contains",
+
+                        
+"operator"
+: 
+"contains"
+,
+                        "target_value": "ssn",
+
+                        "target_value": "ssn",
+
+                        
+"target_value"
+: 
+"ssn"
+,
+                    },
+
+                    },
+
+                    },
+                ],
+
+                ],
+
+                ],
+                "action": {
+
+                "action": {
+
+                
+"action"
+: {
+                    "type": "OVERRIDE",
+
+                    "type": "OVERRIDE",
+
+                    
+"type"
+: 
+"OVERRIDE"
+,
+                    "choices": [
+
+                    "choices": [
+
+                    
+"choices"
+: [
+                        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                    ],
+
+                    ],
+
+                    ],
+                },
+
+                },
+
+                },
+            },
+
+            },
+
+            },
+        ],
+
+        ],
+
+        ],
+        stage_id=stage_id,
+
+        stage_id=stage_id,
+
+        stage_id
+=
+stage_id,
+        timeout=10,  # number of seconds for timeout
+
+        timeout=10,  # number of seconds for timeout
+
+        timeout
+=
+10
+,  
+# number of seconds for timeout
+    )
+    )
+    )
+```
+
+As part of your invocation config, you'll need to define a set of [Rules](/galileo/gen-ai-studio-products/galileo-protect/concepts/rule) you want your application to adhere to, and the [Actions](/galileo/gen-ai-studio-products/galileo-protect/concepts/action) that should be taken when these rules are broken.
+
+[PreviousProtect](/galileo/gen-ai-studio-products/galileo-protect)[NextHow-To](/galileo/gen-ai-studio-products/galileo-protect/how-to)
+
+Last updated 2 months ago

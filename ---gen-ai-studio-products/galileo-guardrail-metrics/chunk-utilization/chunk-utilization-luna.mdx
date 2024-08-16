@@ -1,0 +1,29 @@
+---
+title: "Chunk Utilization Luna"
+---
+
+# Chunk Utilization Luna
+
+Understand Galileo's Chunk Utilization Luna Metric
+
+_**Definition:**_ For each chunk retrieved in a RAG pipeline, Chunk Utilization measures the fraction of the text in that chunk that had an impact on the model's response.
+
+Chunk Utilization ranges from 0 to 1. A value of 1 means that the entire chunk affected the response, while a lower value like 0.5 means that the chunk contained some "extraneous" text which did not affect the response.
+
+Chunk Utilization is closely related to Chunk Attribution: Attribution measures whether or not a chunk affected the response, and Utilization measures how much of the chunk text was involved in the effect. Only chunks that were Attributed can have Utilization scores greater than zero.
+
+_**Calculation:**_ Chunk Utilization Luna is computed using a fine-tuned in-house Galileo evaluation model. The model is a transformer-based encoder that is trained to identify the relevant and utilized information in the provided a query, context, and response. The same model is used to compute Chunk Adherence, Chunk Completeness, Chunk Attribution and Utilization, and a single inference call is used to compute all the Luna metrics at once. The model is trained on carefully curated RAG datasets and optimized to closely align with the RAG Plus metrics.
+
+For each token in the provided context, the model outputs a _utilization probability_, i.e the probability that this token affected the response. _Chunk Utilization Luna_ is then computed as the fraction of tokens with high utilization probability out of all tokens in the chunk.
+
+We recommend starting with "Luna" and seeing if this covers your needs. If you see the need for higher accuracy or would like explanations for the ratings, you can switch over to [Chunk Utilization Plus](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization).
+
+**Explainability**
+
+The Luna model identifies which parts of the chunks were utilized by the model when generating its response. These sections can be highlighted in your retriever nodes by clicking on the 👁️ icon next to the Chunk Utilization metric value in your _Retriever_ nodes.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fpx9VbmNZmRxGoUHWR2Le%252Fimage.png%3Falt%3Dmedia%26token%3Dfc70d6c3-29f9-41c8-8287-5b4290f3230b&width=768&dpr=4&quality=100&sign=1ed04185&sv=1)
+
+[PreviousChunk Utilization](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization)[NextChunk Utilization Plus](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization)
+
+Last updated 29 days ago

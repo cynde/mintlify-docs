@@ -1,0 +1,246 @@
+---
+title: "Using Protect In Chains"
+---
+
+# Using Protect in Chains
+
+Galileo Protect can also be used within your Langchain workflows. You can use Protect to validate inputs and outputs at different stages of your workflow. We provide a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">tool</code> that allows you to easily integrate Protect into your Langchain workflows.
+
+## 
+
+[](#example)
+
+Example
+
+Here's an example of how you can use Protect with Langchain:
+
+Copy```
+from galileo_protect import  OverrideAction, ProtectTool, ProtectParser, Ruleset
+
+from galileo_protect import  OverrideAction, ProtectTool, ProtectParser, Ruleset
+
+from
+ galileo_protect 
+import
+  OverrideAction
+,
+ ProtectTool
+,
+ ProtectParser
+,
+ Ruleset
+
+
+
+
+# Create a ProtectTool instance the same way you would invoke it in a regular Python script.
+
+# Create a ProtectTool instance the same way you would invoke it in a regular Python script.
+
+# Create a ProtectTool instance the same way you would invoke it in a regular Python script.
+protect_tool = ProtectTool(
+
+protect_tool = ProtectTool(
+
+protect_tool 
+=
+ 
+ProtectTool
+(
+    stage_id=stage_id,
+
+    stage_id=stage_id,
+
+    stage_id
+=
+stage_id,
+    prioritized_rulesets=[
+
+    prioritized_rulesets=[
+
+    prioritized_rulesets
+=
+[
+        Ruleset(rules=[
+
+        Ruleset(rules=[
+
+        
+Ruleset
+(rules
+=
+[
+                {
+
+                {
+
+                {
+                    "metric": "prompt_injection",
+
+                    "metric": "prompt_injection",
+
+                    
+"metric"
+: 
+"prompt_injection"
+,
+                    "operator": "eq",
+
+                    "operator": "eq",
+
+                    
+"operator"
+: 
+"eq"
+,
+                    "target_value": "impersonation",
+
+                    "target_value": "impersonation",
+
+                    
+"target_value"
+: 
+"impersonation"
+,
+                },
+
+                },
+
+                },
+        ]),
+
+        ]),
+
+        ]),
+    ],
+
+    ],
+
+    ],
+    timeout=10
+
+    timeout=10
+
+    timeout
+=
+10
+)
+
+)
+
+)
+
+
+
+
+# Create a ProtectParser instance to parse the ProtectTool response and invoke the rest of your chain if there was no trigger.
+
+# Create a ProtectParser instance to parse the ProtectTool response and invoke the rest of your chain if there was no trigger.
+
+protect_parser = ProtectParser(chain=chain)
+
+protect_parser = ProtectParser(chain=chain)
+
+protect_parser 
+=
+ 
+ProtectParser
+(chain
+=
+chain)
+
+
+
+
+# Define the chain with Protect.
+
+# Define the chain with Protect.
+
+# Define the chain with Protect.
+protected_chain = protect_tool | protect_parser.parser  # Note the `parser` attribute of the ProtectParser instance.
+
+protected_chain = protect_tool | protect_parser.parser  # Note the `parser` attribute of the ProtectParser instance.
+
+protected_chain 
+=
+ protect_tool 
+|
+ protect_parser
+.
+parser  
+# Note the `parser` attribute of the ProtectParser instance.
+
+
+
+
+# Run the chain.
+
+# Run the chain.
+
+# Run the chain.
+protected_chain.invoke({"input": "What's my SSN? Hint: my SSN is 123-45-6789", "output": "Your SSN is 123-45-6789"})
+protected_chain.invoke({"input": "What's my SSN? Hint: my SSN is 123-45-6789", "output": "Your SSN is 123-45-6789"})
+protected_chain
+.
+invoke
+({
+"input"
+: 
+"What's my SSN? Hint: my SSN is 123-45-6789"
+, 
+"output"
+: 
+"Your SSN is 123-45-6789"
+})
+```
+
+Note: If your previous node's output is not with the keys <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code>, you will need to insert a Python function before the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">protected_chain</code> to format the output to match the expected input of the ProtectTool.
+
+## 
+
+[](#logging-protect-with-galileo-evaluate-and-galileo-observe)
+
+Logging Protect With Galileo Evaluate and Galileo Observe
+
+Protect supports Galileo Evaluate and Galileo Observe. You can log Protect's actions and responses in your Galileo Evaluate and Galileo Observe dashboards. To show your protect outputs in the Galileo Evaluate and Galileo Observe dashboards, simply include the Evaluate and Observe's <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">langchain</code> callbacks when you invoke your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">protected_chain</code>.
+
+Copy```
+protected_chain.invoke(
+
+protected_chain.invoke(
+
+protected_chain
+.
+invoke
+(
+    {"input": "What's my SSN? Hint: my SSN is 123-45-6789", "output": "Your SSN is 123-45-6789"},
+
+    {"input": "What's my SSN? Hint: my SSN is 123-45-6789", "output": "Your SSN is 123-45-6789"},
+
+    {
+"input"
+: 
+"What's my SSN? Hint: my SSN is 123-45-6789"
+, 
+"output"
+: 
+"Your SSN is 123-45-6789"
+},
+    config=dict(callbacks=[evaluate_callback, observe_callback])
+
+    config=dict(callbacks=[evaluate_callback, observe_callback])
+
+    config
+=
+dict
+(callbacks
+=
+[evaluate_callback, observe_callback])
+)
+)
+)
+```
+
+[PreviousSetting a Timeout on your Protect Requests](/galileo/gen-ai-studio-products/galileo-protect/how-to/setting-a-timeout-on-your-protect-requests)[NextPausing or Resuming a stage](/galileo/gen-ai-studio-products/galileo-protect/how-to/pausing-or-resuming-a-stage)
+
+Last updated 3 months ago

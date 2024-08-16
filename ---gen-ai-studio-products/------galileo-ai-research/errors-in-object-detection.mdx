@@ -1,0 +1,238 @@
+---
+title: "Errors In Object Detection"
+---
+
+# Errors in Object Detection
+
+This page describes the rich error types offered by Galileo for Object Detection
+
+An Object Detection (OD) model receives an image as input and outputs a list of rectangular boxes representing objects within the image. Each box is associated with a label/class and can be positioned anywhere on the image. Unlike other tasks with limited output spaces (such as single labels in classification or labels and spans in NER), OD entails a significantly larger number of possible outputs due to two factors:
+
+1.  The model can generate a substantial quantity of boxes (several thousand for YOLO before NMS).
+    
+2.  Each box can be positioned at any location on the image, as long as it has integer coordinates.
+    
+
+This level of freedom necessitates the use of complex algorithms to establish diverse pairings between predictions and annotations, which in turn gives very rich error types. In this article we will explain what these error types are and how to use Galileo to focus on any of them and fix your data.
+
+For a high-level introduction to error types and Galileo see [here](/galileo/how-to-and-faq/galileo-product-features/error-types-breakdown).
+
+## 
+
+[](#the-6-error-types)
+
+The 6 Error Types
+
+The initial stage in assigning error types to flawed boxes involves identifying the boxes that are not deemed correct. We will refer to inaccurate predictions as False Positives (FP) and erroneous annotations as False Negatives (FN). There are many ways in which a predicted box can turn into a FP, so we will classify them further in more granular buckets:
+
+*   **Duplicate Error:** the predicted box highly overlaps with an annotation that is already used
+    
+*   **Classification Error:** the predicted box highly overlaps with an annotation of different label
+    
+*   **Localization Error:** the predicted box slightly overlaps with an annotation of same label
+    
+*   **Classification and Localization Error:** the predicted box slightly overlaps with an annotation of different label
+    
+*   **Background Error:** the predicted box does not even slightly overlap with an annotation.
+    
+
+Similarly, some FN annotations will be assigned the following error type:
+
+*   **Missed Error:** the annotation was not used by any prediction (either used to declare a prediction a TP or used to bin a prediction in any of the above errors).
+    
+
+The following illustration summarizes the above discussion:
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FxSOrR4BkeUPijOTzzQ88%252FScreenshot%25202023-05-29%2520at%252012.15.50%2520AM.png%3Falt%3Dmedia%26token%3D6099b925-4743-4aec-b379-4483a71b8069&width=768&dpr=4&quality=100&sign=3e009784&sv=1)
+
+The annotations are in yellow, the TP predicted boxes in green and the FP predicted boxes in the red. The real line at the bottom shows how much the predicted and annotation overlap: above t\_f is considered significant, between t\_b and t\_f is slightly, below t\_b is not even slightly.
+
+Note that the above error types were introduced in the [TIDE toolbox](https://dbolya.github.io/tide/) paper. We refer to their paper and to the Technical deep dive below for more details.
+
+## 
+
+[](#the-6-error-types-and-galileo)
+
+The 6 error types and Galileo
+
+### 
+
+[](#count-and-impact-on-map)
+
+Count and Impact on mAP
+
+In the Galileo Console, we surface two metrics for each of the 6 error types: their count and their impact on mAP. The count is simply the number of boxes tagged with that error type, and the impact on mAP is the amount by which mAP would increase if we were to fix all errors of that type.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FiOrDQK2AxHcwn9Q977Mx%252FScreenshot%25202023-05-29%2520at%252010.59.45%2520PM.png%3Falt%3Dmedia%26token%3D7b4cc738-fe1e-4ccb-b2d7-3ba3fecb2d17&width=768&dpr=4&quality=100&sign=9ae32bb1&sv=1)
+
+Use the toggle in the top right to switch between the Count and Impact on mAP values.
+
+We suggest starting analyzing the error with highest impact on mAP and trying to understand why the model and annotations disagree.
+
+### 
+
+[](#focus-on-a-single-error-type-to-gain-insight)
+
+Focus on a single Error Type to gain insight
+
+Galileo allows you to focus on any of the error types in order to dig and understand in each case whether the data quality is poor or the model is not well trained. For this you can either click on an error type in the above bar chart, or simply add the error type filter by clicking on Add Filters.
+
+Once a single error type is selected, Galileo will only display the boxes with that error type together with any other box that is necessary context in order to explain that error type.
+
+For example, a prediction is tagged as a classification error because it significantly overlaps with an annotation of different label. In this case, we will show this annotation and its label.
+
+We refer to the Technical deep dive below for more details on associated boxes.
+
+### 
+
+[](#improve-your-data-quality)
+
+Improve your data quality
+
+Galileo offers the possibility to fix your annotations in a few clicks from the console. After adding a filter by error type, select the images with miss-annotated boxes either one-by-one, or by selecting them all and, if any, unselecting the images with correct annotations.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FiE4E85wb9hQ9wJXlNBlW%252FScreenshot%25202023-05-29%2520at%252011.31.36%2520PM.png%3Falt%3Dmedia%26token%3Daa6b52e3-0249-421a-bb82-2964c8c9622a&width=768&dpr=4&quality=100&sign=65d48ca4&sv=1)
+
+Update your annotations in a few clicks from the console.
+
+Clicking on Overwrite Ground Truth will overwrite the annotation with the prediction that links to that annotation. More concretely, we explain below the typical scenario for every error type.
+
+*   **Duplicate error:** this is often a model error, and duplicates can be reduced by decreasing the IoU threshold in the NMS step. However, sometimes a duplicate box will have more accurate localization that both the TP prediction and the annotation, in which case we would overwrite the annotation with the duplicate box.
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FVgMuFBHmmt8Sq6LG1FmX%252FScreenshot%25202023-05-29%2520at%252011.39.49%2520PM.png%3Falt%3Dmedia%26token%3D3c280024-ea29-4c9e-8546-52b2f6c6af69&width=768&dpr=4&quality=100&sign=17537b96&sv=1)
+    
+    The inner prediction has higher confidence than the larger box, and is thus selected as a TP. The duplicated outer prediction is however a better bounding box than both the TP prediction and the annotation.
+    
+*   **Classification error:** more often than not, classification errors in OD represent mislabeled annotation. Correcting this error would simply relabel the annotation with the predicted one. Note that these errors have overlap with the Likely Mislabeled feature.
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FIOMygMeNmSYAHGmQm52P%252FScreenshot%25202023-05-29%2520at%252011.43.57%2520PM.png%3Falt%3Dmedia%26token%3Dbbadabad-27bd-4ad1-907e-26520a1d0c0f&width=768&dpr=4&quality=100&sign=c3586336&sv=1)
+    
+    Typical classification error where the annotation is mislabeled.
+    
+*   **Localization error:** localization errors surface inaccuracies in the annotations localization. Correcting this error would overwrite the annotation's coordinates with the predicted ones. Note that this error is very sensitive to the IoU threshold chosen (the mAP threshold).
+    
+    ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FNAYlVumf5L4R15Y5dCHa%252FScreenshot%25202023-05-29%2520at%252011.49.42%2520PM.png%3Falt%3Dmedia%26token%3D89c6a218-9135-4959-a7b8-59f69ef2b6c1&width=768&dpr=4&quality=100&sign=d0aef887&sv=1)
+    
+    Localization error exhibiting an inaccurate annotation.
+    
+*   **Classification and Localization error:** these errors are less predictable and can be due to various phenomena. We suggest going through these images one-by-one and taking action accordingly.
+    
+*   **Background error:** more often than not a background error is due to a missed annotation. In this setting, the Overwrite Ground Truth button adds the missing annotation.
+    
+*   **Missed error:** these errors are sometimes due to the model not predicting the appropriate box, and sometimes due to poor annotations. Some common scenarios include:
+    
+    *   poor/gibberish annotations that do not represent an object or do not represent an object that we want to predict
+        
+        ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FCMw69akYpUF3cN2AdzPo%252FScreenshot%25202023-05-30%2520at%252012.01.09%2520AM.png%3Falt%3Dmedia%26token%3D574c12b9-f061-4366-868b-f6445b4745a0&width=768&dpr=4&quality=100&sign=9648417&sv=1)
+        
+        The annotation does not represent any object.
+        
+    *   multiple annotations for the same object
+        
+        ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F1bE7ooBs8i6SFsZcnULL%252FScreenshot%25202023-05-30%2520at%252012.02.41%2520AM.png%3Falt%3Dmedia%26token%3Db9793d0a-1845-4d08-aa7e-0658e0a8e75b&width=768&dpr=4&quality=100&sign=3ae6b265&sv=1)
+        
+        There are multiple annotations for the same object.
+        
+        In this case, overwriting the ground truth means removing the bad annotation.
+        
+    
+
+## 
+
+[](#the-6-error-types-technical-deep-dive)
+
+The 6 error types: Technical deep dive
+
+In this section, we will elaborate on our methodology for determining the suitable error type associated with a box that fails to meet the criteria for correctness.
+
+### 
+
+[](#coarse-errors-fps-and-fns)
+
+Coarse Errors: FPs and FNs
+
+The first step consists of a coarser association is determining all wrong predictions (False Positives, FP), and all wrong annotations (False Negatives, FN). This algorithm is also used for calculating the main metric in Object Detection: the mean Average Precision (mAP). We summarize the steps necessary for finding our error types, and refer to a [modern definition](https://jonathan-hui.medium.com/map-mean-average-precision-for-object-detection-45c121a31173) for more details:
+
+1.  Pick a global IoU threshold. This is used to decide when two boxes overlap enough to be paired together.
+    
+2.  Loop over labels. For every label, only consider the predictions and annotations of that label.
+    
+3.  Sort all predictions descending by their score and go through them one by one. At the beginning all annotation are unused.
+    
+4.  If a prediction overlaps enough with an unused annotation: call that prediction at True Positive (TP) and declare that annotation as used.
+    
+5.  If it doesn't, call that prediction a FP.
+    
+6.  When all predictions are exhausted, call all unused annotations become FNs.
+    
+
+The Galileo console offers three IoU thresholds: 0.5, 0.7 and 0.9. Note that the higher the threshold, the harder it is for a prediction to be a TP as it has to considerably overlap with a detection. Moreover, this is even harder for smaller objects, where moving a box by a few pixels dramatically decreases the IoU.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F0S3DcH9igrDbx61BkP8Y%252FScreenshot%25202023-05-30%2520at%252012.14.21%2520AM.png%3Falt%3Dmedia%26token%3D778286aa-fb52-45e4-ba2f-839ffaff235e&width=768&dpr=4&quality=100&sign=2652513b&sv=1)
+
+### 
+
+[](#finer-errors-the-6-error-types-of-tide)
+
+Finer Errors: The 6 Error Types of TIDE
+
+The 6 error types cited above were introduced in the [TIDE toolbox](https://dbolya.github.io/tide/) paper, to which we refer for more details. For a concise definition, we will re-use the illustration posted above.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FRK9QCYh1nBn1EC6L3V5e%252FScreenshot%25202023-05-29%2520at%252012.15.50%2520AM.png%3Falt%3Dmedia%26token%3D57040f30-fbf4-46dd-a102-73e2f4611077&width=768&dpr=4&quality=100&sign=9aa0d371&sv=1)
+
+The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[0,1]</code> interval appearing below the image indicates the range (in orange) for the IoU between the predicted box (in red) and an annotated box (in yellow). Note that it contains two thresholds: the background threshold <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">t_b</code> and the foreground threshold <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">t_f</code>. Galileo sets the background threshold <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">t_b</code> at <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">0.1</code> and the foreground threshold <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">t_f</code> at the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">mAP threshold</code> used to compute the mAP score. As an example, a predicted box overlapping with an annotation with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">IoU &gt;= t_f</code> will be given the classification error type <button data-testid="annotation-button" aria-label="Open annotation" class="decoration-dotted decoration-1 underline underline-offset-2" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:Rkplkvf937qjta:" data-state="closed">if the class of the annotation doesn't match that of the prediction.</button>
+
+With the above ambiguous definition, there are cases where a predicted box could be part of multiple error types. To avoid ambiguity, Galileo classifies the errors in the following order:
+
+1.  **Localization**
+    
+2.  **Classification**
+    
+3.  **Duplicate**
+    
+4.  **Background**
+    
+5.  **Classification and Localization.**
+    
+
+That is, we check in order, if the predicted box
+
+1.  has IoU with an annotation with same label in the range <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[t_b, t_f]</code>
+    
+2.  has IoU with an annotation with different label in the range <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[t_f, 1]</code>
+    
+3.  has IoU with an annotation already used, with same label in the range <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[t_f, 1]</code>
+    
+4.  has IoU <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">&lt; t_b</code> with <button data-testid="annotation-button" aria-label="Open annotation" class="decoration-dotted decoration-1 underline underline-offset-2" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:R1d59lkvf937qjta:" data-state="closed">all annotations</button>.
+    
+
+If none of these occur, then the box is a classification and localization error (it is easy to see that this implies that the prediction has IoU in the range <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[t_b, t_f]</code> with a box of different label).
+
+Finally, the <strong class="font-bold">Missed</strong> error type is given to any annotation that is already considered a FN, and that was not used in the above definition by either a Classification Error or a Localization Error. Note that Missed annotations can overlap with predictions, for example, they can overlap <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">&lt; t_b</code> with a classification and localization error.
+
+### 
+
+[](#associated-boxes)
+
+Associated boxes
+
+The above definitions beg for better terminology. We will say that an annotation is associated with a prediction, or that a prediction links to an annotation in any of the following cases
+
+*   the prediction is a TP corresponding to the annotation
+    
+*   the prediction is an FP (except background error), and the annotation is the one involved in the IoU deciding so.
+    
+
+For example, if a predicted box is tagged as a classification error, it will link to the annotations with which it overlaps and has a different label. In particular, this associated annotation explains the error type of the predicted box and provides the necessary context to understand the error.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F83ZjldigTcmwYWT7WcdH%252FScreenshot%25202023-05-30%2520at%25201.04.58%2520AM.png%3Falt%3Dmedia%26token%3D04e24b79-e28f-4224-8b3b-cbd0f98db092&width=768&dpr=4&quality=100&sign=a4989436&sv=1)
+
+The predicted box is a localization error. Without the context of the associated annotation, this would be confusing since the prediction looks correct. With the context, one can see that the annotation is inaccurate and should be updated.
+
+The Galileo Console will always show the context in order to explain all error types. This explains why predicted boxes will be visible when filtering and only showing Missed errors, or why annotations will be visible when filtering for, say, Classification errors.
+
+Note that an annotation can be associated with multiple predictions (the simplest case to see is for a TP and a duplicate, but there are countless other possibilities). With this definition, one can notice that a Missed error is an annotation that is either associated with no box or only a classification and localization error (or multiple, but this is rare).
+
+[PreviousClass Boundary Detection](/galileo/gen-ai-studio-products/ml-research-algorithms/class-boundary-detection)[NextAutomatic Prompt Optimization](/galileo/gen-ai-studio-products/ml-research-algorithms/automatic-prompt-optimization)
+
+Last updated 1 year ago

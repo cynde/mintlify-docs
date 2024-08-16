@@ -1,0 +1,125 @@
+---
+title: "Evaluate And Optimize Rag Applications"
+---
+
+# Evaluate and Optimize RAG Applications
+
+How to use Galileo Evaluate with RAG applications
+
+Galileo Evaluate enables you to evaluate and optimize your Retrieval-Augmented Generation (RAG) application with out-of-the-box Tracing and Analytics.
+
+## 
+
+[](#getting-started)
+
+**Getting Started**
+
+The first step in evaluating your application is creating an evaluation run. To do this, run your evaluation set (e.g. a set of inputs that mimic the inputs you expect to get from users) through your RAG system and create a prompt run.
+
+#### 
+
+[](#logging-experiments-with-langchain-callbacks)
+
+Logging experiments with Langchain callbacks
+
+If you're using LangChain, follow [these instructions](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/integrating-evaluate-into-my-existing-application#langchain) or [this code example](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows/examples-with-langchain) to learn how to do this.
+
+#### 
+
+[](#logging-experiments-with-python-logger-for-non-langchain-set-ups)
+
+Logging experiments with Python logger (for non-Langchain set-ups)
+
+If you're using a different orchestration library or not using one at all, follow [these instructions](/galileo/gen-ai-studio-products/galileo-evaluate/quickstart/integrating-evaluate-into-my-existing-application#custom-logging) on how to log your run.
+
+#### 
+
+[](#keeping-track-of-what-changed-in-your-experiment)
+
+**Keeping track of what changed in your experiment**
+
+As you start experimenting, you're going to want to keep track of what you're attempting with each experiment. To do so, use Prompt Tags. Prompt Tags are tags you can add to the run (e.g. "embedding\_model" = "voyage-2", "embedding\_model" = "text-embedding-ada-002").
+
+Prompt Tags will help you remember what you tried with each experiment. Read more about [how to add Prompt Tags here](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/adding-tags-to-prompt-runs).
+
+## 
+
+[](#tracing-your-retrieval-system)
+
+Tracing your Retrieval System
+
+Once you log your evaluation runs, you can go to the Galileo Console to analyze your workflow executions. For each execution, you'll be able to see what the input into the workflow was and what the final response was, as well as any intermediate results.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F5Wk0WPrY2IWP5q2Z9zfJ%252Fimage.png%3Falt%3Dmedia%26token%3D67539488-768b-458d-b364-4b1f269f3f31&width=768&dpr=4&quality=100&sign=aa4b0608&sv=1)
+
+Clicking on any row will open the Expanded View for that node. The Retriever Node will show you all the chunks that your retriever returned. Once you start debugging your executions, this will allow you to trace poor-quality responses back to the step that went wrong.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FHnoWsrZ3jKziqLgUsQeC%252Fimage.png%3Falt%3Dmedia%26token%3D7c371bb9-34fd-49c8-b292-de4b6574f678&width=768&dpr=4&quality=100&sign=a18ade7&sv=1)
+
+## 
+
+[](#evaluating-and-optimizing-the-performance-of-your-rag-application)
+
+**Evaluating and Optimizing the performance of your RAG application**
+
+Galileo has out-of-the-box [Guardrail Metrics](/galileo/gen-ai-studio-products/guardrail-store) to help you assess and evaluate the quality of your application. In addition, Galileo supports user-defined [custom metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics). When logging your evaluation run, make sure to include the metrics you want computed for your run.
+
+For RAG applications, we recommend using the following:
+
+#### 
+
+[](#context-adherence)
+
+**Context Adherence**
+
+_Context Adherence_ (fka Groundedness) measures whether your model's response was purely based on the context provided, i.e. the response didn't state any facts not contained in the context provided. For RAG users, _Context Adherence_ is a measurement of hallucinations.
+
+If a response is _grounded_ in the context (i.e. it has a value of 1 or close to 1), it only contains information given in the context. If a response is _not grounded_ (i.e. it has a value of 0 or close to 0), it's likely to contain facts not included in the context provided to the model.
+
+To fix low _Context Adherence_ values, we recommend (1) ensuring your context DB has all the necessary info to answer the question, and (2) adjusting the prompt to tell the model to stick to the information it's given in the context.
+
+_Note:_ This metric has two options: [Context Adherence Basic](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/context-adherence-basic) and [Context Adherence Plus](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/groundedness).
+
+**Context Relevance**
+
+_Context Relevance_ measures how relevant (or similar) the context provided was to the user query. This metric requires {context} and {query} slots in your data, as well as embeddings for them (i.e. {context\_embedding}, {query\_embedding}.
+
+_Context Relevance_ is a relative metric. High _Context Relevance_ values indicate significant similarity or relevance. Low Context Relevance values are a sign that you need to augment your knowledge base or vector DB with additional documents, modify your retrieval strategy, or use better embeddings.
+
+**Completeness**
+
+If _Context Adherence_ is your precision metric for RAG, _Completeness_ is your recall. In other words, it tries to answer the question: "Out of all the information in the context that's pertinent to the question, how much was covered in the answer?"
+
+Low Completeness values indicate there's relevant information to the question included in your context that was not included in the model's response.
+
+_Note:_ This metric has two options: [Completeness Basic](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness-basic) and [Completeness Plus](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness).
+
+**Chunk Attribution**
+
+Chunk Attribution is a chunk-level metric that denotes whether a chunk was or wasn't used by the model in generating the response. Attribution helps you more quickly identify why the model said what it did, without needing to read over the whole context.
+
+Additionally, Attribution helps you optimize your retrieval strategy.
+
+_Note:_ This metric has two options: [Chunk Attribution Basic](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution-basic) and [Chunk Attribution Plus](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution).
+
+**Chunk Utilization**
+
+Chunk Utilization measures how much of the text included in your chunk was used by the model to generate a response. Chunk Utilization helps you optimize your chunking strategy.
+
+_Note:_ This metric has two options: [Chunk Utilization Basic](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization-basic) and [Chunk Utilization Plus](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization).
+
+**Non-RAG specific Metrics**
+
+Other metrics such as [_Uncertainty_](/galileo/gen-ai-studio-products/guardrail-store/uncertainty) and [_Correctness_](/galileo/gen-ai-studio-products/guardrail-store/factuality) might be useful as well. If these don't cover all your needs, you can always write custom metrics.
+
+## 
+
+[](#iterative-experimentation)
+
+Iterative Experimentation
+
+Now that you've identified something wrong with your RAG application, try to change your retriever logic, prompt template, or model settings and re-run your evaluation under the same project. Your project view will allow you to quickly compare evaluation runs and see which [configuration](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-rag-or-vector-databases#keeping-track-of-what-changed-in-your-experiment) of your system worked best.
+
+[PreviousEvaluate and Optimize Prompts](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/evaluate-and-optimize-prompts)[NextChoose your Guardrail Metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics)
+
+Last updated 3 months ago

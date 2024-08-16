@@ -1,0 +1,307 @@
+---
+title: "  Deploying Galileo   Aks"
+---
+
+# 🔬Deploying Galileo - AKS
+
+This page details the steps to deploy a Galileo Kubernetes cluster in Microsoft Azure's AKS service environment.
+
+**⏱ Total time for deployment:** 30-45 minutes
+
+## 
+
+[](#recommended-cluster-configuration)
+
+Recommended Cluster Configuration
+
+| Configuration | Recommended Value |
+| --- | --- |
+| 
+**Nodes in the cluster’s core nodegroup**
+
+
+
+
+
+ | 
+
+4 (min) 5 (max) 4 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per core node**
+
+
+
+
+
+ | 
+
+4 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per core node**
+
+
+
+
+
+ | 
+
+16 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Number of nodes in the cluster’s runners nodegroup**
+
+
+
+
+
+ | 
+
+1 (min) 5 (max) 1 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per runner node**
+
+
+
+
+
+ | 
+
+8 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per runner node**
+
+
+
+
+
+ | 
+
+32 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Minimum volume size per node**
+
+
+
+
+
+ | 
+
+200 GiB
+
+
+
+
+
+ |
+| 
+
+**Required Kubernetes API version**
+
+
+
+
+
+ | 
+
+1.24
+
+
+
+
+
+ |
+| 
+
+**Storage class**
+
+
+
+
+
+ | 
+
+standard
+
+
+
+
+
+ |
+
+## 
+
+[](#step-1-optional-create-a-dedicated-resource-group-for-galileo-cluster)
+
+Step 1: \[Optional\] Create a dedicated resource group for Galileo cluster
+
+Copy```
+az group create --name galileo --location eastus
+az group create --name galileo --location eastus
+```
+
+## 
+
+[](#step-2-provision-an-aks-cluster)
+
+Step 2: Provision an AKS cluster
+
+Copy```
+az aks create -g galileo -n galileo --enable-managed-identity --node-count 4 --max-count 7 --min-count 4 -s Standard_D4_v4 --nodepool-name gcore --nodepool-labels "galileo-node-type=galileo-core" --enable-cluster-autoscaler
+az aks create -g galileo -n galileo --enable-managed-identity --node-count 4 --max-count 7 --min-count 4 -s Standard_D4_v4 --nodepool-name gcore --nodepool-labels "galileo-node-type=galileo-core" --enable-cluster-autoscaler
+```
+
+## 
+
+[](#step-3-add-galileo-runner-nodepool)
+
+Step 3: Add Galileo Runner nodepool
+
+Copy```
+Az aks nodepool add -g galileo -n grunner --cluster-name galileo --node-count 1 --max-count 5 --min-count 1 --node-count 1 -s Standard_D8_v4 --labels "galileo-node-type=galileo-runner" --enable-cluster-autoscaler
+Az aks nodepool add -g galileo -n grunner --cluster-name galileo --node-count 1 --max-count 5 --min-count 1 --node-count 1 -s Standard_D8_v4 --labels "galileo-node-type=galileo-runner" --enable-cluster-autoscaler
+```
+
+## 
+
+[](#step-4-get-cluster-credentials)
+
+Step 4: Get cluster credentials
+
+Copy```
+az aks get-credentials --resource-group galileo --name galileo
+az aks get-credentials --resource-group galileo --name galileo
+```
+
+## 
+
+[](#step-5-apply-galileo-manifest)
+
+Step 5: Apply Galileo manifest
+
+Copy```
+kubectl apply -f galileo.yaml
+kubectl apply -f galileo.yaml
+```
+
+## 
+
+[](#step-6-customer-dns-configuration)
+
+Step 6: Customer DNS Configuration
+
+Galileo has 4 main URLs (shown below). In order to make the URLs accessible across the company, you have to set the following DNS addresses in your DNS provider after the platform is deployed.
+
+| Service | URL |
+| --- | --- |
+| 
+API
+
+
+
+
+
+ | 
+
+**api.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Data
+
+
+
+
+
+ | 
+
+**data.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+UI
+
+
+
+
+
+ | 
+
+**console.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Grafana
+
+
+
+
+
+ | 
+
+**grafana.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+
+[PreviousGalileo GCP Setup Script](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-gke/galileo-gcp-setup-script)[NextDeploying Galileo - Exoscale](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-exoscale)
+
+Last updated 8 months ago

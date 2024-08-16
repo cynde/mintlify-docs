@@ -1,0 +1,552 @@
+---
+title: "Custom Chain"
+---
+
+# Custom Chain
+
+If you're not using an orchestration library, or using one other than Langchain, we also provide a similar interface for uploading your executions that do not use a callback mechanism. To log your runs with Galileo, you'd start with the same typical flow of logging into Galileo:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+pq.login({YOUR_GALILEO_URL})
+pq.login({YOUR_GALILEO_URL})
+pq
+.
+login
+({YOUR_GALILEO_URL})
+```
+
+Then, for each step of your sequence (or node in the chain), construct a [chain row](https://docs.rungalileo.io/galileo/python-clients/index/promptquality.types/promptquality.types.chains):
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+
+
+
+
+rows = [
+
+rows = [
+
+rows 
+=
+ [
+    NodeRow(node_id=..., 
+
+    NodeRow(node_id=..., 
+
+    
+NodeRow
+(node_id
+=
+..., 
+            chain_root_id=..., 
+
+            chain_root_id=..., 
+
+            chain_root_id
+=
+..., 
+            node_type=<ChainNodeType>)
+
+            node_type=<ChainNodeType>)
+
+            node_type
+=<
+ChainNodeType
+>
+)
+]
+]
+]
+```
+
+For example, you can log your retriever and llm node with the snippet below.
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+import uuid
+
+import uuid
+
+import
+ uuid
+
+
+
+
+rows = []
+
+rows = []
+
+rows 
+=
+ []
+
+
+
+
+CHAIN_ROOT_ID = uuid.uuid4() # Randomly generated UUID
+
+CHAIN_ROOT_ID = uuid.uuid4() # Randomly generated UUID
+
+CHAIN_ROOT_ID 
+=
+ uuid
+.
+uuid4
+()
+ 
+# Randomly generated UUID
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow(node_id=CHAIN_ROOT_ID,
+
+    NodeRow(node_id=CHAIN_ROOT_ID,
+
+    
+NodeRow
+(node_id
+=
+CHAIN_ROOT_ID,
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+             step = 0, #an integer indicating which step this node is
+
+             step = 0, #an integer indicating which step this node is
+
+             step 
+=
+ 
+0
+, 
+#an integer indicating which step this node is
+             node_input=..., # input into your overall sequence or chain
+
+             node_input=..., # input into your overall sequence or chain
+
+             node_input
+=
+..., 
+# input into your overall sequence or chain
+             node_output=..., # output of your overall sequence or chain
+
+             node_output=..., # output of your overall sequence or chain
+
+             node_output
+=
+..., 
+# output of your overall sequence or chain
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+             node_type=NodeType.chain # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type=NodeType.chain # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type
+=
+NodeType.chain 
+# Can be chain, retriever, llm, chat, agent, tool
+         )
+
+         )
+
+         )
+)
+
+)
+
+)
+
+
+
+
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow(node_id=uuid.uuid4(), # Randomly generated UUID
+
+    NodeRow(node_id=uuid.uuid4(), # Randomly generated UUID
+
+    
+NodeRow
+(node_id
+=
+uuid.
+uuid4
+(), 
+# Randomly generated UUID
+             chain_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the root node
+
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the root node
+
+             chain_root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the root node
+             step = 1, #an integer indicating which step this node is
+
+             step = 1, #an integer indicating which step this node is
+
+             step 
+=
+ 
+1
+, 
+#an integer indicating which step this node is
+             node_input=..., # input into your retriever
+
+             node_input=..., # input into your retriever
+
+             node_input
+=
+..., 
+# input into your retriever
+             node_output=..., # serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...]))
+
+             node_output=..., # serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...]))
+
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+             node_type=NodeType.retriever # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type=NodeType.retriever # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type
+=
+NodeType.retriever 
+# Can be chain, retriever, llm, chat, agent, tool
+             )
+
+             )
+
+             )
+)
+
+)
+
+)
+
+
+
+
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow(node_id=uuid.uuid4(), # Randomly generated UUUID
+
+    NodeRow(node_id=uuid.uuid4(), # Randomly generated UUUID
+
+    
+NodeRow
+(node_id
+=
+uuid.
+uuid4
+(), 
+# Randomly generated UUUID
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+             chain_root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+             step = 2, #an integer indicating which step this node is
+
+             step = 2, #an integer indicating which step this node is
+
+             step 
+=
+ 
+2
+, 
+#an integer indicating which step this node is
+             node_input=..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+             node_input=..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+             node_input
+=
+..., 
+# input into your llm (i.e. user query + relevant contexts passed in as a string)
+             prompt = ..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+             prompt = ..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+             prompt 
+=
+ ..., 
+# input into your llm (i.e. user query + relevant contexts passed in as a string)
+             node_output=..., # output of the llm passed in as a string
+
+             node_output=..., # output of the llm passed in as a string
+
+             node_output
+=
+..., 
+# output of the llm passed in as a string
+             response = ..., # output of the llm passed in as a string
+
+             response = ..., # output of the llm passed in as a string
+
+             response 
+=
+ ..., 
+# output of the llm passed in as a string
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency=..., # latency of this step/node. in nanoseconds
+
+             latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+             node_type=NodeType.llm # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type=NodeType.llm # Can be chain, retriever, llm, chat, agent, tool
+
+             node_type
+=
+NodeType.llm 
+# Can be chain, retriever, llm, chat, agent, tool
+             )
+
+             )
+
+             )
+)
+)
+)
+```
+
+We recommend you randomly generate _node\_id_ and _chain\_root\_id_ (e.g. uuid()). Add the _id_ of a 'parent' node as the _chain\_root\_id_ of its children.
+
+When your execution completes, log that data to Galileo:
+
+Copy```
+pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
+pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
+pq
+.
+chain_run
+(rows, project_name
+=<
+project
+-
+name
+>
+, scorers
+=
+[
+<
+list
+-
+of
+-
+scorers
+>
+])
+```
+
+Once that's complete, this step will display the link to access the run from your Galileo Console.
+
+### 
+
+[](#logging-metadata)
+
+Logging metadata
+
+If you are logging chains from <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">langchain</code>, metadata values (such as chunk-level metadata for the retriever) will be automatocally included.
+
+For custom chains, metadata values can be logged by dumping metadata along with page\_content as demonstrated below.
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+import uuid
+
+import uuid
+
+import
+ uuid
+
+
+
+
+retriever_output = [ { "page_content": "chunk 1 content", "metadata": {"key": "value"} }, { "page_content": "chunk 2 content", "metadata": {"key": "value"} }, ]
+
+retriever_output = [ { "page_content": "chunk 1 content", "metadata": {"key": "value"} }, { "page_content": "chunk 2 content", "metadata": {"key": "value"} }, ]
+
+
+
+
+
+rows = []
+
+rows = []
+
+rows 
+=
+ []
+
+
+
+
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow(
+
+    NodeRow(
+
+    
+NodeRow
+(
+        node_id=uuid.uuid4(), # Randomly generated UUID
+
+        node_id=uuid.uuid4(), # Randomly generated UUID
+
+        node_id
+=
+uuid.
+uuid4
+(), 
+# Randomly generated UUID
+        chain_root_id=..., # UUID of the 'parent' node
+
+        chain_root_id=..., # UUID of the 'parent' node
+
+        chain_root_id
+=
+..., 
+# UUID of the 'parent' node
+        step = ...,  #an integer indicating which step this node is
+
+        step = ...,  #an integer indicating which step this node is
+
+        step 
+=
+ ...,  
+#an integer indicating which step this node is
+        node_type=NodeType.retriever, 
+
+        node_type=NodeType.retriever, 
+
+        node_type
+=
+NodeType.retriever, 
+        step=..., #an integer indicating which step this node is
+
+        step=..., #an integer indicating which step this node is
+
+        step
+=
+..., 
+#an integer indicating which step this node is
+        node_input="the query to the retriever", 
+
+        node_input="the query to the retriever", 
+
+        node_input
+=
+"the query to the retriever"
+, 
+        node_output=json.dumps(retriever_output) )
+
+        node_output=json.dumps(retriever_output) )
+
+        node_output
+=
+json.
+dumps
+(retriever_output) )
+)
+)
+)
+```
+
+[PreviousLangchain](/galileo/gen-ai-studio-products/galileo-evaluate/integrations/langchain)[NextExamples](/galileo/gen-ai-studio-products/galileo-evaluate/examples)
+
+Last updated 2 months ago

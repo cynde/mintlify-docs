@@ -1,0 +1,419 @@
+---
+title: "Creating And Using Stages"
+---
+
+# Creating and Using Stages
+
+[Stages](/galileo/gen-ai-studio-products/galileo-protect/concepts/stage) can be managed centrally (i.e. registered once and updated dynamically) or locally within the application. Stages consist of [Rulesets](/galileo/gen-ai-studio-products/galileo-protect/concepts/ruleset) that are applied during one invocation. A stage can be composed of multiple rulesets, each executed independently and defined as a prioritized list (i.e. order matters). The [Action](/galileo/gen-ai-studio-products/galileo-protect/concepts/action) for the ruleset with the highest priority is chosen for composing the response.
+
+We recommend defining a stage on your user queries and one on your application's output.
+
+All stages must have names and belong to a project. The project ID is required to create a stage. The stage ID is returned when the stage is created and is required to invoke the stage. Optionally, you can provide a description of the stage.
+
+Check out [Concepts > Stages](/galileo/gen-ai-studio-products/galileo-protect/concepts/stage) for the difference between a Central and a Local stage, and when to use each.
+
+## 
+
+[](#creating-a-stage)
+
+Creating a Stage
+
+To create a stage, you can use the following code snippet:
+
+Copy```
+import galileo_protect as gp
+
+import galileo_protect as gp
+
+import
+ galileo_protect 
+as
+ gp
+
+
+
+
+gp.create_stage(name="my first stage", project_id="<project_id>", description="This is my first stage", type="local")  # type can be "central" or "local", default is "local"
+gp.create_stage(name="my first stage", project_id="<project_id>", description="This is my first stage", type="local")  # type can be "central" or "local", default is "local"
+```
+
+If you're using central stages, we recommend including the ruleset definitions during stage creation. This way, you can manage the rulesets centrally and update them without changing the invocation code.
+
+Copy```
+import galileo_protect as gp
+
+import galileo_protect as gp
+
+import
+ galileo_protect 
+as
+ gp
+
+
+
+
+gp.create_stage(name="my first stage", project_id="<project_id>", description="This is my first stage", type="central", prioritized_rulesets=[
+
+gp.create_stage(name="my first stage", project_id="<project_id>", description="This is my first stage", type="central", prioritized_rulesets=[
+
+    {
+
+    {
+
+    
+{
+        "rules": [
+
+        "rules": [
+
+        
+"rules"
+:
+ [
+            {
+
+            {
+
+            
+{
+                "metric": "pii",
+
+                "metric": "pii",
+
+                
+"metric"
+:
+ 
+"pii"
+,
+                "operator": "contains",
+
+                "operator": "contains",
+
+                
+"operator"
+:
+ 
+"contains"
+,
+                "target_value": "ssn",
+
+                "target_value": "ssn",
+
+                
+"target_value"
+:
+ 
+"ssn"
+,
+            },
+
+            },
+
+            
+},
+        ],
+
+        ],
+
+        ]
+,
+        "action": {
+
+        "action": {
+
+        
+"action"
+:
+ 
+{
+            "type": "OVERRIDE",
+
+            "type": "OVERRIDE",
+
+            
+"type"
+:
+ 
+"OVERRIDE"
+,
+            "choices": [
+
+            "choices": [
+
+            
+"choices"
+:
+ [
+                "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+                
+"Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+            ],
+
+            ],
+
+            ]
+,
+        },
+
+        },
+
+        
+},
+    },
+
+    },
+
+    
+},
+])
+])
+])
+```
+
+If you're using local stages, you can define the rulesets within the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.invoke()</code> function during the invocation instead of the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">create_stage</code> operation.
+
+## 
+
+[](#defining-and-using-actions)
+
+Defining and Using Actions
+
+Actions define the operation to perform when a ruleset is triggered when using Galileo Protect. These can be:
+
+1.  [Override Action](https://protect.docs.rungalileo.io/?h=status#galileo_protect.OverrideAction): The override action allows configuring various choices from which one is chosen at random when all the rulesets for the stage are triggered.
+    
+2.  [Passthrough Action](https://protect.docs.rungalileo.io/?h=status#galileo_protect.PassthroughAction): The pass-through action does a simple pass-through of the text. This is the default action in case no other action is defined and used when no rulesets are triggered.
+    
+
+## 
+
+[](#subscribing-to-events-for-actions)
+
+Subscribing to Events for Actions
+
+Actions include configuration for subscriptions which can be set to event destinations (like webhooks) to HTTP POST requests notifications are sent when the ruleset is triggered. Subscriptions can be configured in actions of any type as:
+
+Copy```
+"action": {
+
+"action": {
+
+"action"
+:
+ 
+{
+    "type": "OVERRIDE",
+
+    "type": "OVERRIDE",
+
+    
+"type"
+:
+ 
+"OVERRIDE"
+,
+    "choices": [
+
+    "choices": [
+
+    
+"choices"
+:
+ [
+        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+        
+"Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+    ],
+
+    ],
+
+    ]
+,
+    "subscriptions": [{"url": "<your-webhook-url>"}],
+
+    "subscriptions": [{"url": "<your-webhook-url>"}],
+
+    
+"subscriptions"
+:
+ [
+{
+"url"
+:
+ 
+"<your-webhook-url>"
+}
+]
+,
+}
+}
+}
+```
+
+By default, notifications are sent to the subscription when they are triggered, but notifications can be sent based on any of the execution statuses. In the below example, notifications will be sent to the specified webhook if there's an error or the ruleset is not triggered.
+
+Copy```
+"action": {
+
+"action": {
+
+"action"
+:
+ 
+{
+    "type": "OVERRIDE",
+
+    "type": "OVERRIDE",
+
+    
+"type"
+:
+ 
+"OVERRIDE"
+,
+    "choices": [
+
+    "choices": [
+
+    
+"choices"
+:
+ [
+        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+        "Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+
+        
+"Personal Identifiable Information detected in the model output. Sorry, I cannot answer that question."
+    ],
+
+    ],
+
+    ]
+,
+    "subscriptions": [{"statuses": ["error", "not_triggered"], "url": "<your-webhook-url>"}],
+
+    "subscriptions": [{"statuses": ["error", "not_triggered"], "url": "<your-webhook-url>"}],
+
+    
+"subscriptions"
+:
+ [
+{
+"statuses"
+:
+ [
+"error"
+,
+ 
+"not_triggered"
+]
+,
+ 
+"url"
+:
+ 
+"<your-webhook-url>"
+}
+]
+,
+}
+}
+}
+```
+
+The subscribers are sent HTTP POST requests with a payload that matches the [response from the Protect invocation](https://protect.docs.rungalileo.io/#galileo_protect.Response) and is of schema:
+
+Copy```
+{
+
+{
+
+{
+  "text": "string",
+
+  "text": "string",
+
+  
+"text"
+:
+ 
+"string"
+,
+  "trace_metadata": {
+
+  "trace_metadata": {
+
+  
+"trace_metadata"
+:
+ {
+    "id": "string",
+
+    "id": "string",
+
+    
+"id"
+:
+ 
+"string"
+,
+    "received_at": 0,
+
+    "received_at": 0,
+
+    
+"received_at"
+:
+ 
+0
+,
+    "response_at": 0,
+
+    "response_at": 0,
+
+    
+"response_at"
+:
+ 
+0
+,
+    "execution_time": -1
+
+    "execution_time": -1
+
+    
+"execution_time"
+:
+ 
+-1
+  },
+
+  },
+
+  }
+,
+  "status": "string"
+
+  "status": "string"
+
+  
+"status"
+:
+ 
+"string"
+}
+}
+}
+```
+
+[PreviousHow-To](/galileo/gen-ai-studio-products/galileo-protect/how-to)[NextInvoking Rulesets](/galileo/gen-ai-studio-products/galileo-protect/how-to/invoking-rulesets)
+
+Last updated 17 days ago

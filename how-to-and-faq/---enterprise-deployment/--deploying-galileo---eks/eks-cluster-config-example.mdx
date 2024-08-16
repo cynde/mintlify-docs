@@ -1,0 +1,697 @@
+---
+title: "Eks Cluster Config Example"
+---
+
+# EKS Cluster Config Example
+
+Copy```
+---
+
+---
+
+---
+apiVersion: eksctl.io/v1alpha5
+
+apiVersion: eksctl.io/v1alpha5
+
+apiVersion
+:
+ 
+eksctl.io/v1alpha5
+kind: ClusterConfig
+
+kind: ClusterConfig
+
+kind
+:
+ 
+ClusterConfig
+
+
+
+
+metadata:
+
+metadata:
+
+metadata
+:
+  name: CLUSTER_NAME
+
+  name: CLUSTER_NAME
+
+  
+name
+:
+ 
+CLUSTER_NAME
+  region: us-east-2
+
+  region: us-east-2
+
+  
+region
+:
+ 
+us-east-2
+  version: "1.28"
+
+  version: "1.28"
+
+  
+version
+:
+ 
+"1.28"
+  tags:
+
+  tags:
+
+  
+tags
+:
+    env: CLUSTER_NAME
+
+    env: CLUSTER_NAME
+
+    
+env
+:
+ 
+CLUSTER_NAME
+
+
+
+
+availabilityZones: ["us-east-2a", "us-east-2b"]
+
+availabilityZones: ["us-east-2a", "us-east-2b"]
+
+availabilityZones
+:
+ [
+"us-east-2a"
+,
+ 
+"us-east-2b"
+]
+
+
+
+
+cloudWatch:
+
+cloudWatch:
+
+cloudWatch
+:
+  clusterLogging:
+
+  clusterLogging:
+
+  
+clusterLogging
+:
+    enableTypes: ["*"]
+
+    enableTypes: ["*"]
+
+    
+enableTypes
+:
+ [
+"*"
+]
+
+
+
+
+addons:
+
+addons:
+
+addons
+:
+  - name: vpc-cni
+
+  - name: vpc-cni
+
+  - 
+name
+:
+ 
+vpc-cni
+    version: 1.13.4
+
+    version: 1.13.4
+
+    
+version
+:
+ 
+1.13.4
+  - name: aws-ebs-csi-driver
+
+  - name: aws-ebs-csi-driver
+
+  - 
+name
+:
+ 
+aws-ebs-csi-driver
+    version: 1.29.1
+
+    version: 1.29.1
+
+    
+version
+:
+ 
+1.29.1
+managedNodeGroups:
+
+managedNodeGroups:
+
+managedNodeGroups
+:
+  - name: galileo-core
+
+  - name: galileo-core
+
+  - 
+name
+:
+ 
+galileo-core
+    privateNetworking: true
+
+    privateNetworking: true
+
+    
+privateNetworking
+:
+ 
+true
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    
+availabilityZones
+:
+ [
+"us-east-2a"
+,
+ 
+"us-east-2b"
+]
+    labels: { galileo-node-type: galileo-core }
+
+    labels: { galileo-node-type: galileo-core }
+
+    
+labels
+:
+ { 
+galileo-node-type
+:
+ 
+galileo-core
+ }
+    tags:
+
+    tags:
+
+    
+tags
+:
+      {
+
+      {
+
+      {
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        
+"k8s.io/cluster-autoscaler/CLUSTER_NAME"
+:
+ 
+"owned"
+,
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        
+"k8s.io/cluster-autoscaler/enabled"
+:
+ 
+"true"
+,
+      }
+
+      }
+
+      }
+    amiFamily: AmazonLinux2
+
+    amiFamily: AmazonLinux2
+
+    
+amiFamily
+:
+ 
+AmazonLinux2
+    instanceType: m5a.xlarge
+
+    instanceType: m5a.xlarge
+
+    
+instanceType
+:
+ 
+m5a.xlarge
+    minSize: 2
+
+    minSize: 2
+
+    
+minSize
+:
+ 
+2
+    maxSize: 5
+
+    maxSize: 5
+
+    
+maxSize
+:
+ 
+5
+    desiredCapacity: 2
+
+    desiredCapacity: 2
+
+    
+desiredCapacity
+:
+ 
+2
+    volumeSize: 200
+
+    volumeSize: 200
+
+    
+volumeSize
+:
+ 
+200
+    volumeType: gp3
+
+    volumeType: gp3
+
+    
+volumeType
+:
+ 
+gp3
+    volumeEncrypted: true
+
+    volumeEncrypted: true
+
+    
+volumeEncrypted
+:
+ 
+true
+    disableIMDSv1: false
+
+    disableIMDSv1: false
+
+    
+disableIMDSv1
+:
+ 
+false
+    iam:
+
+    iam:
+
+    
+iam
+:
+      attachPolicyARNs:
+
+      attachPolicyARNs:
+
+      
+attachPolicyARNs
+:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - 
+arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - 
+arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - 
+arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      withAddonPolicies:
+
+      withAddonPolicies:
+
+      
+withAddonPolicies
+:
+        autoScaler: true
+
+        autoScaler: true
+
+        
+autoScaler
+:
+ 
+true
+        cloudWatch: true
+
+        cloudWatch: true
+
+        
+cloudWatch
+:
+ 
+true
+        ebs: true
+
+        ebs: true
+
+        
+ebs
+:
+ 
+true
+    updateConfig:
+
+    updateConfig:
+
+    
+updateConfig
+:
+      maxUnavailable: 2
+
+      maxUnavailable: 2
+
+      
+maxUnavailable
+:
+ 
+2
+  - name: galileo-runner
+
+  - name: galileo-runner
+
+  - 
+name
+:
+ 
+galileo-runner
+    privateNetworking: true
+
+    privateNetworking: true
+
+    
+privateNetworking
+:
+ 
+true
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    availabilityZones: ["us-east-2a", "us-east-2b"]
+
+    
+availabilityZones
+:
+ [
+"us-east-2a"
+,
+ 
+"us-east-2b"
+]
+    labels: { galileo-node-type: galileo-runner }
+
+    labels: { galileo-node-type: galileo-runner }
+
+    
+labels
+:
+ { 
+galileo-node-type
+:
+ 
+galileo-runner
+ }
+    tags:
+
+    tags:
+
+    
+tags
+:
+      {
+
+      {
+
+      {
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        "k8s.io/cluster-autoscaler/CLUSTER_NAME": "owned",
+
+        
+"k8s.io/cluster-autoscaler/CLUSTER_NAME"
+:
+ 
+"owned"
+,
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        "k8s.io/cluster-autoscaler/enabled": "true",
+
+        
+"k8s.io/cluster-autoscaler/enabled"
+:
+ 
+"true"
+,
+      }
+
+      }
+
+      }
+    amiFamily: AmazonLinux2
+
+    amiFamily: AmazonLinux2
+
+    
+amiFamily
+:
+ 
+AmazonLinux2
+    instanceType: m5a.2xlarge
+
+    instanceType: m5a.2xlarge
+
+    
+instanceType
+:
+ 
+m5a.2xlarge
+    minSize: 1
+
+    minSize: 1
+
+    
+minSize
+:
+ 
+1
+    maxSize: 5
+
+    maxSize: 5
+
+    
+maxSize
+:
+ 
+5
+    desiredCapacity: 1
+
+    desiredCapacity: 1
+
+    
+desiredCapacity
+:
+ 
+1
+    volumeSize: 200 # GiB
+
+    volumeSize: 200 # GiB
+
+    
+volumeSize
+:
+ 
+200
+ 
+# GiB
+    volumeType: gp3
+
+    volumeType: gp3
+
+    
+volumeType
+:
+ 
+gp3
+    volumeEncrypted: true
+
+    volumeEncrypted: true
+
+    
+volumeEncrypted
+:
+ 
+true
+    disableIMDSv1: false
+
+    disableIMDSv1: false
+
+    
+disableIMDSv1
+:
+ 
+false
+    iam:
+
+    iam:
+
+    
+iam
+:
+      attachPolicyARNs:
+
+      attachPolicyARNs:
+
+      
+attachPolicyARNs
+:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+        - 
+arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+        - 
+arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+        - 
+arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+        - 
+arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      withAddonPolicies:
+
+      withAddonPolicies:
+
+      
+withAddonPolicies
+:
+        autoScaler: true
+
+        autoScaler: true
+
+        
+autoScaler
+:
+ 
+true
+        cloudWatch: true
+
+        cloudWatch: true
+
+        
+cloudWatch
+:
+ 
+true
+        ebs: true
+
+        ebs: true
+
+        
+ebs
+:
+ 
+true
+    updateConfig:
+
+    updateConfig:
+
+    
+updateConfig
+:
+      maxUnavailable: 1
+
+      maxUnavailable: 1
+
+      
+maxUnavailable
+:
+ 
+1
+
+
+```
+
+[PreviousDeploying Galileo - EKS](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks)[NextUpdating Galileo EKS cluster](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks/updating-galileo-eks-cluster)
+
+Last updated 2 months ago

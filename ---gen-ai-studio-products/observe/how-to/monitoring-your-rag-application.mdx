@@ -1,0 +1,83 @@
+---
+title: "Monitoring Your Rag Application"
+---
+
+# Monitoring your RAG application
+
+Galileo Observe allows you to monitor your Retrieval-Augmented Generation (RAG) application with out-of-the-box Tracing and Analytics.
+
+## 
+
+[](#getting-started)
+
+**Getting Started**
+
+The first step is to integrate Galileo Observe into your application code. If you're using Langchain, follow the [integration instructions here](/galileo/gen-ai-studio-products/galileo-observe/getting-started#langchain). If you're not using Langchain, or you're using a different kind of orchestration service, follow [these instructions](/galileo/gen-ai-studio-products/galileo-observe/getting-started#python-logger) on how to log your run. For any RAG or multi-step application, make sure to log your retriever node as well as your LLM node.
+
+## 
+
+[](#tracing-your-retrieval-system)
+
+Tracing your Retrieval System
+
+Once you start logging your data to Galileo Observe, you can go to the Galileo Console to analyze your workflow executions. For each execution, you'll be able to see what the original input and the final output of the workflow were, as well as all the steps that were taken in between.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FkQCoqQxxvoGv1y7oXcD2%252Fimage.png%3Falt%3Dmedia%26token%3Dbaa8e317-1aa4-4aef-88b5-3cbb347abc92&width=768&dpr=4&quality=100&sign=202963d6&sv=1)
+
+Clicking on any row will open the Expanded View for that node. The Retriever Node will show you all the chunks that your retriever returned. Once you start debugging your executions, this will allow you to trace poor-quality responses back to the step that went wrong.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FHnoWsrZ3jKziqLgUsQeC%252Fimage.png%3Falt%3Dmedia%26token%3D7c371bb9-34fd-49c8-b292-de4b6574f678&width=768&dpr=4&quality=100&sign=a18ade7&sv=1)
+
+## 
+
+[](#evaluating-the-performance-of-your-rag-application)
+
+**Evaluating the performance of your RAG application**
+
+Galileo has out-of-the-box [Guardrail Metrics](/galileo/gen-ai-studio-products/guardrail-store) to help you assess and evaluate the quality of your application. In addition, Galileo supports user-defined [custom metrics](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/choosing-your-guardrail-metrics). When logging your evaluation run, make sure to include the metrics you want computed for your run.
+
+For RAG applications, we recommend using the following:
+
+#### 
+
+[](#context-adherence)
+
+**Context Adherence**
+
+_Context Adherence_ (fka Groundedness) measures whether your model's response was purely based on the context provided, i.e. the response didn't state any facts not contained in the context provided. For RAG users, _Context Adherence_ is a measurement of hallucinations.
+
+If a response is _grounded_ in the context (i.e. it has a value of 1 or close to 1), it only contains information given in the context. If a response is _not grounded_ (i.e. it has a value of 0 or close to 0), it's likely to contain facts not included in the context provided to the model.
+
+To fix low _Context Adherence_ values, we recommend (1) ensuring your context DB has all the necessary info to answer the question, and (2) adjusting the prompt to tell the model to stick to the information it's given in the context.
+
+_Note:_ This metric is computed by prompting an LLM multiple times, and thus requires additional LLM calls to compute.
+
+**Context Relevance**
+
+_Context Relevance_ measures how relevant (or similar) the context provided was to the user query. This metric requires {context} and {query} slots in your data, as well as embeddings for them (i.e. {context\_embedding}, {query\_embedding}.
+
+_Context Relevance_ is a relative metric. High _Context Relevance_ values indicate significant similarity or relevance. Low Context Relevance values are a sign that you need to augment your knowledge base or vector DB with additional documents, modify your retrieval strategy, or use better embeddings.
+
+**Completeness**
+
+If _Context Adherence_ is your precision metric for RAG, _Completeness_ is your recall. In other words, it tries to answer the question: "Out of all the information in the context that's pertinent to the question, how much was covered in the answer?"
+
+Low Completeness values indicate there's relevant information to the question included in your context that was not included in the model's response.
+
+**Chunk Attribution**
+
+Chunk Attribution is a chunk-level metric that denotes whether a chunk was or wasn't used by the model in generating the response. Attribution helps you more quickly identify why the model said what it did, without needing to read over the whole context.
+
+Additionally, Attribution helps you optimize your retrieval strategy.
+
+**Chunk Utilization**
+
+Chunk Utilization measures how much of the text included in your chunk was used by the model to generate a response. Chunk Utilization helps you optimize your chunking strategy.
+
+**Non-RAG specific Metrics**
+
+Other metrics such as [_Uncertainty_](/galileo/gen-ai-studio-products/guardrail-store/uncertainty) and [_Correctness_](/galileo/gen-ai-studio-products/guardrail-store/factuality) might be useful as well. If these don't cover all your needs, you can always write custom metrics.
+
+[PreviousIdentifying and debugging issues](/galileo/gen-ai-studio-products/galileo-observe/how-to/identifying-and-debugging-issues)[NextLogging Data via Python](/galileo/gen-ai-studio-products/galileo-observe/how-to/logging-data-via-python)
+
+Last updated 1 month ago

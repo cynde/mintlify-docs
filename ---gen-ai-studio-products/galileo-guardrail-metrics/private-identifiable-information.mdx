@@ -1,0 +1,46 @@
+---
+title: "Private Identifiable Information"
+---
+
+# Private Identifiable Information
+
+Understand Galileo's PII Metric
+
+_**Definition:**_ Identify PII spans within a sample (both input and output). The current model detects the following precisely defined categories:
+
+*   **Account Information**: account numbers, BIC and IBAN.
+    
+*   **Address**: must contain at least a street name and number, and may contain extra elements such as city, zip code, state, etc.
+    
+*   **Credit Card**: credit card number, CVV and expiration date.
+    
+*   **Date of Birth**: must contain a day, month and year.
+    
+*   **Email**.
+    
+*   **Name**: must contain first and last name (and optionally middle name).
+    
+*   **Network Information**: IPv4, IPv6 and MAC addresses.
+    
+*   **Personal Identification**: personal IDs not included in other categories. In particular: PIN, IMEI, VIN, VRM, Driver license.
+    
+*   **Password.**
+    
+*   **Phone Number**.
+    
+*   **Social Security Number (SSN)**.
+    
+*   **Username.**
+    
+
+_**Calculation:**_ We leverage a Small Language Model (SML) trained on proprietary datasets.
+
+_**Usefulness:**_ Automatically identify PII occurrences in any part of the workflow (user input, chains, model output, etc), and respond accordingly by implementing guardrails or other preventative measures.
+
+**Explainability:** To highlight which parts of the text were detected as PII, click on the 👁️ icon next to the PII metric value. The type of PII detected along with the model's confidence will be shown on the input or output text.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FyNSp4763e8IvYiVdgayX%252Fimage.png%3Falt%3Dmedia%26token%3Df08481df-59fd-4481-8525-73f4eead2b21&width=768&dpr=4&quality=100&sign=db71c493&sv=1)
+
+[PreviousContext Relevance](/galileo/gen-ai-studio-products/guardrail-store/context-relevance)[NextToxicity](/galileo/gen-ai-studio-products/guardrail-store/toxicity)
+
+Last updated 29 days ago

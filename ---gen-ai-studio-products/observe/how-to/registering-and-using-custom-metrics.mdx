@@ -1,0 +1,460 @@
+---
+title: "Registering And Using Custom Metrics"
+---
+
+# Registering and Using Custom Metrics
+
+Registered Metrics enable the ability for your team to define the custom metrics (programmatic or GPT-based) for your Observe projects.
+
+#### 
+
+[](#creating-your-registered-scorer)
+
+Creating Your Registered Scorer
+
+To define a registered scorer, create a Python file that has the following functions and follow the function signatures as described below:
+
+1.  <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer_fn</code>: The scorer function is provided the row-wise inputs and is expected to generate outputs for each response. The expected signature for this function is:
+    
+    Copy```
+    def scorer_fn(*, index: Union[int, str], response: str, **kwargs: Any) -> Union[float, int, bool, str, None]:
+    
+    def scorer_fn(*, index: Union[int, str], response: str, **kwargs: Any) -> Union[float, int, bool, str, None]:
+    
+    def
+     
+    scorer_fn
+    (
+    *
+    , 
+    index
+    :
+     Union
+    [
+    int
+    ,
+     
+    str
+    ],
+     
+    response
+    :
+     
+    str
+    ,
+     
+    **
+    kwargs
+    :
+     Any) 
+    ->
+     Union
+    [
+    float
+    ,
+     
+    int
+    ,
+     
+    bool
+    ,
+     
+    str
+    ,
+     
+    None
+    ]
+    :
+        ...
+        ...
+        ...
+    ```
+    
+    We support output of a floating points, integers, boolean values, and strings. Your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer_fn</code> must accept <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">**kwargs</code> as the last parameter so that your registered scorer is forward-compatible.
+    
+2.  <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator_fn</code>: The aggregator function takes in an array of the row-wise outputs from your scorer and allows you to generate aggregates from those. The expected signature for the aggregator function is:
+    
+    Copy```
+    def aggregator_fn(*, scores: List[Union[float, int, bool, str, None]]) -> Dict[str, Union[float, int, bool, str, None]]:
+    
+    def aggregator_fn(*, scores: List[Union[float, int, bool, str, None]]) -> Dict[str, Union[float, int, bool, str, None]]:
+    
+        ...
+        ...
+        ...
+    ```
+    
+    For aggregated values that you want to output from your scorer, return them as key-value pairs with the key corresponding to the label and the value.
+    
+3.  (Optional, but recommended) <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">score_type</code>: The scorer_type function is used to define the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Type</code> of the score that your scorer generates. The expected signature for this function is:
+    
+    Copy```
+    def score_type() -> Type[float] | Type[int] | Type[str] | Type[bool]:
+    
+    def score_type() -> Type[float] | Type[int] | Type[str] | Type[bool]:
+    
+    def
+     
+    score_type
+    () 
+    ->
+     Type
+    [
+    float
+    ]
+     
+    |
+     Type
+    [
+    int
+    ]
+     
+    |
+     Type
+    [
+    str
+    ]
+     
+    |
+     Type
+    [
+    bool
+    ]
+    :
+        ...
+        ...
+        ...
+    ```
+    
+    Note that the return type is a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Type</code> object like <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code>, not the actual type itself. Defining this function is necessary for sorting and filtering by scores to work correctly. If you don't define this function, the scorer is assumed to generate <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">float</code> scores by default.
+    
+4.  (Optional) <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scoreable_node_types_fn</code>: If you want to restrict your scorer to only run on specific node types, you can define this function which returns a list of node types that your scorer should run on. The expected signature for this function is:
+    
+    Copy```
+    def scoreable_node_types_fn() -> List[str]:
+    
+    def scoreable_node_types_fn() -> List[str]:
+    
+    def
+     
+    scoreable_node_types_fn
+    () 
+    ->
+     List
+    [
+    str
+    ]
+    :
+        ...
+        ...
+        ...
+    ```
+    
+    If you don't define this function, your scorer will run on <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">llm</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">chat</code> nodes by default.
+    
+
+#### 
+
+[](#registering-your-scorer)
+
+Registering Your Scorer
+
+Once you've created your scorer file, you can register it with the name and the scorer file with our <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://pypi.org/project/promptquality/">Python package <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code></a>:
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+
+
+
+
+pq.login({YOUR_GALILEO_URL})
+
+pq.login({YOUR_GALILEO_URL})
+
+pq
+.
+login
+({YOUR_GALILEO_URL})
+registered_scorer = pq.register_scorer(scorer_name="My Scorer", scorer_file="/path/to/scorer/file.py")
+registered_scorer = pq.register_scorer(scorer_name="My Scorer", scorer_file="/path/to/scorer/file.py")
+registered_scorer 
+=
+ pq
+.
+register_scorer
+(scorer_name
+=
+"My Scorer"
+, scorer_file
+=
+"/path/to/scorer/file.py"
+)
+```
+
+#### 
+
+[](#execution-environment)
+
+Execution Environment
+
+Your scorer will be executed in a Python 3.10 environment. The Python libraries available for your use are:
+
+Copy```
+numpy~=1.26.4
+
+numpy~=1.26.4
+
+pandas~=2.2.2
+
+pandas~=2.2.2
+
+pydantic~=2.7.1
+
+pydantic~=2.7.1
+
+scikit-learn~=1.4.2
+
+scikit-learn~=1.4.2
+
+tensorflow~=2.16.1
+tensorflow~=2.16.1
+```
+
+Please note that we regularly update the minor and patch versions of these packages. Major version updates are infrequent but if a library is critical to your scorer, please let us know and we'll provide 1+ week of warning before updating the _major_ versions for those.
+
+The name you choose here will be the name with which the values for this scorer appear in the UI later.
+
+#### 
+
+[](#using-your-registered-scorer)
+
+Using Your Registered Scorer
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fy8LYKGwlgDJ20TUP8YYC%252Fimage.png%3Falt%3Dmedia%26token%3D89134c51-7bd3-4cd7-84cb-d4b8ce95f7f6&width=768&dpr=4&quality=100&sign=174bf4&sv=1)
+
+All your Registered Scorers will be shown under the _Custom Metrics_ section of your _Project Settings_. The On/Off switch turns them on and off.
+
+When your metrics are on, your registered scorer will be executed on new samples that get logged to Galileo Observe (Note: scorers don't run retroactively, so past samples will not be scored). For each added Scorer, you'll see a new column in your _Data_ view.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FF0tV4C3qUX0d8fl3eS3Z%252Fimage.png%3Falt%3Dmedia%26token%3D2d41479b-9329-49c0-8ae7-c4d2ea6bae4c&width=768&dpr=4&quality=100&sign=e68e3373&sv=1)
+
+#### 
+
+[](#example)
+
+Example
+
+For the same example scorer that we created using Custom Scorer for response lengths, here's its Registered Scorer equivalent.
+
+1.  Create a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">scorer.py</code> file:
+    
+
+Copy```
+from typing import List, Dict, Type
+
+from typing import List, Dict, Type
+
+from
+ typing 
+import
+ List
+,
+ Dict
+,
+ Type
+
+
+
+
+
+
+
+
+def scorer_fn(*, response: str, **kwargs) -> int:
+
+def scorer_fn(*, response: str, **kwargs) -> int:
+
+def
+ 
+scorer_fn
+(
+*
+, 
+response
+:
+ 
+str
+,
+ 
+**
+kwargs
+) 
+->
+ 
+int
+:
+    return len(response)
+
+    return len(response)
+
+    
+return
+ 
+len
+(response)
+
+
+
+
+
+
+
+
+def aggregator_fn(*, scores: List[str]) -> Dict[str, int]:
+
+def aggregator_fn(*, scores: List[str]) -> Dict[str, int]:
+
+def
+ 
+aggregator_fn
+(
+*
+, 
+scores
+:
+ List
+[
+str
+]
+) 
+->
+ Dict
+[
+str
+,
+ 
+int
+]
+:
+    return {
+
+    return {
+
+    
+return
+ 
+{
+        "Total Response Length": sum(scores),
+
+        "Total Response Length": sum(scores),
+
+        
+"Total Response Length"
+:
+ 
+sum
+(scores),
+        "Average Response Length": sum(scores) / len(scores),
+
+        "Average Response Length": sum(scores) / len(scores),
+
+        
+"Average Response Length"
+:
+ 
+sum
+(scores)
+ 
+/
+ 
+len
+(scores),
+    }
+
+    }
+
+    
+}
+    
+
+    
+
+    
+def score_type() -> Type:
+
+def score_type() -> Type:
+
+def
+ 
+score_type
+() 
+->
+ Type:
+    return int
+
+    return int
+
+    
+return
+ 
+int
+
+
+
+
+def scoreable_node_types_fn() -> List[str]:
+
+def scoreable_node_types_fn() -> List[str]:
+
+def
+ 
+scoreable_node_types_fn
+() 
+->
+ List
+[
+str
+]
+:
+    return ["llm", "chat"]
+
+    return ["llm", "chat"]
+
+    
+return
+ [
+"llm"
+,
+ 
+"chat"
+]
+
+
+```
+
+1.  Register the scorer:
+    
+    Copy```
+    pq.register_scorer("response_length", "scorer.py")
+    pq.register_scorer("response_length", "scorer.py")
+    pq
+    .
+    register_scorer
+    (
+    "response_length"
+    , 
+    "scorer.py"
+    )
+    ```
+    
+
+[PreviousChoosing your Guardrail Metrics](/galileo/gen-ai-studio-products/galileo-observe/how-to/choosing-your-guardrail-metrics)[NextSetting Up Alerts](/galileo/gen-ai-studio-products/galileo-observe/how-to/setting-up-alerts)
+
+Last updated 2 months ago

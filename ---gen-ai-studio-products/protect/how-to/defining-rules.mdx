@@ -1,0 +1,863 @@
+---
+title: "Defining Rules"
+---
+
+# Defining Rules
+
+A condition or rule you never want your application to break. It's composed of three ingredients:
+
+*   A metric
+    
+*   An operator
+    
+*   A target value
+    
+
+Your Rules should evaluate to False for the base case, and to True for unwanted scenarios.
+
+In the example above, the "_input/output shall never contain PII_" is encoded into a Rule like below:
+
+Copy```
+                    {
+
+                    {
+
+                        "metric": "pii",
+
+                        "metric": "pii",
+
+                        "operator": "contains",
+
+                        "operator": "contains",
+
+                        "target_value": "ssn",
+
+                        "target_value": "ssn",
+
+                    },
+                    },
+```
+
+Or:
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.pii,
+
+    metric=gp.RuleMetrics.pii,
+
+    metric
+=
+gp.RuleMetrics.pii,
+    operator=gp.RuleOperator.contains,
+
+    operator=gp.RuleOperator.contains,
+
+    operator
+=
+gp.RuleOperator.contains,
+    target_value="ssn"
+
+    target_value="ssn"
+
+    target_value
+=
+"ssn"
+)
+)
+)
+```
+
+### 
+
+[](#metrics-and-operators-supported)
+
+Metrics and Operators supported
+
+We support several metrics within Protect rules. Because each metric can have different output values (e.g. float metrics, categorical, etc.), the Operators and Target values differ by metric. Below is a list of all supported metric and their available configurations:
+
+*   [Prompt Injection](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#prompt-injection)
+    
+*   [Context Adherence](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#context-adherence)
+    
+*   [PII](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#pii)
+    
+*   [Tone](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#tone)
+    
+*   [Toxicity](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#toxicity)
+    
+*   [Sexism](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#sexism)
+    
+*   [Registered Scorers](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators#registered-scorers)
+    
+
+## 
+
+[](#prompt-injection)
+
+Prompt Injection
+
+Used to detect and stop prompt injections in the input.
+
+**Metric Constants:**
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.prompt_injection</code>
+    
+
+<strong class="font-bold">Payload Field:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code>
+
+**Potential Categories:**
+
+*   impersonation
+    
+*   obfuscation
+    
+*   simple\_instruction
+    
+*   few\_shot
+    
+*   new\_context
+    
+
+**Operators and Target Value Supported:**
+
+| Operator | Target Value |
+| --- | --- |
+| 
+Any (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.any</code>)
+
+
+
+
+
+ | 
+
+A list of categories (e.g. \["obfuscation", "impersonation"\])
+
+
+
+
+
+ |
+| 
+
+All (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.all</code>)
+
+
+
+
+
+ | 
+
+A list of categories (e.g. \["obfuscation", "impersonation"\])
+
+
+
+
+
+ |
+| 
+
+Contains (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.contains</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "impersonation")
+
+
+
+
+
+ |
+| 
+
+Equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.eq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "impersonation")
+
+
+
+
+
+ |
+| 
+
+Not equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.neq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "impersonation")
+
+
+
+
+
+ |
+| 
+
+Empty (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.empty</code>)
+
+
+
+
+
+ | 
+
+\-
+
+
+
+
+
+ |
+| 
+
+Not Empty (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.not_empty</code>)
+
+
+
+
+
+ | 
+
+\-
+
+
+
+
+
+ |
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.prompt_injection,
+
+    metric=gp.RuleMetrics.prompt_injection,
+
+    metric
+=
+gp.RuleMetrics.prompt_injection,
+    operator=gp.RuleOperator.any,
+
+    operator=gp.RuleOperator.any,
+
+    operator
+=
+gp.RuleOperator.any,
+    target_value=["impersonation", "obfuscation"]
+
+    target_value=["impersonation", "obfuscation"]
+
+    target_value
+=
+[
+"impersonation"
+, 
+"obfuscation"
+]
+)
+)
+)
+```
+
+## 
+
+[](#pii-personal-identifiable-information)
+
+PII (Personal Identifiable Information)
+
+Used to detect and stop Personal Identifiable Information (PII). When applied on the input, it can be used to stop the user or company PII from being included in API calls to external services. When applied on the output, it can be used to prevent data leakage or PII being shown back to the user.
+
+**Metric Constants:**
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.pii</code>for output PII
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.input_pii</code> for input PII
+    
+
+<strong class="font-bold">Payload Field:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> (for input PII) or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code> (for output PII)
+
+**Potential Categories:**
+
+*   address
+    
+*   date
+    
+*   email
+    
+*   financial\_info
+    
+*   name
+    
+*   phone\_number
+    
+*   ssn
+    
+*   username\_password
+    
+
+**Operators and Target Value Supported:**
+
+| Operator | Target Value |
+| --- | --- |
+| 
+Any (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.any</code>)
+
+
+
+
+
+ | 
+
+A list of categories (e.g. \["ssn", "address"\])
+
+
+
+
+
+ |
+| 
+
+All (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.all</code>)
+
+
+
+
+
+ | 
+
+A list of categories (e.g. \["ssn", "address"\])
+
+
+
+
+
+ |
+| 
+
+Contains (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.contains</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "ssn")
+
+
+
+
+
+ |
+| 
+
+Equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.eq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "ssn")
+
+
+
+
+
+ |
+| 
+
+Not equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.neq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "ssn")
+
+
+
+
+
+ |
+| 
+
+Empty (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.empty</code>)
+
+
+
+
+
+ | 
+
+\-
+
+
+
+
+
+ |
+| 
+
+Not Empty (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.not_empty</code>)
+
+
+
+
+
+ | 
+
+\-
+
+
+
+
+
+ |
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.pii,
+
+    metric=gp.RuleMetrics.pii,
+
+    metric
+=
+gp.RuleMetrics.pii,
+    operator=gp.RuleOperator.any,
+
+    operator=gp.RuleOperator.any,
+
+    operator
+=
+gp.RuleOperator.any,
+    target_value=["ssn", "address"]
+
+    target_value=["ssn", "address"]
+
+    target_value
+=
+[
+"ssn"
+, 
+"address"
+]
+)
+)
+)
+```
+
+## 
+
+[](#context-adherence)
+
+Context Adherence
+
+Measures whether your model's response was purely based on the context provided. It can be used to stop hallucinations from reaching your end users. Powered by [Context Adherence Luna](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/context-adherence-basic).
+
+<strong class="font-bold">Metric Constant:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.context_adherence_luna</code>
+
+<strong class="font-bold">Payload Field:</strong> Both <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code> must be included in the payload
+
+**Potential Values:** 0.00 to 1.00.
+
+Generally, we see 0.1 as a good threshold below which we're confident the response is not adhering to the context.
+
+**Operators Supported:**
+
+*   Greater than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gt</code>)
+    
+*   Less than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lt</code>)
+    
+*   Greater than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gte</code>)
+    
+*   Less than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lte</code>)
+    
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.context_adherence_luna,
+
+    metric=gp.RuleMetrics.context_adherence_luna,
+
+    metric
+=
+gp.RuleMetrics.context_adherence_luna,
+    operator=gp.RuleOperator.lt,
+
+    operator=gp.RuleOperator.lt,
+
+    operator
+=
+gp.RuleOperator.lt,
+    target_value=0.90
+
+    target_value=0.90
+
+    target_value
+=
+0.90
+)
+)
+)
+```
+
+## 
+
+[](#toxicity)
+
+Toxicity
+
+Used to detect and stop toxic or foul language in the input (user query) or output (response shown to the user).
+
+**Metric Constants:**
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.toxicity</code>for output Toxicity
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.input_toxicity</code> for input Toxicity
+    
+
+<strong class="font-bold">Payload Field:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code>
+
+**Potential Values:** 0.00 to 1.00 (higher values indicate higher toxicity)
+
+**Operators Supported:**
+
+*   Greater than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gt</code>)
+    
+*   Less than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lt</code>)
+    
+*   Greater than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gte</code>)
+    
+*   Less than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lte</code>)
+    
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.toxicity,
+
+    metric=gp.RuleMetrics.toxicity,
+
+    metric
+=
+gp.RuleMetrics.toxicity,
+    operator=gp.RuleOperator.gt,
+
+    operator=gp.RuleOperator.gt,
+
+    operator
+=
+gp.RuleOperator.gt,
+    target_value=0.95
+
+    target_value=0.95
+
+    target_value
+=
+0.95
+)
+)
+)
+```
+
+## 
+
+[](#sexism)
+
+Sexism
+
+Detect sexist or biased language. When applied on the input, it can be used to detect sexist remarks in user queries. When applied on the output, it can be used to prevent your application from using an making biased or sexist comments in its responses.
+
+**Metric Constants:**
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.sexist</code>for output Sexism
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.input_sexist</code> for input Sexism
+    
+
+<strong class="font-bold">Payload Field:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code>
+
+**Potential Values:** 0.00 to 1.00 (higher values indicate higher toxicity)
+
+**Operators Supported:**
+
+*   Greater than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gt</code>)
+    
+*   Less than (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lt</code>)
+    
+*   Greater than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.gte</code>)
+    
+*   Less than or equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.lte</code>)
+    
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.sexist,
+
+    metric=gp.RuleMetrics.sexist,
+
+    metric
+=
+gp.RuleMetrics.sexist,
+    operator=gp.RuleOperator.gt,
+
+    operator=gp.RuleOperator.gt,
+
+    operator
+=
+gp.RuleOperator.gt,
+    target_value=0.95
+
+    target_value=0.95
+
+    target_value
+=
+0.95
+)
+)
+)
+```
+
+## 
+
+[](#tone)
+
+Tone
+
+Primary tone detected from the text. When applied on the input, it can be used to detect negative tones in user queries. When applied on the output, it can be used to prevent your application from using an undesired tone in its responses.
+
+**Metric Constants:**
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.tone</code>for output Tone
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleMetrics.input_tone</code> for input Tone
+    
+
+<strong class="font-bold">Payload Field:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">input</code> (for input Tone) or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">output</code> (for output Tone)
+
+**Potential Categories:**
+
+*   anger
+    
+*   annoyance
+    
+*   confusion
+    
+*   fear
+    
+*   joy
+    
+*   love
+    
+*   sadness
+    
+*   surprise
+    
+*   neutral
+    
+
+**Operators and Target Value Supported:**
+
+| Operator | Target Value |
+| --- | --- |
+| 
+Equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.eq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "anger")
+
+
+
+
+
+ |
+| 
+
+Not equal (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gp.RuleOperator.neq</code>)
+
+
+
+
+
+ | 
+
+A single category (e.g. "neutral")
+
+
+
+
+
+ |
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.tone,
+
+    metric=gp.RuleMetrics.tone,
+
+    metric
+=
+gp.RuleMetrics.tone,
+    operator=gp.RuleOperator.neq,
+
+    operator=gp.RuleOperator.neq,
+
+    operator
+=
+gp.RuleOperator.neq,
+    target_value="neutral"
+
+    target_value="neutral"
+
+    target_value
+=
+"neutral"
+)
+)
+)
+```
+
+## 
+
+[](#registered-scorers)
+
+Registered Scorers
+
+If you have a [registered scorer](https://docs.rungalileo.io/galileo/gen-ai-studio-products/galileo-evaluate/how-to/registering-and-using-custom-metrics#registered-scorers), it can also be used in your Galileo Protect rulesets.
+
+**Example:**
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=<registered-metric-name>,
+
+    metric=<registered-metric-name>,
+
+    metric
+=<
+registered
+-
+metric
+-
+name
+>
+,
+    operator=<operator>,
+
+    operator=<operator>,
+
+    operator
+=<
+operator
+>
+,
+    target_value=<target>,
+
+    target_value=<target>,
+
+    target_value
+=<
+target
+>
+,
+)
+)
+)
+```
+
+The operators and target values here should match the type of data that the registered scorer is expected to produce.
+
+[PreviousInvoking Rulesets](/galileo/gen-ai-studio-products/galileo-protect/how-to/invoking-rulesets)[NextSetting a Timeout on your Protect Requests](/galileo/gen-ai-studio-products/galileo-protect/how-to/setting-a-timeout-on-your-protect-requests)
+
+Last updated 17 days ago

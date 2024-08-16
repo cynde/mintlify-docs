@@ -1,0 +1,538 @@
+---
+title: "Log Pre Generated Responses In Python"
+---
+
+# Log Pre-generated Responses in Python
+
+If you already have a dataset of requests and application responses, and you want to log and evaluate these on Galileo without re-generating the responses, you can do so via our custom loggers.
+
+First, log in via pq.login()
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+pq.login({YOUR_GALILEO_URL})
+pq.login({YOUR_GALILEO_URL})
+pq
+.
+login
+({YOUR_GALILEO_URL})
+```
+
+Then, for each request/response in your eval set, construct a [node row](https://promptquality.docs.rungalileo.io/#promptquality.NodeRow):
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+
+
+
+
+
+
+
+
+# Your previously generated requests & responses
+
+# Your previously generated requests & responses
+
+# Your previously generated requests & responses
+data = [{'request': 'Say hi', 'response': 'Hi!'},
+
+data = [{'request': 'Say hi', 'response': 'Hi!'},
+
+data 
+=
+ [
+{
+'request'
+:
+ 
+'Say hi'
+,
+ 
+'response'
+:
+ 
+'Hi!'
+},
+        {'request': 'Say hey', 'response': 'Hey!'}]
+
+        {'request': 'Say hey', 'response': 'Hey!'}]
+
+        
+{
+'request'
+:
+ 
+'Say hey'
+,
+ 
+'response'
+:
+ 
+'Hey!'
+}
+]
+
+
+
+
+rows = []
+
+rows = []
+
+rows 
+=
+ []
+
+
+
+
+for d in data:
+
+for d in data:
+
+for
+ d 
+in
+ data
+:
+    rows.append(
+
+    rows.append(
+
+    rows
+.
+append
+(
+        NodeRow.for_llm(
+
+        NodeRow.for_llm(
+
+        NodeRow.
+for_llm
+(
+            step=0,
+
+            step=0,
+
+            step
+=
+0
+,
+            prompt=d['request'],
+
+            prompt=d['request'],
+
+            prompt
+=
+d[
+'request'
+],
+            response=d['response'],
+
+            response=d['response'],
+
+            response
+=
+d[
+'response'
+],
+            target='Hi!' #expected output optional to enable Bleu and Rouge scores
+
+            target='Hi!' #expected output optional to enable Bleu and Rouge scores
+
+            target
+=
+'Hi!'
+ 
+#expected output optional to enable Bleu and Rouge scores
+        )
+
+        )
+
+        )
+    )
+
+    )
+
+    )
+
+
+```
+
+Finally, log your NodeRows to Galileo and specify the list of metrics you'd like to compute for this run:
+
+Copy```
+pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
+pq.chain_run(rows, project_name=<project-name>, scorers=[<list-of-scorers>])
+pq
+.
+chain_run
+(rows, project_name
+=<
+project
+-
+name
+>
+, scorers
+=
+[
+<
+list
+-
+of
+-
+scorers
+>
+])
+```
+
+Once complete, this step will display the link to access the run from your Galileo Console.
+
+See below if you're logging a RAG workflow.
+
+### 
+
+[](#what-is-a-noderow)
+
+What is a **NodeRow**?
+
+A NodeRow is an object representation of one step in your workflow. For example, in an Agent or RAG system:
+
+*   Your retriever step would be represented by a NodeRow with the inputs that went into it and the output (chunks) that came out of it.
+    
+*   Your LLM step(s) would be represented by NodeRows with the prompt into the model as the input and the response from the model as the output.
+    
+*   An Agent or Chain node would be represented by a NodeRow, with the output of its children nodes being its output.
+    
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2Flh7-us.googleusercontent.com%2Fslidesz%2FAGV_vUf_3RnQfE47NxmpGy6E4jVFezy_4Q5o01wX_4-0L8hZqJMyD5ygrWsXuVAgA2xNB6cvWMsVbdkDn9ekAJNasU6xYqnpqxQaBbkjvC4DOfBuwr0GiJlfLndq4I5aURio2jpCdRAn1qTxy5eHaaceBKbEc9XQ86Hl%3Ds2048%3Fkey%3DUXHJOKTJP_yWr-k5B669SQ&width=768&dpr=4&quality=100&sign=41a73677&sv=1)
+
+To recreate a simple RAG system like the one above, you'd log the following Nodes:
+
+1.  A NodeRow for your "Workflow" step. Because this node is the "root" of your tree, this node's ID will be the "chain\_root\_id" of every node in the tree.
+    
+2.  A NodeRow for your "VectorStoreRetriver" step. because the "Workflow" node is its parent, this node's chain\_id will be the ID of the "Workflow" node.
+    
+3.  A NodeRow for the "CustomLLM" step. Again, because the "Workflow" node is its parent, this node's chain\_id will be the ID of the "Workflow" node.
+    
+
+### 
+
+[](#rag-workflows)
+
+RAG workflows
+
+To log and recreate a RAG workflow, log your retriever steps, and your LLM steps separately. This will enable Galileo to compute RAG metrics and inspect the documents or chunks returned. <strong class="font-bold">Importantly, also add both of these nodes as children of a</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">'chain'</code> <strong class="font-bold">NodeRow.</strong>
+
+Copy```
+from promptquality import NodeType, NodeRow
+
+from promptquality import NodeType, NodeRow
+
+from
+ promptquality 
+import
+ NodeType
+,
+ NodeRow
+import uuid
+
+import uuid
+
+import
+ uuid
+
+
+
+
+rows = []
+
+rows = []
+
+rows 
+=
+ []
+
+
+
+
+CHAIN_ROOT_ID = uuid.uuid4(), # Randomly generated UUID
+
+CHAIN_ROOT_ID = uuid.uuid4(), # Randomly generated UUID
+
+CHAIN_ROOT_ID 
+=
+ uuid
+.
+uuid4
+(),
+ 
+# Randomly generated UUID
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow(
+
+    NodeRow(
+
+    
+NodeRow
+(
+        node_id=CHAIN_ROOT_ID,
+
+        node_id=CHAIN_ROOT_ID,
+
+        node_id
+=
+CHAIN_ROOT_ID,
+        chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        chain_root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        chain_root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+        step = 0, #an integer indicating which step this node is
+
+        step = 0, #an integer indicating which step this node is
+
+        step 
+=
+ 
+0
+, 
+#an integer indicating which step this node is
+        node_input=..., # input into your overall sequence or chain
+
+        node_input=..., # input into your overall sequence or chain
+
+        node_input
+=
+..., 
+# input into your overall sequence or chain
+        node_output=..., # output of your overall sequence or chain
+
+        node_output=..., # output of your overall sequence or chain
+
+        node_output
+=
+..., 
+# output of your overall sequence or chain
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+        node_type=NodeType.chain # Can be chain, retriever, llm, chat, agent, tool
+
+        node_type=NodeType.chain # Can be chain, retriever, llm, chat, agent, tool
+
+        node_type
+=
+NodeType.chain 
+# Can be chain, retriever, llm, chat, agent, tool
+    )
+
+    )
+
+    )
+)
+
+)
+
+)
+
+
+
+
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow.for_retriever(
+
+    NodeRow.for_retriever(
+
+    NodeRow.
+for_retriever
+(
+        id=uuid.uuid4(), # Randomly generated UUID
+
+        id=uuid.uuid4(), # Randomly generated UUID
+
+        id
+=
+uuid.
+uuid4
+(), 
+# Randomly generated UUID
+        root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+        step = 1, #an integer indicating which step this node is
+
+        step = 1, #an integer indicating which step this node is
+
+        step 
+=
+ 
+1
+, 
+#an integer indicating which step this node is
+        query=..., # input into your retriever
+
+        query=..., # input into your retriever
+
+        query
+=
+..., 
+# input into your retriever
+        documents=..., # serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...]))
+
+        documents=..., # serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...]))
+
+        # If no metadata exists for the documents, you can pass them as strings in a list.
+
+        # If no metadata exists for the documents, you can pass them as strings in a list.
+
+        
+# If no metadata exists for the documents, you can pass them as strings in a list.
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+    )
+
+    )
+
+    )
+)
+
+)
+
+)
+
+
+
+
+rows.append(
+
+rows.append(
+
+rows
+.
+append
+(
+    NodeRow.for_llm(
+
+    NodeRow.for_llm(
+
+    NodeRow.
+for_llm
+(
+        id=uuid.uuid4(), # Randomly generated UUUID
+
+        id=uuid.uuid4(), # Randomly generated UUUID
+
+        id
+=
+uuid.
+uuid4
+(), 
+# Randomly generated UUUID
+        root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        root_id=CHAIN_ROOT_ID, # UUID of the 'parent' node
+
+        root_id
+=
+CHAIN_ROOT_ID, 
+# UUID of the 'parent' node
+        step = 2, #an integer indicating which step this node is
+
+        step = 2, #an integer indicating which step this node is
+
+        step 
+=
+ 
+2
+, 
+#an integer indicating which step this node is
+        prompt = ..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+        prompt = ..., # input into your llm (i.e. user query + relevant contexts passed in as a string)
+
+        prompt 
+=
+ ..., 
+# input into your llm (i.e. user query + relevant contexts passed in as a string)
+        response = ..., # output of the llm passed in as a string
+
+        response = ..., # output of the llm passed in as a string
+
+        response 
+=
+ ..., 
+# output of the llm passed in as a string
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency=..., # latency of this step/node. in nanoseconds
+
+        latency
+=
+..., 
+# latency of this step/node. in nanoseconds
+    )
+
+    )
+
+    )
+)
+)
+)
+```
+
+We recommend that you randomly generate _node\_id_ and _chain\_root\_id_ (e.g. uuid()). Add the _id_ of the 'parent' node as the _chain\_root\_id_ of its children.
+
+[PreviousAdd Tags and Metadata to Prompt Runs](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/adding-tags-to-prompt-runs)[NextLog Evaluate Runs via REST APIs](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/log-evaluate-runs-via-rest-apis)
+
+Last updated 6 days ago

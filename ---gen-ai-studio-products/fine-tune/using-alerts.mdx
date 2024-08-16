@@ -1,0 +1,37 @@
+---
+title: "Using Alerts"
+---
+
+# Using Alerts
+
+Galileo Alerts are your starting point in your data inspection journey. After you complete a run, Galileo surfaces a summary of issues it has found in your dataset in the Alerts section. Each Alert represents a problematic pocket of data that Galileo has identified.
+
+Clicking on an alert will filter the dataset to this problematic subset of data and allows you to fix them.
+
+Alerts will also educate you on why this subset of your data might be causing issues and tell you how you can fix them. You can think of Alerts as a partner Data Scientist working with you to find and fix your data.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fxtib0NCi6FxO7vfq1KTI%252Fimage.png%3Falt%3Dmedia%26token%3D914fbf59-9743-4164-a8a1-0edc6d69657d&width=768&dpr=4&quality=100&sign=3804e73f&sv=1)
+
+## 
+
+[](#alerts-that-we-support-today)
+
+Alerts that we support today
+
+We support a growing list of alerts, and are open to feature requests! Some of the highlights include:
+
+<table class="w-full grid-area-1-1 table-auto"><tbody class="[&amp;&gt;*+*]:border-t"><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Hard for the model</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Exposes the samples we believe are hard for your model to learn. These are the samples with high Data Error Potential scores.</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Hard for the model cluster</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Exposes clusters of data that have a high Data Error Potential.</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">High Uncertainty Outputs</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Surfaces samples that have High Uncertainty on the generated output (only available if <i class="font-italic">generations</i> were created for this split).</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">High Perplexity Samples</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Identifies samples whose predictions have high Perplexity.</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Empty Samples</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Identifies samples that have empty <i class="font-italic">Input, </i>empty <i class="font-italic">Target</i> or empty <i class="font-italic">Generations</i>.</p></div></div></td></tr><tr class="[&amp;&gt;*+*]:border-l [&amp;&gt;*+*]:pl-4 border-dark/3 dark:border-light/2"><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Low Performing Cluster</p></div></div></td><td class="align-middle min-w-[8rem] border-dark/2 py-3 text-sm lg:text-base dark:border-light/2"><div class="pr-4 text-balance"><div class="w-full space-y-2 lg:space-y-3 leading-normal"><p class="mx-auto decoration-primary/6 w-full max-w-[unset]">Exposes clusters that have poor BLEU or ROUGE scores (only available if <i class="font-italic">generations</i> were created for this split).</p></div></div></td></tr></tbody></table>
+
+## 
+
+[](#how-to-request-a-new-alert)
+
+How to request a new alert?
+
+Have a great idea for a new alert? We'd love to hear about it! File any requests under your _Profile Avatar Menu >_ "Bug Report or Feature Request", and we'll immediately get your request 🔭.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fklat5IFGDlVsKUcSggWg%252Fimage%2520%289%29.png%3Falt%3Dmedia%26token%3Dc6b5c64d-d6b1-4365-8e72-7d62ef7ecfc2&width=768&dpr=4&quality=100&sign=7cca8e47&sv=1)
+
+[PreviousConsole Walkthrough](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/uncovering-data-issues)[NextVisualizing and Understanding Your Data](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/visualizing-and-understanding-your-data)
+
+Last updated 10 months ago

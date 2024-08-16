@@ -1,0 +1,95 @@
+---
+title: "Setting Up Alerts"
+---
+
+# Setting Up Alerts
+
+How to set up Alerts and automatically be alerted when things go wrong
+
+Galileo enables you to get alerted whenever unexpected things happen (e.g. your cost is higher than expected, your model is hallucinating more than you want, users are entering foul language into your app).
+
+**Pre-requisites**
+
+Before setting up alerting, make sure you:
+
+*   [Configure your LLM APIs](/galileo/gen-ai-studio-products/galileo-evaluate/integrations/setting-up-your-llms)
+    
+*   [Turn on the Metrics you want to track (Guardrail Metrics or Custom Metrics)](/galileo/gen-ai-studio-products/galileo-observe/how-to/choosing-your-guardrail-metrics)
+    
+
+#### 
+
+[](#set-up)
+
+Set-Up
+
+To set up your alerts, you need to define:
+
+1.  Who should be alerted and how
+    
+2.  What they should be alerted on
+    
+
+Your _Alerting Settings_ will be under your _Project Settings_ page (i.e. the ⚙️ icon near the top-right of your _Monitoring Dashboard)_.
+
+#### 
+
+[](#email-alerts)
+
+Email Alerts
+
+If you want Alerts to be sent via emails, add your recipients' email addresses in the Alerts Recipients section:
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FZV8vfoZBiF1HD6yOH2qj%252Fimage.png%3Falt%3Dmedia%26token%3Dd17cc150-9b96-4ef1-8deb-830bfe251c12&width=768&dpr=4&quality=100&sign=caea795f&sv=1)
+
+#### 
+
+[](#slack-alerts)
+
+Slack Alerts
+
+To get Alerts via Slack, you'll need to configure your workspace to receive slack messages via webhook URLs. You'll first need to follow [Slack's instructions to generate a webhook URL](https://api.slack.com/messaging/webhooks):
+
+1.  [Create a Slack app](https://api.slack.com/apps/new). This application will be used to send your notifications to your Slack workspace.
+    
+2.  Pick a name like "Galileo Alerts" that will help identify where these messages are coming from.
+    
+3.  Enable 'incoming webhooks'.
+    
+4.  Create an 'incoming webhook' and choose the Slack channel you'd like Galileo's Alerts to go to.
+    
+
+Once you've followed the instructions above, grab the webhook URL from your Slack application and paste it into your Galileo Console. We recommend adding the name of the channel that's getting notificed in the "Notes" section:
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FHzyPkUm4VduHlxuxvugC%252Fimage.png%3Falt%3Dmedia%26token%3D061f2c0d-fb5d-431a-af02-b43c95c129f1&width=768&dpr=4&quality=100&sign=f4dad3c4&sv=1)
+
+#### 
+
+[](#configuring-alerts)
+
+Configuring Alerts
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FzeyDqz9Qnb8Az9lZVKkB%252Fimage.png%3Falt%3Dmedia%26token%3De0c6e949-ac1d-4c8d-8436-7eb6f8c452e1&width=768&dpr=4&quality=100&sign=b3d544f1&sv=1)
+
+Each alert is composed of a Metric (e.g. Correctness, Cost, Toxicity), an Aggregation Function (e.g. Min, Max, Average, Total), a threshold (e.g. greater than 0.5), and a time window (e.g. hourly).
+
+**Example Alerts:**
+
+*   Exceeding costs: If you want to get alerted with an uptick in cost (above $10/day, you select <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Sum Value</code> of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Cost</code> is <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">more than or equal to</code> your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">10</code> in the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">last day</code>.
+    
+*   Hallucinations: If you want to get alerted any time you have a hallucination, select <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Min Value</code> of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Correctness</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Context Adherence</code> is <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">equal to</code> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">0</code>.
+    
+*   Hallucination Rate: If you're comfortable with a certain level of hallucinations (e.g. 5%), you can select <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Average value</code> of <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Correctness</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Context Adherence</code> is <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">less than or equal</code> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">0.05</code>.
+    
+
+**Triggering Alerts**
+
+Once your Alerts are configured, we periodically run jobs to check whether your Alerts have been triggered. Once they do, you should receive an email letting you know which alert has triggered and what the value of the alert is.
+
+From your email, you can click on the "Open Project" link to open your dashboard and find the problematic requests.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FZTQMcXhvY2ihpNFPrygp%252Fimage.png%3Falt%3Dmedia%26token%3D78ef5931-ae0f-45c3-98c9-b17738754487&width=768&dpr=4&quality=100&sign=45985c44&sv=1)
+
+[PreviousRegistering and Using Custom Metrics](/galileo/gen-ai-studio-products/galileo-observe/how-to/registering-and-using-custom-metrics)[NextIdentifying and debugging issues](/galileo/gen-ai-studio-products/galileo-observe/how-to/identifying-and-debugging-issues)
+
+Last updated 2 months ago

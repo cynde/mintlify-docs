@@ -1,0 +1,786 @@
+---
+title: "Quickstart"
+---
+
+# Quickstart
+
+How to monitor your apps with Galileo Observe
+
+<iframe src="https://cdn.iframe.ly/lZW5Y21" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+Getting started with Galileo Observe is really easy. It involves 3 steps:
+
+1.  Create a project
+    
+2.  Integrate Galileo in your code
+    
+3.  Choose your Guardrail metrics
+    
+
+### 
+
+[](#create-a-project)
+
+Create a Project
+
+The first step is creating a project from the Galileo UI.
+
+1.  Go to **Galileo Console**
+    
+2.  Click on the big **+** icon on the top left
+    
+3.  Follow the steps to create your Observe project.
+    
+
+## 
+
+[](#integrate-into-your-code)
+
+Integrate into your code
+
+Galileo Observe can integrate via [Langchain callbacks](/galileo/gen-ai-studio-products/galileo-observe/getting-started#langchain), our [Python Logger](/galileo/gen-ai-studio-products/galileo-observe/getting-started#python-logger), or via [RESTFul APIs](/galileo/gen-ai-studio-products/galileo-observe/how-to/logging-data-via-restful-apis).
+
+### 
+
+[](#authentication)
+
+**Authentication**
+
+To authenticate Galileo, perform the following steps
+
+1.  Add your Galileo Console URL (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GALILEO_CONSOLE_URL</code>) to your environment variables.
+    
+
+Copy```
+import os
+
+import os
+
+import
+ os
+
+
+
+
+os.environ['GALILEO_CONSOLE_URL']="https://console.galileo.XYZ.com"
+
+os.environ['GALILEO_CONSOLE_URL']="https://console.galileo.XYZ.com"
+
+os
+.
+environ
+[
+'GALILEO_CONSOLE_URL'
+]
+=
+"https://console.galileo.XYZ.com"
+# Ask your Galileo ADMIN for the URL if you don't know
+# Ask your Galileo ADMIN for the URL if you don't know
+# Ask your Galileo ADMIN for the URL if you don't know
+```
+
+1.  Set your user name and password OR your **API key** (recommended) to your environment variables
+    
+
+Copy```
+import os
+
+import os
+
+import
+ os
+
+
+
+
+os.environ["GALILEO_USERNAME"]="Your Galileo registered email e.g. john@acme.com"
+
+os.environ["GALILEO_USERNAME"]="Your Galileo registered email e.g. john@acme.com"
+
+os
+.
+environ
+[
+"GALILEO_USERNAME"
+]
+=
+"Your Galileo registered email e.g. john@acme.com"
+os.environ["GALILEO_PASSWORD"]="Your Galileo password"
+
+os.environ["GALILEO_PASSWORD"]="Your Galileo password"
+
+os
+.
+environ
+[
+"GALILEO_PASSWORD"
+]
+=
+"Your Galileo password"
+
+
+
+
+# OR
+
+# OR
+
+# OR
+
+
+
+
+os.environ["GALILEO_API_KEY"]="Your Galileo API key"
+os.environ["GALILEO_API_KEY"]="Your Galileo API key"
+os
+.
+environ
+[
+"GALILEO_API_KEY"
+]
+=
+"Your Galileo API key"
+```
+
+We recommend using an API key to authenticate. To create one, go to "API Keys" under your profile bubble.
+
+### 
+
+[](#getting-an-api-key)
+
+Getting an API Key
+
+To create an API key:
+
+1.  Go to your **Galileo Console settings**
+    
+2.  Go to **API Keys**
+    
+3.  Select **Create a new key**
+    
+
+### 
+
+[](#integrating-with-langchain)
+
+Integrating with Langchain
+
+We support integrating into both [Python-based](/galileo/gen-ai-studio-products/galileo-observe/getting-started#python) and [Typescript-based](/galileo/gen-ai-studio-products/galileo-observe/getting-started#typescript) Langchain systems:
+
+PythonTypescript
+
+Integrating into your Python-based Langchain application is the easiest and recommended route. You can just add <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoObserveCallback(project_name="YOUR_PROJECT_NAME")</code> to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">callbacks</code> of your chain invocation.
+
+Copy```
+from galileo_observe import GalileoObserveCallback
+
+from galileo_observe import GalileoObserveCallback
+
+from
+ galileo_observe 
+import
+ GalileoObserveCallback
+from langchain.chat_models import ChatOpenAI
+
+from langchain.chat_models import ChatOpenAI
+
+from
+ langchain
+.
+chat_models 
+import
+ ChatOpenAI
+
+
+
+
+prompt = ChatPromptTemplate.from_template("tell me a joke about {foo}")
+
+prompt = ChatPromptTemplate.from_template("tell me a joke about {foo}")
+
+prompt 
+=
+ ChatPromptTemplate
+.
+from_template
+(
+"tell me a joke about 
+{foo}
+"
+)
+model = ChatOpenAI()
+
+model = ChatOpenAI()
+
+model 
+=
+ 
+ChatOpenAI
+()
+chain = prompt | model
+
+chain = prompt | model
+
+chain 
+=
+ prompt 
+|
+ model
+
+
+
+
+monitor_handler = GalileoObserveCallback(project_name="YOUR_PROJECT_NAME")
+
+monitor_handler = GalileoObserveCallback(project_name="YOUR_PROJECT_NAME")
+
+monitor_handler 
+=
+ 
+GalileoObserveCallback
+(project_name
+=
+"YOUR_PROJECT_NAME"
+)
+chain.invoke({'foo':'bears'}, 
+
+chain.invoke({'foo':'bears'}, 
+
+chain
+.
+invoke
+({
+'foo'
+:
+'bears'
+}, 
+             config(dict(callbacks=[monitor_handler])))
+
+             config(dict(callbacks=[monitor_handler])))
+
+             
+config
+(
+dict
+(callbacks
+=
+[monitor_handler])))
+
+
+
+
+
+
+```
+
+The GalileoObserveCallback logs your input, output, and relevant statistics back to Galileo, where additional evaluation metrics are computed.
+
+Integrating into your Typescript-based Langchain application is a very simple process. You can just add a<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">GalileoObserveCallback</code> object to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">callbacks</code> of your chain invocation.
+
+Copy```
+import { GalileoObserveCallback } from "@rungalileo/observe";
+
+import { GalileoObserveCallback } from "@rungalileo/observe";
+
+import
+ { GalileoObserveCallback } 
+from
+ 
+"@rungalileo/observe"
+;
+const observe_callback = new GalileoObserveCallback("observe_example", "app_v1")
+
+const observe_callback = new GalileoObserveCallback("observe_example", "app_v1")
+
+const
+ 
+observe_callback
+ 
+=
+ 
+new
+ 
+GalileoObserveCallback
+(
+"observe_example"
+,
+ 
+"app_v1"
+)
+await observe_callback.init();
+await observe_callback.init();
+await
+ 
+observe_callback
+.init
+();
+```
+
+Add the callback <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{callbacks: [observe_callback]}</code> in the invoke step of your application:
+
+Copy```
+const result = await chain.invoke(
+
+const result = await chain.invoke(
+
+const
+ 
+result
+ 
+=
+ 
+await
+ 
+chain
+.invoke
+(
+    { question: "What is the powerhouse of the cell?"}, 
+
+    { question: "What is the powerhouse of the cell?"}, 
+
+    { question
+:
+ 
+"What is the powerhouse of the cell?"
+}
+,
+ 
+    {callbacks: [observe_callback]});
+    {callbacks: [observe_callback]});
+    {callbacks
+:
+ [observe_callback]});
+```
+
+The GalileoObserveCallback callback logs your input, output, and relevant statistics back to Galileo, where additional evaluation metrics are computed.
+
+### 
+
+[](#non-langchain-custom-logging-via-python-logger)
+
+**Non-Langchain: Custom Logging via Python Logger**
+
+If you're not using LangChain, you can use our Python Logger to log your data to Galileo. The Logger automatically batches and uploads data in the background asynchronously, ensuring the performance and reliability of your application is not compromised.
+
+Use the **log\_node\_start()** and **log\_node\_completion()** to log your prompt, model, hyperparameters and response respectively, as shown below:
+
+Copy```
+import json
+
+import json
+
+import
+ json
+
+
+
+
+from openai import OpenAI
+
+from openai import OpenAI
+
+from
+ openai 
+import
+ OpenAI
+from galileo_observe import GalileoObserve
+
+from galileo_observe import GalileoObserve
+
+from
+ galileo_observe 
+import
+ GalileoObserve
+from galileo_observe.schema.transaction import TransactionRecordType
+
+from galileo_observe.schema.transaction import TransactionRecordType
+
+from
+ galileo_observe
+.
+schema
+.
+transaction 
+import
+ TransactionRecordType
+
+
+
+
+client = OpenAI()
+
+client = OpenAI()
+
+client 
+=
+ 
+OpenAI
+()
+observe = GalileoObserve(project_name="llm_monitor_test_1", version='manual_app_v1')
+
+observe = GalileoObserve(project_name="llm_monitor_test_1", version='manual_app_v1')
+
+observe 
+=
+ 
+GalileoObserve
+(project_name
+=
+"llm_monitor_test_1"
+, version
+=
+'manual_app_v1'
+)
+
+
+
+
+prompt = "Tell me a joke about Large Language Models"
+
+prompt = "Tell me a joke about Large Language Models"
+
+prompt 
+=
+ 
+"Tell me a joke about Large Language Models"
+model = "gpt-3.5-turbo"
+
+model = "gpt-3.5-turbo"
+
+model 
+=
+ 
+"gpt-3.5-turbo"
+temperature = 0.3
+
+temperature = 0.3
+
+temperature 
+=
+ 
+0.3
+
+
+
+
+# Start a new chain
+
+# Start a new chain
+
+# Start a new chain
+chain_id = observe.log_node_start(
+
+chain_id = observe.log_node_start(
+
+chain_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chain,
+
+    node_type=TransactionRecordType.chain,
+
+    node_type
+=
+TransactionRecordType.chain,
+    input_text=json.dumps({"input": prompt}),
+
+    input_text=json.dumps({"input": prompt}),
+
+    input_text
+=
+json.
+dumps
+({
+"input"
+: prompt}),
+    constructor="CustomChain",
+
+    constructor="CustomChain",
+
+    constructor
+=
+"CustomChain"
+,
+)
+
+)
+
+)
+
+
+
+
+# Start a chat trace
+
+# Start a chat trace
+
+# Start a chat trace
+node_id = observe.log_node_start(
+
+node_id = observe.log_node_start(
+
+node_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chat,
+
+    node_type=TransactionRecordType.chat,
+
+    node_type
+=
+TransactionRecordType.chat,
+    chain_id=chain_id,
+
+    chain_id=chain_id,
+
+    chain_id
+=
+chain_id,
+    input_text=prompt,
+
+    input_text=prompt,
+
+    input_text
+=
+prompt,
+    model=model,
+
+    model=model,
+
+    model
+=
+model,
+    temperature=temperature,
+
+    temperature=temperature,
+
+    temperature
+=
+temperature,
+    constructor="ChatOpenAI",
+
+    constructor="ChatOpenAI",
+
+    constructor
+=
+"ChatOpenAI"
+,
+    user_metadata={"env": "production"},
+
+    user_metadata={"env": "production"},
+
+    user_metadata
+=
+{
+"env"
+: 
+"production"
+},
+    tags=["prod", "chat"],
+
+    tags=["prod", "chat"],
+
+    tags
+=
+[
+"prod"
+, 
+"chat"
+],
+)
+
+)
+
+)
+
+
+
+
+# Initiate the chat call
+
+# Initiate the chat call
+
+# Initiate the chat call
+chat_completion = client.chat.completions.create(
+
+chat_completion = client.chat.completions.create(
+
+chat_completion 
+=
+ client
+.
+chat
+.
+completions
+.
+create
+(
+    model=model,
+
+    model=model,
+
+    model
+=
+model,
+    messages=[{"role": "user", "content": prompt}],
+
+    messages=[{"role": "user", "content": prompt}],
+
+    messages
+=
+[{
+"role"
+: 
+"user"
+, 
+"content"
+: prompt}],
+    temperature=temperature,
+
+    temperature=temperature,
+
+    temperature
+=
+temperature,
+)
+
+)
+
+)
+
+
+
+
+# Log the chat completion
+
+# Log the chat completion
+
+# Log the chat completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=node_id,
+
+    node_id=node_id,
+
+    node_id
+=
+node_id,
+    output_text=chat_completion.choices[0].message.content,
+
+    output_text=chat_completion.choices[0].message.content,
+
+    output_text
+=
+chat_completion.choices[
+0
+].message.content,
+    num_input_tokens=chat_completion.usage.prompt_tokens,
+
+    num_input_tokens=chat_completion.usage.prompt_tokens,
+
+    num_input_tokens
+=
+chat_completion.usage.prompt_tokens,
+    num_output_tokens=chat_completion.usage.completion_tokens,
+
+    num_output_tokens=chat_completion.usage.completion_tokens,
+
+    num_output_tokens
+=
+chat_completion.usage.completion_tokens,
+    num_total_tokens=chat_completion.usage.total_tokens,
+
+    num_total_tokens=chat_completion.usage.total_tokens,
+
+    num_total_tokens
+=
+chat_completion.usage.total_tokens,
+    finish_reason=chat_completion.choices[0].finish_reason,
+
+    finish_reason=chat_completion.choices[0].finish_reason,
+
+    finish_reason
+=
+chat_completion.choices[
+0
+].finish_reason,
+)
+
+)
+
+)
+
+
+
+
+# Log the chain completion
+
+# Log the chain completion
+
+# Log the chain completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=chain_id,
+
+    node_id=chain_id,
+
+    node_id
+=
+chain_id,
+    finish_reason="chain_end",
+
+    finish_reason="chain_end",
+
+    finish_reason
+=
+"chain_end"
+,
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text
+=
+json.
+dumps
+({
+"output"
+: chat_completion.choices[
+0
+].message.content}),
+)
+)
+)
+```
+
+#### 
+
+[](#logging-through-our-rest-apis)
+
+**Logging through our REST APIs**
+
+If you are looking to log directly from the client (e.g. using Javascript), you can log directly through our APIs. The Monitor API endpoints can be found on the swagger docs for your environment. More instructions can be found [here](/galileo/gen-ai-studio-products/galileo-observe/how-to/logging-data-via-restful-apis).
+
+Once you've integrated Galileo into your production app code, you can [choose your Guardrail metrics](https://github.com/rungalileo/docs/blob/main/gen-ai-studio-products/galileo-observe/broken-reference/README.md).
+
+[PreviousObserve](/galileo/gen-ai-studio-products/galileo-observe)[NextHow-To](/galileo/gen-ai-studio-products/galileo-observe/how-to)
+
+Last updated 2 months ago

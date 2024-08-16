@@ -1,0 +1,1057 @@
+---
+title: "Model Monitoring And Data Drift"
+---
+
+# Model Monitoring and Data Drift
+
+Once your model is in production, it is essential to monitor its health:
+
+<iframe src="https://cdn.iframe.ly/GFTbcwg" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+Production data monitoring with Galileo
+
+> _Is there training<>production data drift? What unlabeled data should I select for my next training run? Is the model confidence dropping on an existing class in production? ..._
+
+To answer the above questions and more with Galileo, you will need:
+
+1.  Your unlabeled production data
+    
+2.  Your model
+    
+
+### 
+
+[](#simply-run-an-inference-job-on-production-data-to-view-inspect-and-select-samples-directly-in-the-ga)
+
+⚡️Simply run an inference job on production data to view, inspect and select samples directly in the Galileo UI.
+
+Here is what to expect:
+
+• Get the list of [**drifted data samples**](/galileo/gen-ai-studio-products/ml-research-algorithms/data-drift-detection) **out of the box**
+
+• Get the list of [**on-the-class-boundary**](/galileo/gen-ai-studio-products/ml-research-algorithms/class-boundary-detection) **samples out of the box**
+
+• Quickly **compare model confidence and class distributions** between production and training runs
+
+• Find **similar samples to low-confidence production data** within less than a second
+
+... and a lot more
+
+## 
+
+[](#full-walkthrough-tutorial)
+
+Full Walkthrough Tutorial
+
+Follow our [**example notebook with Pytorch**](https://colab.research.google.com/drive/1t-DL8aGGAWpEOUzBol9CeVDM1CmJibDk) or read the full tutorial below.
+
+[![Logo](https://ssl.gstatic.com/colaboratory-static/common/7a3cffa388d8f658cbf1801b7cbe5352/img/favicon.ico)Google Colaboratory](https://colab.research.google.com/drive/1t-DL8aGGAWpEOUzBol9CeVDM1CmJibDk)
+
+After building and training a model, inference allows us to run that model on unseen data, such as deploying that model in production. In text classification, given an unseen set of documents, the task is to predict (as correctly as possible) the class of that document based on the data seen during training.
+
+Copy```
+input = "Perfectly works fine after 10 years, would highly recommend. Great buy!!"
+
+input = "Perfectly works fine after 10 years, would highly recommend. Great buy!!"
+
+# Unknown output label
+
+# Unknown output label
+
+model.predict(input) --> "positive review"
+model.predict(input) --> "positive review"
+```
+
+### 
+
+[](#logging-the-data-inputs)
+
+Logging the Data Inputs
+
+Log your inference dataset. Galileo will join these samples with the model's outputs and present them in the Console. Note that unlike training, where ground truth labels are present for validation, during inference we assume that no ground truth labels exist.
+
+PyTorch
+
+Copy```
+import torch
+
+import torch
+
+import
+ torch
+import dataquality
+
+import dataquality
+
+import
+ dataquality
+import pandas as pd
+
+import pandas as pd
+
+import
+ pandas 
+as
+ pd
+from transformers import AutoTokenizer
+
+from transformers import AutoTokenizer
+
+from
+ transformers 
+import
+ AutoTokenizer
+
+
+
+
+class InferenceTextDataset(torch.utils.data.Dataset):
+
+class InferenceTextDataset(torch.utils.data.Dataset):
+
+class
+ 
+InferenceTextDataset
+(
+torch
+.
+utils
+.
+data
+.
+Dataset
+):
+    def __init__(
+
+    def __init__(
+
+    
+def
+ 
+__init__
+(
+        self, dataset: pd.DataFrame, inference_name: str
+
+        self, dataset: pd.DataFrame, inference_name: str
+
+        
+self
+,
+ 
+dataset
+:
+ pd
+.
+DataFrame
+,
+ 
+inference_name
+:
+ 
+str
+    ):
+
+    ):
+
+    ):
+        self.dataset = dataset
+
+        self.dataset = dataset
+
+        self
+.
+dataset 
+=
+ dataset
+
+
+
+
+        # 🔭🌕 Galileo logging
+
+        # 🔭🌕 Galileo logging
+
+        
+# 🔭🌕 Galileo logging
+        # Note 1: this works seamlessly because self.dataset has text, label, and
+
+        # Note 1: this works seamlessly because self.dataset has text, label, and
+
+        
+# Note 1: this works seamlessly because self.dataset has text, label, and
+        # id columns. See `help(dq.log_dataset)` for more info
+
+        # id columns. See `help(dq.log_dataset)` for more info
+
+        
+# id columns. See `help(dq.log_dataset)` for more info
+        # Note 2: We can set the inference_name for our run
+
+        # Note 2: We can set the inference_name for our run
+
+        
+# Note 2: We can set the inference_name for our run
+        dq.log_dataset(self.dataset, split="inference", inference_name=inference_name)
+
+        dq.log_dataset(self.dataset, split="inference", inference_name=inference_name)
+
+        dq
+.
+log_dataset
+(self.dataset, split
+=
+"inference"
+, inference_name
+=
+inference_name)
+
+
+
+
+        tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+
+        tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+
+        tokenizer 
+=
+ AutoTokenizer
+.
+from_pretrained
+(
+"distilbert-base-uncased"
+)
+        self.encodings = tokenizer(
+
+        self.encodings = tokenizer(
+
+        self
+.
+encodings 
+=
+ 
+tokenizer
+(
+            self.dataset["text"].tolist(), truncation=True, padding=True
+
+            self.dataset["text"].tolist(), truncation=True, padding=True
+
+            self.dataset[
+"text"
+].
+tolist
+(), truncation
+=
+True
+, padding
+=
+True
+        )
+
+        )
+
+        )
+
+
+
+
+    def __getitem__(self, idx):
+
+    def __getitem__(self, idx):
+
+    
+def
+ 
+__getitem__
+(
+self
+,
+ 
+idx
+):
+        x = torch.tensor(self.encodings["input_ids"][idx])
+
+        x = torch.tensor(self.encodings["input_ids"][idx])
+
+        x 
+=
+ torch
+.
+tensor
+(self.encodings[
+"input_ids"
+][idx])
+        attention_mask = torch.tensor(self.encodings["attention_mask"][idx])
+
+        attention_mask = torch.tensor(self.encodings["attention_mask"][idx])
+
+        attention_mask 
+=
+ torch
+.
+tensor
+(self.encodings[
+"attention_mask"
+][idx])
+
+
+
+
+        return self.dataset["id"][idx], x, attention_mask
+
+        return self.dataset["id"][idx], x, attention_mask
+
+        
+return
+ self
+.
+dataset
+[
+"id"
+]
+[idx]
+,
+ x
+,
+ attention_mask
+
+
+
+
+    def __len__(self):
+
+    def __len__(self):
+
+    
+def
+ 
+__len__
+(
+self
+):
+        return len(self.dataset)
+        return len(self.dataset)
+        
+return
+ 
+len
+(self.dataset)
+```
+
+### 
+
+[](#logging-the-inference-model-outputs)
+
+Logging the Inference Model Outputs
+
+Log model outputs from within your model's forward function.
+
+PyTorch
+
+Copy```
+import torch
+
+import torch
+
+import
+ torch
+import torch.nn.functional as F
+
+import torch.nn.functional as F
+
+import
+ torch
+.
+nn
+.
+functional 
+as
+ F
+from torch.nn import Linear
+
+from torch.nn import Linear
+
+from
+ torch
+.
+nn 
+import
+ Linear
+from transformers import AutoModel
+
+from transformers import AutoModel
+
+from
+ transformers 
+import
+ AutoModel
+
+
+
+
+
+
+
+
+class TextClassificationModel(torch.nn.Module):
+
+class TextClassificationModel(torch.nn.Module):
+
+class
+ 
+TextClassificationModel
+(
+torch
+.
+nn
+.
+Module
+):
+    """Defines a Pytorch text classification bert based model."""
+
+    """Defines a Pytorch text classification bert based model."""
+
+    
+"""Defines a Pytorch text classification bert based model."""
+
+
+
+
+    def __init__(self, num_labels: int):
+
+    def __init__(self, num_labels: int):
+
+    
+def
+ 
+__init__
+(
+self
+,
+ 
+num_labels
+:
+ 
+int
+):
+        super().__init__()
+
+        super().__init__()
+
+        
+super
+().
+__init__
+()
+        self.feature_extractor = AutoModel.from_pretrained("distilbert-base-uncased")
+
+        self.feature_extractor = AutoModel.from_pretrained("distilbert-base-uncased")
+
+        self
+.
+feature_extractor 
+=
+ AutoModel
+.
+from_pretrained
+(
+"distilbert-base-uncased"
+)
+        self.classifier = Linear(self.feature_extractor.config.hidden_size, num_labels)
+
+        self.classifier = Linear(self.feature_extractor.config.hidden_size, num_labels)
+
+        self
+.
+classifier 
+=
+ 
+Linear
+(self.feature_extractor.config.hidden_size, num_labels)
+
+
+
+
+    def forward(self, x, attention_mask, ids):
+
+    def forward(self, x, attention_mask, ids):
+
+    
+def
+ 
+forward
+(
+self
+,
+ 
+x
+,
+ 
+attention_mask
+,
+ 
+ids
+):
+        """Model forward function."""
+
+        """Model forward function."""
+
+        
+"""Model forward function."""
+        encoded_layers = self.feature_extractor(
+
+        encoded_layers = self.feature_extractor(
+
+        encoded_layers 
+=
+ self
+.
+feature_extractor
+(
+            input_ids=x, attention_mask=attention_mask
+
+            input_ids=x, attention_mask=attention_mask
+
+            input_ids
+=
+x, attention_mask
+=
+attention_mask
+        ).last_hidden_state
+
+        ).last_hidden_state
+
+        ).
+last_hidden_state
+        classification_embedding = encoded_layers[:, 0]
+
+        classification_embedding = encoded_layers[:, 0]
+
+        classification_embedding 
+=
+ encoded_layers
+[:,
+ 
+0
+]
+        logits = self.classifier(classification_embedding)
+
+        logits = self.classifier(classification_embedding)
+
+        logits 
+=
+ self
+.
+classifier
+(classification_embedding)
+
+
+
+
+        # 🔭🌕 Galileo logging
+
+        # 🔭🌕 Galileo logging
+
+        
+# 🔭🌕 Galileo logging
+        dq.log_model_outputs(
+
+        dq.log_model_outputs(
+
+        dq
+.
+log_model_outputs
+(
+            embs=classification_embedding, logits=logits, ids=ids
+
+            embs=classification_embedding, logits=logits, ids=ids
+
+            embs
+=
+classification_embedding, logits
+=
+logits, ids
+=
+ids
+        )
+
+        )
+
+        )
+
+
+
+
+        return logits
+        return logits
+        
+return
+ logits
+```
+
+### 
+
+[](#putting-it-all-together)
+
+Putting it all together
+
+Login and initialize a <i class="font-italic">new</i> project + run name <i class="font-italic">or</i> one matching an existing training run (this will add inference to that training run in the console). Then, load and log your inference dataset; load a pre-trained model; set the split to inference and run your inference run; finally call <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.finish()</code>!
+
+Note: If you're extending a current training run, the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">list_of_labels</code> logged for your dataset must match exactly that used during training.
+
+PyTorch
+
+Copy```
+import numpy as np
+
+import numpy as np
+
+import
+ numpy 
+as
+ np
+import io
+
+import io
+
+import
+ io
+import random
+
+import random
+
+import
+ random
+from smart_open import open as smart_open
+
+from smart_open import open as smart_open
+
+from
+ smart_open 
+import
+ 
+open
+ 
+as
+ smart_open
+import s3fs
+
+import s3fs
+
+import
+ s3fs
+import torch
+
+import torch
+
+import
+ torch
+import torch.nn.functional as F
+
+import torch.nn.functional as F
+
+import
+ torch
+.
+nn
+.
+functional 
+as
+ F
+import torchmetrics
+
+import torchmetrics
+
+import
+ torchmetrics
+from tqdm.notebook import tqdm
+
+from tqdm.notebook import tqdm
+
+from
+ tqdm
+.
+notebook 
+import
+ tqdm
+
+
+
+
+BATCH_SIZE = 32
+
+BATCH_SIZE = 32
+
+BATCH_SIZE 
+=
+ 
+32
+
+
+
+
+# 🔭🌕 Galileo logging - initialize project/run name
+
+# 🔭🌕 Galileo logging - initialize project/run name
+
+# 🔭🌕 Galileo logging - initialize project/run name
+
+
+
+
+dq.login()
+
+dq.login()
+
+dq
+.
+login
+()
+dq.init(task_type="text_classification", project_name=project_name, run_name=run_name)
+
+dq.init(task_type="text_classification", project_name=project_name, run_name=run_name)
+
+dq
+.
+init
+(task_type
+=
+"text_classification"
+, project_name
+=
+project_name, run_name
+=
+run_name)
+
+
+
+
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
+
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
+
+device 
+=
+ torch
+.
+device
+(
+"cuda"
+)
+ 
+if
+ torch
+.
+cuda
+.
+is_available
+()
+ 
+else
+ torch
+.
+device
+(
+"cpu"
+)
+)
+
+
+
+
+inference_dataset = InferenceTextDataset(inference_df, inference_name="inference_run_1")
+
+inference_dataset = InferenceTextDataset(inference_df, inference_name="inference_run_1")
+
+inference_dataset 
+=
+ 
+InferenceTextDataset
+(inference_df, inference_name
+=
+"inference_run_1"
+)
+
+
+
+
+# 🔭🌕 Galileo logging
+
+# 🔭🌕 Galileo logging
+
+# 🔭🌕 Galileo logging
+# Note: if you are adding the inference run to a previous
+
+# Note: if you are adding the inference run to a previous
+
+# Note: if you are adding the inference run to a previous
+# training run, the labels and there order must match that used
+
+# training run, the labels and there order must match that used
+
+# training run, the labels and there order must match that used
+# in training. If you're logging inference in isolation then
+
+# in training. If you're logging inference in isolation then
+
+# in training. If you're logging inference in isolation then
+# this order does not matter.
+
+# this order does not matter.
+
+# this order does not matter.
+list_of_labels = ["labels", "ordered", "from", "trianing"]
+
+list_of_labels = ["labels", "ordered", "from", "trianing"]
+
+list_of_labels 
+=
+ [
+"labels"
+,
+ 
+"ordered"
+,
+ 
+"from"
+,
+ 
+"trianing"
+]
+dq.set_labels_for_run(list_of_labels)
+
+dq.set_labels_for_run(list_of_labels)
+
+dq
+.
+set_labels_for_run
+(list_of_labels)
+
+
+
+
+inference_dataloader = torch.utils.data.DataLoader(
+
+inference_dataloader = torch.utils.data.DataLoader(
+
+inference_dataloader 
+=
+ torch
+.
+utils
+.
+data
+.
+DataLoader
+(
+        inference_dataset,
+
+        inference_dataset,
+
+        inference_dataset,
+        batch_size=BATCH_SIZE,
+
+        batch_size=BATCH_SIZE,
+
+        batch_size
+=
+BATCH_SIZE,
+        shuffle=False
+
+        shuffle=False
+
+        shuffle
+=
+False
+)
+
+)
+
+)
+
+
+
+
+# Load your pre-trained model
+
+# Load your pre-trained model
+
+# Load your pre-trained model
+model_path = "path/to/your/model.pt"
+
+model_path = "path/to/your/model.pt"
+
+model_path 
+=
+ 
+"path/to/your/model.pt"
+model = TextClassificationModel(num_labels=len(list_of_labels))
+
+model = TextClassificationModel(num_labels=len(list_of_labels))
+
+model 
+=
+ 
+TextClassificationModel
+(num_labels
+=
+len
+(list_of_labels))
+model.load_state_dict(torch.load(model_path))
+
+model.load_state_dict(torch.load(model_path))
+
+model
+.
+load_state_dict
+(torch.
+load
+(model_path))
+model.to(device)
+
+model.to(device)
+
+model
+.
+to
+(device)
+
+
+
+
+model.eval()
+
+model.eval()
+
+model
+.
+eval
+()
+
+
+
+
+# 🔭🌕 Galileo logging - naming your inference run
+
+# 🔭🌕 Galileo logging - naming your inference run
+
+# 🔭🌕 Galileo logging - naming your inference run
+inference_name = "inference_run_1"
+
+inference_name = "inference_run_1"
+
+inference_name 
+=
+ 
+"inference_run_1"
+dq.set_split("inference", inference_name)
+
+dq.set_split("inference", inference_name)
+
+dq
+.
+set_split
+(
+"inference"
+, inference_name)
+
+
+
+
+for data in tqdm(inference_dataloader):
+
+for data in tqdm(inference_dataloader):
+
+for
+ data 
+in
+ 
+tqdm
+(inference_dataloader):
+    x_idxs, x, attention_mask = data
+
+    x_idxs, x, attention_mask = data
+
+    x_idxs
+,
+ x
+,
+ attention_mask 
+=
+ data
+    x = x.to(device)
+
+    x = x.to(device)
+
+    x 
+=
+ x
+.
+to
+(device)
+    attention_mask = attention_mask.to(device)
+
+    attention_mask = attention_mask.to(device)
+
+    attention_mask 
+=
+ attention_mask
+.
+to
+(device)
+
+
+
+
+    model(x, attention_mask, x_idxs)
+
+    model(x, attention_mask, x_idxs)
+
+    
+model
+(x, attention_mask, x_idxs)
+
+
+
+
+print("Finished Inference")
+
+print("Finished Inference")
+
+print
+(
+"Finished Inference"
+)
+
+
+
+
+# 🔭🌕 Galileo logging
+
+# 🔭🌕 Galileo logging
+
+# 🔭🌕 Galileo logging
+dq.finish()
+
+dq.finish()
+
+dq
+.
+finish
+()
+
+
+
+
+print("Finished uploading")
+print("Finished uploading")
+print
+(
+"Finished uploading"
+)
+```
+
+To learn more about **Data Drift**, **Class Boundary Detection** or other Model Monitoring features, check out the [Galileo Product Features Guide](/galileo/how-to-and-faq/galileo-product-features).
+
+[PreviousLogging Data to Galileo](/galileo/galileo-nlp-studio/natural-language-inference/logging-data-to-galileo)[NextGalileo + Delta Lake (Databricks)](/galileo/galileo-nlp-studio/galileo-+-delta-lake-databricks)
+
+Last updated 11 months ago

@@ -1,0 +1,434 @@
+---
+title: "Example Code   Monitor App"
+---
+
+# Example code - Monitor App
+
+Example app that asks trivia questions to an LLM. We hook up the Galileo Observe tool with this app in 1 line of code.
+
+You can use a Jupyter Notebook, VSCode, or any other python environment for this.
+
+### 
+
+[](#in-your-python-environment-pip-install-3-libraries-using-the-command-below)
+
+In your python environment, pip install 3 libraries using the command below:
+
+Copy```
+pip install galileo-observe openai langchain
+pip install galileo-observe openai langchain
+```
+
+### 
+
+[](#set-5-variables-in-your-python-ide)
+
+Set 5 variables in your python IDE
+
+Copy```
+GALILEO_CONSOLE_URL = "YOUR_GALILEO_CONSOLE_URL_GOES_HERE"
+
+GALILEO_CONSOLE_URL = "YOUR_GALILEO_CONSOLE_URL_GOES_HERE"
+
+GALILEO_API_KEY = "YOUR_GALILE_API_KEY_GOES_HERE"
+
+GALILEO_API_KEY = "YOUR_GALILE_API_KEY_GOES_HERE"
+
+OPENAI_API_KEY = "YOUR_OPEN_AI_KEY_GOES_HERE"
+
+OPENAI_API_KEY = "YOUR_OPEN_AI_KEY_GOES_HERE"
+
+PROJECT_NAME = "my_demo_monitor_project"
+PROJECT_NAME = "my_demo_monitor_project"
+```
+
+### 
+
+[](#go-to-the-galileo-console-create-a-new-project)
+
+Go to the Galileo console create a new project
+
+1.  Hit "New Project" (top left)
+    
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FaXvrzaQ5RJTsKwnXxe31%252Fimage.png%3Falt%3Dmedia%26token%3D8b19bde3-9469-4bfa-882a-22d62bc53c2f&width=768&dpr=4&quality=100&sign=ae59b174&sv=1)
+
+1.  Give your project a nice name like "my\_demo\_monitor\_project" as shown below
+    
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FxEnjKch9ln460Zw5nZjo%252Fimage.png%3Falt%3Dmedia%26token%3D9ea460a5-33e9-4cae-847b-335703aad408&width=768&dpr=4&quality=100&sign=74800f4b&sv=1)
+
+1.  Choose "Observe" as the Task Type
+    
+
+### 
+
+[](#copy-and-paste-the-monitoring-app-code-below)
+
+Copy and paste the **Monitoring app code** below
+
+Copy```
+from langchain.chains import LLMChain
+
+from langchain.chains import LLMChain
+
+from
+ langchain
+.
+chains 
+import
+ LLMChain
+from langchain.chat_models import ChatOpenAI
+
+from langchain.chat_models import ChatOpenAI
+
+from
+ langchain
+.
+chat_models 
+import
+ ChatOpenAI
+from langchain.prompts import PromptTemplate
+
+from langchain.prompts import PromptTemplate
+
+from
+ langchain
+.
+prompts 
+import
+ PromptTemplate
+from galileo_observe import GalileoObserveCallback
+
+from galileo_observe import GalileoObserveCallback
+
+from
+ galileo_observe 
+import
+ GalileoObserveCallback
+from datetime import datetime
+
+from datetime import datetime
+
+from
+ datetime 
+import
+ datetime
+
+
+
+
+import time
+
+import time
+
+import
+ time
+import random
+
+import random
+
+import
+ random
+
+
+
+
+import os
+
+import os
+
+import
+ os
+
+
+
+
+os.environ["GALILEO_CONSOLE_URL"] = YOUR_GALILEO_CONSOLE_URL
+
+os.environ["GALILEO_CONSOLE_URL"] = YOUR_GALILEO_CONSOLE_URL
+
+os
+.
+environ
+[
+"GALILEO_CONSOLE_URL"
+]
+ 
+=
+ YOUR_GALILEO_CONSOLE_URL
+os.environ["OPENAI_API_KEY"] = YOUR_OPEN_AI_KEY
+
+os.environ["OPENAI_API_KEY"] = YOUR_OPEN_AI_KEY
+
+os
+.
+environ
+[
+"OPENAI_API_KEY"
+]
+ 
+=
+ YOUR_OPEN_AI_KEY
+os.environ["GALILEO_API_KEY"] = YOUR_GALILEO_API_KEY
+
+os.environ["GALILEO_API_KEY"] = YOUR_GALILEO_API_KEY
+
+os
+.
+environ
+[
+"GALILEO_API_KEY"
+]
+ 
+=
+ YOUR_GALILEO_API_KEY
+
+
+
+
+class MonitoringApp:
+
+class MonitoringApp:
+
+class
+ 
+MonitoringApp
+:
+
+
+
+
+    def run_llm(self, llm, user_prompt):
+
+    def run_llm(self, llm, user_prompt):
+
+    
+def
+ 
+run_llm
+(
+self
+,
+ 
+llm
+,
+ 
+user_prompt
+):
+        prompt = PromptTemplate.from_template("Answer the following question: {user_prompt}")
+
+        prompt = PromptTemplate.from_template("Answer the following question: {user_prompt}")
+
+        prompt 
+=
+ PromptTemplate
+.
+from_template
+(
+"Answer the following question: 
+{user_prompt}
+"
+)
+        chain = prompt | llm | StrOutputParser()
+
+        chain = prompt | llm | StrOutputParser()
+
+        chain 
+=
+ prompt 
+|
+ llm 
+|
+ 
+StrOutputParser
+()
+        result = chain.invoke(dict(user_prompt=user_prompt), config=dict(callbacks=[GalileoObserveCallback(project_name='first-project')]))
+
+        result = chain.invoke(dict(user_prompt=user_prompt), config=dict(callbacks=[GalileoObserveCallback(project_name='first-project')]))
+
+
+
+
+
+
+
+
+
+app = MonitoringApp()
+
+app = MonitoringApp()
+
+app 
+=
+ 
+MonitoringApp
+()
+
+
+
+
+llm = ChatOpenAI(
+
+llm = ChatOpenAI(
+
+llm 
+=
+ 
+ChatOpenAI
+(
+    temperature=0
+
+    temperature=0
+
+    temperature
+=
+0
+)
+
+)
+
+)
+
+
+
+
+
+
+
+
+questions = [
+
+questions = [
+
+questions 
+=
+ [
+    "Why is the sky blue?",
+
+    "Why is the sky blue?",
+
+    
+"Why is the sky blue?"
+,
+    "How do magnets work?",
+
+    "How do magnets work?",
+
+    
+"How do magnets work?"
+,
+    "Why do apples fall from trees?",
+
+    "Why do apples fall from trees?",
+
+    
+"Why do apples fall from trees?"
+,
+    "What is gravity?",
+
+    "What is gravity?",
+
+    
+"What is gravity?"
+,
+    "How does the moon affect tides?",
+
+    "How does the moon affect tides?",
+
+    
+"How does the moon affect tides?"
+,
+    "Why is the ocean salty?",
+
+    "Why is the ocean salty?",
+
+    
+"Why is the ocean salty?"
+,
+    "What causes thunder?",
+
+    "What causes thunder?",
+
+    
+"What causes thunder?"
+,
+    "How do plants make food?",
+
+    "How do plants make food?",
+
+    
+"How do plants make food?"
+,
+    "Why do we have seasons?",
+
+    "Why do we have seasons?",
+
+    
+"Why do we have seasons?"
+,
+    "How do rainbows form?"
+
+    "How do rainbows form?"
+
+    
+"How do rainbows form?"
+]
+
+]
+
+]
+
+
+
+
+while True:
+
+while True:
+
+while
+ 
+True
+:
+    question = random.choice(questions)
+
+    question = random.choice(questions)
+
+    question 
+=
+ random
+.
+choice
+(questions)
+    print(f"Querying the LLM: {question}")
+
+    print(f"Querying the LLM: {question}")
+
+    
+print
+(f
+"Querying the LLM: 
+{question}
+"
+)
+    app.run_llm(llm, question)
+
+    app.run_llm(llm, question)
+
+    app
+.
+run_llm
+(llm, question)
+    time.sleep(5)
+    time.sleep(5)
+    time
+.
+sleep
+(
+5
+)
+```
+
+[PreviousExamples](/galileo/gen-ai-studio-products/galileo-observe/examples)[NextProtect](/galileo/gen-ai-studio-products/galileo-protect)
+
+Last updated 8 days ago

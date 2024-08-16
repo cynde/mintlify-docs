@@ -1,0 +1,792 @@
+---
+title: "Zero Shot Prompting"
+---
+
+# Zero-Shot Prompting
+
+Clone this notebook to create this run in your Galileo cluster: https://colab.research.google.com/drive/1LfFEe8MlZuKU\_a41z8SEH0to4OOfrWnO
+
+In this example, we will demonstrate how to integrate a topic detection model into a Galileo run through a Galileo CustomMetric.
+
+## 
+
+[](#setup-install-library-and-set-up-variables)
+
+Setup: Install Library and Set Up Variables
+
+We will use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code>, the Python client to interact with Galileo’s GenAI Studio: Evaluate.
+
+Copy```
+! pip install promptquality
+! pip install promptquality
+!
+ 
+pip
+ 
+install
+ 
+promptquality
+```
+
+Next, we will set our Galileo cluster url, API key, and project name in order to define where we want to log our results.
+
+Copy```
+import os
+
+import os
+
+import
+ os
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+from google.colab import userdata
+
+from google.colab import userdata
+
+from
+ google
+.
+colab 
+import
+ userdata
+
+
+
+
+### Set variables and env variables ###
+
+### Set variables and env variables ###
+
+### Set variables and env variables ###
+os.environ['GALILEO_API_KEY'] = GALILEO_API_KEY = userdata.get('GALILEO_API_KEY_DEMO')
+
+os.environ['GALILEO_API_KEY'] = GALILEO_API_KEY = userdata.get('GALILEO_API_KEY_DEMO')
+
+os
+.
+environ
+[
+'GALILEO_API_KEY'
+]
+ 
+=
+ GALILEO_API_KEY 
+=
+ userdata
+.
+get
+(
+'GALILEO_API_KEY_DEMO'
+)
+os.environ['GALILEO_CONSOLE_URL'] = GALILEO_CONSOLE_URL = 'https://console.demo.rungalileo.io/'
+
+os.environ['GALILEO_CONSOLE_URL'] = GALILEO_CONSOLE_URL = 'https://console.demo.rungalileo.io/'
+
+os
+.
+environ
+[
+'GALILEO_CONSOLE_URL'
+]
+ 
+=
+ GALILEO_CONSOLE_URL 
+=
+ 
+'https://console.demo.rungalileo.io/'
+GALILEO_PROJECT_NAME = 'hotpotqa_topicdetection'
+
+GALILEO_PROJECT_NAME = 'hotpotqa_topicdetection'
+
+GALILEO_PROJECT_NAME 
+=
+ 
+'hotpotqa_topicdetection'
+
+
+
+
+# 🔭🌕 Logging in to the console
+
+# 🔭🌕 Logging in to the console
+
+# 🔭🌕 Logging in to the console
+config = pq.login(os.environ['GALILEO_CONSOLE_URL'])
+config = pq.login(os.environ['GALILEO_CONSOLE_URL'])
+config 
+=
+ pq
+.
+login
+(os.environ[
+'GALILEO_CONSOLE_URL'
+])
+```
+
+## 
+
+[](#construct-dataset-subsample-of-hotpotqa)
+
+Construct Dataset: Subsample of HotpotQA
+
+We will be using (a subsample of) HotpotQA, a public Q&A dataset with question, context, and ground truths aliases. HotpotQA has easy, medium, and hard tasks that are challenging even for the most modern LLM releases.
+
+In lieu of evaluating model responses against the ground truths, we can leverage Galileo's metrics to gauge hallucinations.
+
+Copy```
+import urllib.request
+
+import urllib.request
+
+import
+ urllib
+.
+request
+import pandas
+
+import pandas
+
+import
+ pandas
+import json
+
+import json
+
+import
+ json
+
+
+
+
+def parse_context(context):
+
+def parse_context(context):
+
+def
+ 
+parse_context
+(
+context
+):
+    parsed_context = ""
+
+    parsed_context = ""
+
+    parsed_context 
+=
+ 
+""
+    for item in context:
+
+    for item in context:
+
+    
+for
+ item 
+in
+ context
+:
+        title = item[0]
+
+        title = item[0]
+
+        title 
+=
+ item
+[
+0
+]
+        contents = " ".join(item[1])
+
+        contents = " ".join(item[1])
+
+        contents 
+=
+ 
+" "
+.
+join
+(item[
+1
+])
+        parsed_context += f"{title}: {contents}\n"
+
+        parsed_context += f"{title}: {contents}\n"
+
+        parsed_context 
++=
+ f
+"
+{title}
+: 
+{contents}
+\n"
+    return parsed_context.strip()
+
+    return parsed_context.strip()
+
+    
+return
+ parsed_context
+.
+strip
+()
+
+
+
+
+url = 'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
+
+url = 'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
+
+url 
+=
+ 
+'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
+with urllib.request.urlopen(url) as urlo:
+
+with urllib.request.urlopen(url) as urlo:
+
+with
+ urllib
+.
+request
+.
+urlopen
+(url)
+ 
+as
+ urlo
+:
+    json_data = json.load(urlo)
+
+    json_data = json.load(urlo)
+
+    json_data 
+=
+ json
+.
+load
+(urlo)
+
+
+
+
+data = pandas.DataFrame(json_data)
+
+data = pandas.DataFrame(json_data)
+
+data 
+=
+ pandas
+.
+DataFrame
+(json_data)
+data['parsed_context'] = data['context'].apply(parse_context)
+
+data['parsed_context'] = data['context'].apply(parse_context)
+
+data
+[
+'parsed_context'
+]
+ 
+=
+ data
+[
+'context'
+].
+apply
+(parse_context)
+
+
+
+
+dataset = {
+
+dataset = {
+
+dataset 
+=
+ 
+{
+    'question': data['question'].iloc[0:50].tolist(),
+
+    'question': data['question'].iloc[0:50].tolist(),
+
+    
+'question'
+:
+ data
+[
+'question'
+].
+iloc
+[
+0
+:
+50
+].
+tolist
+(),
+    'context': data['parsed_context'].iloc[0:50].tolist()
+
+    'context': data['parsed_context'].iloc[0:50].tolist()
+
+    
+'context'
+:
+ data
+[
+'parsed_context'
+].
+iloc
+[
+0
+:
+50
+].
+tolist
+()
+}
+}
+}
+```
+
+## 
+
+[](#define-our-classification-pipeline)
+
+Define our Classification Pipeline
+
+We will use a checkpoint for bart-large that has been trained on the MultiNLI (MNLI) dataset, which is a dataset of sentence pairs annotated with textual entailment information. This makes it ideal as an off-the-shelf zero-shot topic classification model.
+
+Copy```
+from transformers import pipeline
+
+from transformers import pipeline
+
+from
+ transformers 
+import
+ pipeline
+
+
+
+
+# HuggingFace will expect an environment variable 'HF_TOKEN' to download the model
+
+# HuggingFace will expect an environment variable 'HF_TOKEN' to download the model
+
+# HuggingFace will expect an environment variable 'HF_TOKEN' to download the model
+os.environ['HF_TOKEN'] = userdata.get('HF_TOKEN')
+
+os.environ['HF_TOKEN'] = userdata.get('HF_TOKEN')
+
+os
+.
+environ
+[
+'HF_TOKEN'
+]
+ 
+=
+ userdata
+.
+get
+(
+'HF_TOKEN'
+)
+pipe = pipeline(model="facebook/bart-large-mnli")
+pipe = pipeline(model="facebook/bart-large-mnli")
+pipe 
+=
+ 
+pipeline
+(model
+=
+"facebook/bart-large-mnli"
+)
+```
+
+## 
+
+[](#implementing-our-pipeline-as-a-galileo-custommetric)
+
+Implementing our Pipeline as a Galileo CustomMetric
+
+We will define a small space of candidate labels for this zero-shot topic detection task.
+
+We also define an <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> function. The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> is a row-level calculator, while the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> consolidates all of the calculated row values.
+
+In this example, I want to publish both the top topic and its score, so my <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> will serialize the JSON into a string. Then, my <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> will evaluate that string to parse the numeric label score for aggregation.
+
+When we invoke our run, the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> will be computed within your Python runtime / notebook / application.
+
+Copy```
+import ast
+
+import ast
+
+import
+ ast
+
+
+
+
+candidate_labels=["sports", "music", "science", "history", "technology"]
+
+candidate_labels=["sports", "music", "science", "history", "technology"]
+
+candidate_labels
+=
+[
+"sports"
+,
+ 
+"music"
+,
+ 
+"science"
+,
+ 
+"history"
+,
+ 
+"technology"
+]
+
+
+
+
+# The executor function is a row-level calculation function.
+
+# The executor function is a row-level calculation function.
+
+# The executor function is a row-level calculation function.
+def executor_topicdetect(row) -> str:
+
+def executor_topicdetect(row) -> str:
+
+def
+ 
+executor_topicdetect
+(
+row
+) 
+->
+ 
+str
+:
+    pipe_out = pipe(row.response, candidate_labels=candidate_labels)
+
+    pipe_out = pipe(row.response, candidate_labels=candidate_labels)
+
+    pipe_out 
+=
+ 
+pipe
+(row.response, candidate_labels
+=
+candidate_labels)
+    return json.dumps({'top_label': pipe_out['labels'][0], 'top_score': pipe_out['scores'][0]})
+
+    return json.dumps({'top_label': pipe_out['labels'][0], 'top_score': pipe_out['scores'][0]})
+
+    
+return
+ json
+.
+dumps
+({
+'top_label'
+: pipe_out[
+'labels'
+][
+0
+], 
+'top_score'
+: pipe_out[
+'scores'
+][
+0
+]})
+# The aggregator function takes in row-level calculations of all rows, in order to perform some kind of aggregation calculation (eg mean, median, P95, etc)
+
+# The aggregator function takes in row-level calculations of all rows, in order to perform some kind of aggregation calculation (eg mean, median, P95, etc)
+
+def aggregator_topicdetect(scores, indices) -> float:
+
+def aggregator_topicdetect(scores, indices) -> float:
+
+def
+ 
+aggregator_topicdetect
+(
+scores
+,
+ 
+indices
+) 
+->
+ 
+float
+:
+    scores_parse = [float(ast.literal_eval(score)['top_score']) for score in scores]
+
+    scores_parse = [float(ast.literal_eval(score)['top_score']) for score in scores]
+
+    scores_parse 
+=
+ [
+float
+(ast.
+literal_eval
+(score)[
+'top_score'
+])
+ 
+for
+ score 
+in
+ scores]
+    return {'Average Topic Score (Top Label)': sum(scores_parse) / len(scores_parse) }
+    return {'Average Topic Score (Top Label)': sum(scores_parse) / len(scores_parse) }
+    
+return
+ 
+{
+'Average Topic Score (Top Label)'
+:
+ 
+sum
+(scores_parse)
+ 
+/
+ 
+len
+(scores_parse)
+ 
+}
+```
+
+## 
+
+[](#galileo-evaluate)
+
+Galileo Evaluate
+
+Finally, we will define the metrics we are interested in (Galileo's metrics) as well as our CustomMetric (Galileo's CustomScorer class that take our <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">executor</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">aggregator</code> as inputs).
+
+We will also define our prompt template with placeholders <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{context}</code> and <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">{question}.</code> These will be replaced by values with the same keys in our <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataset</code>.
+
+Copy```
+metrics = [
+
+metrics = [
+
+metrics 
+=
+ [
+    pq.Scorers.context_adherence,
+
+    pq.Scorers.context_adherence,
+
+    pq
+.
+Scorers
+.
+context_adherence
+,
+    pq.Scorers.correctness,
+
+    pq.Scorers.correctness,
+
+    pq
+.
+Scorers
+.
+correctness
+,
+    pq.Scorers.latency,
+
+    pq.Scorers.latency,
+
+    pq
+.
+Scorers
+.
+latency
+,
+    pq.Scorers.tone,
+
+    pq.Scorers.tone,
+
+    pq
+.
+Scorers
+.
+tone
+,
+    pq.Scorers.sexist,
+
+    pq.Scorers.sexist,
+
+    pq
+.
+Scorers
+.
+sexist
+,
+    pq.Scorers.pii,
+
+    pq.Scorers.pii,
+
+    pq
+.
+Scorers
+.
+pii
+,
+    pq.Scorers.prompt_perplexity,
+
+    pq.Scorers.prompt_perplexity,
+
+    pq
+.
+Scorers
+.
+prompt_perplexity
+,
+    pq.CustomScorer(name='Top Topic', executor=executor_topicdetect, aggregator=aggregator_topicdetect)
+
+    pq.CustomScorer(name='Top Topic', executor=executor_topicdetect, aggregator=aggregator_topicdetect)
+
+    pq
+.
+CustomScorer
+(name
+=
+'Top Topic'
+, executor
+=
+executor_topicdetect, aggregator
+=
+aggregator_topicdetect)
+]
+
+]
+
+]
+
+
+
+
+template = """
+
+template = """
+
+template 
+=
+ 
+"""
+    You are a knowledgeable assistant capable of answering a wide range of questions accurately and clearly. Given the following context, provide detailed and informative answers.
+
+    You are a knowledgeable assistant capable of answering a wide range of questions accurately and clearly. Given the following context, provide detailed and informative answers.
+
+
+
+
+
+    Context:
+
+    Context:
+
+    Context:
+    {context}
+
+    {context}
+
+    
+{context}
+
+
+
+
+    Question: {question}
+
+    Question: {question}
+
+    Question: 
+{question}
+    """
+
+    """
+
+    """
+
+
+
+
+# run our dataset
+
+# run our dataset
+
+# run our dataset
+pq.run(project_name = GALILEO_PROJECT_NAME,
+
+pq.run(project_name = GALILEO_PROJECT_NAME,
+
+pq
+.
+run
+(project_name 
+=
+ GALILEO_PROJECT_NAME,
+       template = template,
+
+       template = template,
+
+       template 
+=
+ template,
+       dataset = dataset,
+
+       dataset = dataset,
+
+       dataset 
+=
+ dataset,
+       scorers = metrics,
+
+       scorers = metrics,
+
+       scorers 
+=
+ metrics,
+       settings = pq.Settings(model_alias=pq.SupportedModels.chat_gpt))
+       settings = pq.Settings(model_alias=pq.SupportedModels.chat_gpt))
+       settings 
+=
+ pq.
+Settings
+(model_alias
+=
+pq.SupportedModels.chat_gpt))
+```
+
+The run() execution will return a URL for you to inspect your run in the Galileo Evaluate UI.
+
+In the below run view, you can see that UI publishes the row-level and aggregate calculations based on our CustomMetric.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F7DMdHLCN8Fd3B38eeWeC%252Fimage.png%3Falt%3Dmedia%26token%3Dc9243501-2da9-45c2-ad04-34e3f03d9c2d&width=768&dpr=4&quality=100&sign=c9abadf6&sv=1)
+
+[PreviousExamples](/galileo/gen-ai-studio-products/galileo-evaluate/examples)[NextRAG Q&A (LangChain + ChromaDB)](/galileo/gen-ai-studio-products/galileo-evaluate/examples/rag-q-and-a-langchain-+-chromadb)
+
+Last updated 2 months ago

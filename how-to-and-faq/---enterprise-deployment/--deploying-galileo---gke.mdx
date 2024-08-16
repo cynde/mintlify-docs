@@ -1,0 +1,495 @@
+---
+title: "  Deploying Galileo   Gke"
+---
+
+# 🥽Deploying Galileo – GKE
+
+## 
+
+[](#setting-up-your-kubernetes-cluster-for-galileo-applications-on-google-kubernetes-engine-gke)
+
+Setting Up Your Kubernetes Cluster for Galileo Applications on Google Kubernetes Engine (GKE)
+
+Welcome to your guide on configuring and deploying a Google Kubernetes Engine (GKE) environment optimized for Galileo applications. Galileo, tailored for dynamic and scalable deployments, requires a robust and adaptable infrastructure—qualities inherent to Kubernetes. This guide will navigate you through the preparatory steps involving Identity and Access Management (IAM) and the DNS setup crucial for integrating Galileo's services.
+
+### 
+
+[](#prerequisites)
+
+Prerequisites
+
+Before diving into the setup, ensure you have the following:
+
+*   A Google Cloud account.
+    
+*   The Google Cloud SDK installed and initialized.
+    
+*   Kubernetes command-line tool (<code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl</code>) installed.
+    
+*   Basic familiarity with GKE, IAM roles, and Kubernetes concepts.
+    
+
+### 
+
+[](#setting-up-iam)
+
+Setting Up IAM
+
+Identity and Access Management (IAM) plays a critical role in securing and granting the appropriate permissions for your Kubernetes cluster. Here's how to configure IAM for your GKE environment:
+
+1.  **Create a Project**: Sign in to your Google Cloud Console and create a new project for your Galileo application if you haven't done so already.
+    
+2.  <strong class="font-bold">Set Up IAM Roles</strong>: Navigate to the IAM &amp; Admin section in the Google Cloud Console. Here, assign the necessary roles to your Google Cloud account, ensuring you have rights for GKE administration. Essential roles include <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">roles/container.admin</code> (for managing clusters), <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">roles/iam.serviceAccountUser</code> (to use service accounts with your clusters), and any other roles specific to your operational needs.
+    
+3.  **Configure Service Accounts**: Create a service account dedicated to your GKE cluster to segregate duties and enhance security. Assign the service account the minimal roles necessary to operate your Galileo applications efficiently.
+    
+
+### 
+
+[](#configuring-dns-for-galileo)
+
+Configuring DNS for Galileo
+
+Your Galileo application requires four DNS endpoints for optimal functionality. These endpoints handle different aspects of the application's operations and need to be properly set up:
+
+1.  **Acquire a Domain**: If not already owned, purchase a domain name that will serve as the base URL for Galileo.
+    
+2.  **Set Up DNS Records**: Utilize your domain registrar's DNS management tools to create four DNS A records pointing to the Galileo application's operational endpoints. These records will route traffic correctly within your GKE environment.
+    
+
+More details in the [Step 3: Customer DNS Configuration](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-gke#step-3-customer-dns-configuration) section.
+
+### 
+
+[](#deploying-your-cluster-on-gke)
+
+Deploying Your Cluster on GKE
+
+With IAM configured and DNS set up, you’re now ready to deploy your Kubernetes cluster on GKE.
+
+1.  <strong class="font-bold">Create the Cluster</strong>: Use the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">gcloud</code> command-line tool to create your cluster. Ensure that it is configured with the correct machine type, node count, and other specifications suitable for your Galileo application needs.
+    
+2.  <strong class="font-bold">Deploy Galileo</strong>: With your cluster running, deploy your Galileo application. Employ <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">kubectl</code> to manage resources and deploy services necessary for your application.
+    
+3.  **Verify Deployment**: After deployment, verify that your Galileo application is running smoothly by checking the service status and ensuring that external endpoints are reachable.
+    
+
+**⏱ Total time for deployment:** 30-45 minutes
+
+<strong class="font-bold">This deployment requires the use of Google Cloud's CLI, </strong><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]"><strong class="font-bold">gcloud</strong></code><strong class="font-bold">. Please follow</strong> <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://cloud.google.com/sdk/docs/install"><strong class="font-bold">these instructions</strong></a> <strong class="font-bold">to install and set up gcloud for your GCP account.</strong>
+
+### 
+
+[](#recommended-cluster-configuration)
+
+Recommended Cluster Configuration
+
+Galileo recommends the following Kubernetes deployment configuration. These details are captured in the bootstrap script Galileo provides.
+
+| Configuration | Recommended Value |
+| --- | --- |
+| 
+**Nodes in the cluster’s core nodegroup**
+
+
+
+
+
+ | 
+
+4 (min) 5 (max) 4 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per core node**
+
+
+
+
+
+ | 
+
+4 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per core node**
+
+
+
+
+
+ | 
+
+16 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Number of nodes in the cluster’s runners nodegroup**
+
+
+
+
+
+ | 
+
+1 (min) 5 (max) 1 (desired)
+
+
+
+
+
+ |
+| 
+
+**CPU per runner node**
+
+
+
+
+
+ | 
+
+8 CPU
+
+
+
+
+
+ |
+| 
+
+**RAM per runner node**
+
+
+
+
+
+ | 
+
+32 GiB RAM
+
+
+
+
+
+ |
+| 
+
+**Minimum volume size per node**
+
+
+
+
+
+ | 
+
+200 GiB
+
+
+
+
+
+ |
+| 
+
+**Required Kubernetes API version**
+
+
+
+
+
+ | 
+
+1.21
+
+
+
+
+
+ |
+| 
+
+**Storage class**
+
+
+
+
+
+ | 
+
+standard
+
+
+
+
+
+ |
+
+### 
+
+[](#step-0-deploying-the-gke-cluster)
+
+Step 0: Deploying the GKE Cluster
+
+Run [this script](https://docs.rungalileo.io/galileo/how-to-and-faq/enterprise-only/deploying-galileo-gke/galileo-gcp-setup-script) as instructed. If you have specialized tasks that require GPU processing make sure CREATE\_ML\_NODE\_POOL=true is set before running the script. If you have any questions, please reach out to a Galilean in the slack channel Galileo shares with you and your team.
+
+### 
+
+[](#step-1-required-configuration-values)
+
+**Step 1: Required Configuration Values**
+
+Customer specific cluster values (e.g. domain name, slack channel for notifications etc) will be placed in a base64 encoded string, stored as a secret in GitHub that Galileo’s deployment automation will read in and use when templating a cluster’s resource files.\\
+
+**Mandatory fields the Galileo team requires:**
+
+| Mandatory Field | Description |
+| --- | --- |
+| 
+**GCP Account ID**
+
+
+
+
+
+ | 
+
+The Customer's GCP Account ID that the customer will use for provisioning Galileo
+
+
+
+
+
+ |
+| 
+
+**Customer GCP Project Name**
+
+
+
+
+
+ | 
+
+The Name of the GCP project the customer is using to provision Galileo.
+
+
+
+
+
+ |
+| 
+
+**Customer Service Account Address for Galileo**
+
+
+
+
+
+ | 
+
+The Service account address the customer has created for the galileo deployment account to assume.
+
+
+
+
+
+ |
+| 
+
+**GKE Cluster Name**
+
+
+
+
+
+ | 
+
+The GKE cluster name that Galileo will deploy the platform to.
+
+
+
+
+
+ |
+| 
+
+**Domain Name**
+
+
+
+
+
+ | 
+
+The customer wishes to deploy the cluster under e.g. google.com
+
+
+
+
+
+ |
+| 
+
+**GKE Cluster Region**
+
+
+
+
+
+ | 
+
+The region of the cluster.
+
+
+
+
+
+ |
+| 
+
+**Root subdomain**
+
+
+
+
+
+ | 
+
+e.g. "galileo" as in galileo.google.com
+
+
+
+
+
+ |
+| 
+
+**Trusted SSL Certificates (Optional)**
+
+
+
+
+
+ | 
+
+By default, Galileo provisions Let’s Encrypt certificates. But if you wish to use your own trusted SSL certificates, you should submit a base64 encoded string of
+
+1.  the full certificate chain, and
+    
+2.  another, separate base64 encoded string of the signing key.
+    
+
+
+
+
+
+ |
+
+### 
+
+[](#step-2-access-to-deployment-logs)
+
+Step 2: Access to Deployment Logs
+
+As a customer, you have full access to the deployment logs in Google Cloud Storage. You (customer) are able to view all configuration there. A customer email address must be provided to have access to this log.
+
+### 
+
+[](#step-3-customer-dns-configuration)
+
+**Step 3: Customer DNS Configuration**
+
+Galileo has 4 main URLs (shown below). In order to make the URLs accessible across the company, you have to set the following DNS addresses in your DNS provider after the platform is deployed.
+
+**⏱ Time taken :** 5-10 minutes (post the ingress endpoint / load balancer provisioning)
+
+| Service | URL |
+| --- | --- |
+| 
+API
+
+
+
+
+
+ | 
+
+**api.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Data
+
+
+
+
+
+ | 
+
+**data.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+UI
+
+
+
+
+
+ | 
+
+**console.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+| 
+
+Grafana
+
+
+
+
+
+ | 
+
+**grafana.galileo**.company.\[com|ai|io…\]
+
+
+
+
+
+ |
+
+[PreviousEKS Cluster Config Example (Zero Access)](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-eks-zero-access/eks-cluster-config-example-zero-access)[NextGalileo GCP Setup Script](/galileo/how-to-and-faq/enterprise-only/deploying-galileo-gke/galileo-gcp-setup-script)
+
+Last updated 1 month ago

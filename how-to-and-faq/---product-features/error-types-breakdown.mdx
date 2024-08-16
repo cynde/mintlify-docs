@@ -1,0 +1,27 @@
+---
+title: "Error Types Breakdown"
+---
+
+# Error Types Breakdown
+
+For use cases with complex data and error types (e.g. Named Entity Recognition, Object Detection or Semantic Segmentation), the **Error Types Chart** gives you an insight into exactly how the Ground Truth differed from your model's predictions. It allows you to get a sense of what types of mistakes your model is making, with what frequency and, in the case of Object Detection, what impact these errors had on your overall performance metric.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FnOv885jRnbn1GnrmNKXC%252Fimage.png%3Falt%3Dmedia%26token%3Da9a7dd53-cde2-4ebe-af6c-23b463776409&width=768&dpr=4&quality=100&sign=76d570&sv=1)
+
+Error Types for a Object Detection model
+
+**How does this work?**
+
+For Named Entity Recognition, Galileo surfaces _Ghost Spans, Span Shifts, Missed Spans_ or _Wrong Tag Errors_.
+
+For Object Detection, Galileo leverages the [TIDE](https://arxiv.org/abs/2008.08115) framework to find associations between Ground Truth and Predicted objects and break differences between the two into one of: _Localization_, _Classification_, _Background_, _Missed_, _Duplicates_ or _Localization and Classification_ mistakes. See a thorough write-up of how that's done and the definition of each error type [here](/galileo/gen-ai-studio-products/ml-research-algorithms/errors-in-object-detection).
+
+**How should I leverage this chart?**
+
+Click on an error type to filter the dataset to samples with that error type. From there, you can inspect your erroneous samples and fix them.
+
+One common flow we see is selecting _Ghost Spans (NER)_ or _Background Confusion Errors_ (Obj. Detection) combined with a high DEP filter can be used to surface Missed Annotations from your labelers. You can send these samples to your labeling tool or fix them with the Galileo console.
+
+[PreviousClustering](/galileo/how-to-and-faq/galileo-product-features/clusters)[NextSimilarity Search](/galileo/how-to-and-faq/galileo-product-features/similarity-search)
+
+Last updated 1 year ago

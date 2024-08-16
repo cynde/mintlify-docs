@@ -1,0 +1,1392 @@
+---
+title: "Log Evaluate Runs Via Rest Apis"
+---
+
+# Log Evaluate Runs via REST APIs
+
+If you're using a programming language other than Python, you can use Galileo's REST APIs to create runs on Evaluate.
+
+Logging runs is a 4 step process:
+
+1.  Creating a Project
+    
+2.  Creating a Run
+    
+3.  Ingesting Records into the Run
+    
+
+### 
+
+[](#authentication)
+
+Authentication
+
+For Authentication, include your GALILEO\_API\_KEY under 'Galileo-Api-Key' in the Header of your HTTPRequests.
+
+### 
+
+[](#creating-a-project)
+
+Creating a Project
+
+All Evaluation Runs live under a <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/galileo-evaluate/concepts/project">Project</a>. Before logging a run, you need to create the Project this run will be under. To create a project, make a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">POST</code> request to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/projects</code> .
+
+Your body should contain:
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">name</code>: The name of your project. Needs to be unique.
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">type:</code> Should be set to 'prompt_evaluation'.
+    
+
+You'll need the ID of your project to create and log runs.
+
+Copy```
+async function createProject() {
+
+async function createProject() {
+
+async
+ 
+function
+ 
+createProject
+() {
+    const projectsURL = `${ROOT_URL}/projects`;
+
+    const projectsURL = `${ROOT_URL}/projects`;
+
+    
+const
+ 
+projectsURL
+ 
+=
+ 
+`
+${
+ROOT_URL
+}
+/projects`
+;
+    const response = await fetch(projectsURL, {
+
+    const response = await fetch(projectsURL, {
+
+    
+const
+ 
+response
+ 
+=
+ 
+await
+ 
+fetch
+(projectsURL
+,
+ {
+        method: 'POST',
+
+        method: 'POST',
+
+        method
+:
+ 
+'POST'
+,
+        headers: {
+
+        headers: {
+
+        headers
+:
+ {
+            'Content-Type': 'application/json',
+
+            'Content-Type': 'application/json',
+
+            
+'Content-Type'
+:
+ 
+'application/json'
+,
+            'Galileo-Api-Key': GALILEO_API_KEY,
+
+            'Galileo-Api-Key': GALILEO_API_KEY,
+
+            
+'Galileo-Api-Key'
+:
+ 
+GALILEO_API_KEY
+,
+        },
+
+        },
+
+        }
+,
+        body: JSON.stringify({
+
+        body: JSON.stringify({
+
+        body
+:
+ 
+JSON
+.stringify
+({
+            name: '{MY_PROJECT_NAME}',
+
+            name: '{MY_PROJECT_NAME}',
+
+            name
+:
+ 
+'{MY_PROJECT_NAME}'
+,
+            is_private: false,
+
+            is_private: false,
+
+            is_private
+:
+ 
+false
+,
+            type: 'prompt_evaluation',
+
+            type: 'prompt_evaluation',
+
+            type
+:
+ 
+'prompt_evaluation'
+,
+        }),
+
+        }),
+
+        })
+,
+    });
+
+    });
+
+    });
+    if (response.ok) {
+
+    if (response.ok) {
+
+    
+if
+ (
+response
+.ok) {
+        const createProjectResponse = await response.json();
+
+        const createProjectResponse = await response.json();
+
+        
+const
+ 
+createProjectResponse
+ 
+=
+ 
+await
+ 
+response
+.json
+();
+        console.log('Project Created:', createProjectResponse);
+
+        console.log('Project Created:', createProjectResponse);
+
+        
+console
+.log
+(
+'Project Created:'
+,
+ createProjectResponse);
+        return createProjectResponse;
+
+        return createProjectResponse;
+
+        
+return
+ createProjectResponse;
+    }
+
+    }
+
+    }
+    else {
+
+    else {
+
+    
+else
+ {
+        console.error('POST request failed. Response Code:', response.status);
+
+        console.error('POST request failed. Response Code:', response.status);
+
+        
+console
+.error
+(
+'POST request failed. Response Code:'
+,
+ 
+response
+.status);
+        const errorResponse = await response.text();
+
+        const errorResponse = await response.text();
+
+        
+const
+ 
+errorResponse
+ 
+=
+ 
+await
+ 
+response
+.text
+();
+        console.error('Error Response:', errorResponse);
+
+        console.error('Error Response:', errorResponse);
+
+        
+console
+.error
+(
+'Error Response:'
+,
+ errorResponse);
+        return null;
+
+        return null;
+
+        
+return
+ 
+null
+;
+    }
+
+    }
+
+    }
+}
+
+}
+
+}
+
+
+
+
+const createProjectResponse = await createProject();
+
+const createProjectResponse = await createProject();
+
+const
+ 
+createProjectResponse
+ 
+=
+ 
+await
+ 
+createProject
+();
+const projectID = createProjectResponse.id;
+const projectID = createProjectResponse.id;
+const
+ 
+projectID
+ 
+=
+ 
+createProjectResponse
+.id;
+```
+
+### 
+
+[](#creating-a-run)
+
+Creating a Run
+
+Once you've created your project, you need to create a run. To create a run make a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">POST</code> request to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/projects/${projectId}/runs</code> endpoint.
+
+Your body should contain:
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">name</code>: The name of your project. Needs to be unique.
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">type:</code> Should be set to 'prompt_evaluation'.
+    
+
+You'll need the ID of your run to ingest rows.
+
+Copy```
+async function createRun(projectID, runName) {
+
+async function createRun(projectID, runName) {
+
+async
+ 
+function
+ 
+createRun
+(projectID
+,
+ runName) {
+    const createRunURL = `${ROOT_URL}/projects/${projectID}/runs`;
+
+    const createRunURL = `${ROOT_URL}/projects/${projectID}/runs`;
+
+    
+const
+ 
+createRunURL
+ 
+=
+ 
+`
+${
+ROOT_URL
+}
+/projects/
+${
+projectID
+}
+/runs`
+;
+    const response = await fetch(createRunURL, {
+
+    const response = await fetch(createRunURL, {
+
+    
+const
+ 
+response
+ 
+=
+ 
+await
+ 
+fetch
+(createRunURL
+,
+ {
+        method: 'POST',
+
+        method: 'POST',
+
+        method
+:
+ 
+'POST'
+,
+        headers: {
+
+        headers: {
+
+        headers
+:
+ {
+            'Content-Type': 'application/json',
+
+            'Content-Type': 'application/json',
+
+            
+'Content-Type'
+:
+ 
+'application/json'
+,
+            'Galileo-Api-Key': GALILEO_API_KEY,
+
+            'Galileo-Api-Key': GALILEO_API_KEY,
+
+            
+'Galileo-Api-Key'
+:
+ 
+GALILEO_API_KEY
+,
+        },
+
+        },
+
+        }
+,
+        body: JSON.stringify({
+
+        body: JSON.stringify({
+
+        body
+:
+ 
+JSON
+.stringify
+({
+            name: runName,
+
+            name: runName,
+
+            name
+:
+ runName
+,
+            task_type: 'prompt_chain',
+
+            task_type: 'prompt_chain',
+
+            task_type
+:
+ 
+'prompt_chain'
+,
+        }),
+
+        }),
+
+        })
+,
+    });
+
+    });
+
+    });
+    if (response.ok) {
+
+    if (response.ok) {
+
+    
+if
+ (
+response
+.ok) {
+        const createRunResponse = await response.json();
+
+        const createRunResponse = await response.json();
+
+        
+const
+ 
+createRunResponse
+ 
+=
+ 
+await
+ 
+response
+.json
+();
+        console.log('Run Created:', createRunResponse);
+
+        console.log('Run Created:', createRunResponse);
+
+        
+console
+.log
+(
+'Run Created:'
+,
+ createRunResponse);
+        return createRunResponse;
+
+        return createRunResponse;
+
+        
+return
+ createRunResponse;
+    }
+
+    }
+
+    }
+    else {
+
+    else {
+
+    
+else
+ {
+        console.error('POST request failed. Response Code:', response.status);
+
+        console.error('POST request failed. Response Code:', response.status);
+
+        
+console
+.error
+(
+'POST request failed. Response Code:'
+,
+ 
+response
+.status);
+        const errorResponse = await response.text();
+
+        const errorResponse = await response.text();
+
+        
+const
+ 
+errorResponse
+ 
+=
+ 
+await
+ 
+response
+.text
+();
+        console.error('Error Response:', errorResponse);
+
+        console.error('Error Response:', errorResponse);
+
+        
+console
+.error
+(
+'Error Response:'
+,
+ errorResponse);
+        return null;
+
+        return null;
+
+        
+return
+ 
+null
+;
+    }
+
+    }
+
+    }
+}
+}
+}
+```
+
+### 
+
+[](#ingesting-records-to-a-run)
+
+Ingesting Records to a Run
+
+Now that you've created a Project and a Run, you're ready to log your data to your Run. To ingest your data, make a POST request to the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">/projects/${projectId}/runs/${runId}/chains/ingest </code>endpoint.
+
+Your body will include two things:
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">rows:</code> Your Evaluation Run will be the result of running a series of data points (your eval set) through your system. For each step taken for every single data point in your eval set, you can include a "Node" in rows. See more on this below.
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">prompt_scorers_configuration</code>: A dictionary of metrics or scorers to compute as part of your run. E.g.
+    
+
+Copy```
+prompt_scorers_config = {       
+
+prompt_scorers_config = {       
+
+prompt_scorers_config 
+=
+ {       
+        adherence_nli: true,
+
+        adherence_nli: true,
+
+        adherence_nli
+:
+ 
+true
+,
+        chunk_attribution_utilization_nli: true,
+
+        chunk_attribution_utilization_nli: true,
+
+        chunk_attribution_utilization_nli
+:
+ 
+true
+,
+        completeness_nli: false,
+
+        completeness_nli: false,
+
+        completeness_nli
+:
+ 
+false
+,
+}
+}
+}
+```
+
+### 
+
+[](#how-to-structure-rows)
+
+How to structure `rows`:
+
+For each data point in your eval set, you can log a series of _NodeRows_ to represent the steps taken in your workflow. A NodeRow has the following fields:
+
+Copy```
+node_id: A unique ID (more on this below)
+
+node_id: A unique ID (more on this below)
+
+node_type: One of "llm," "chat," "chain," "tool," "agent," or "retriever."
+
+node_type: One of "llm," "chat," "chain," "tool," "agent," or "retriever."
+
+node_name: A name for your node (can be the same as node_type)
+
+node_name: A name for your node (can be the same as node_type)
+
+node_input: The input of the step (a string). If the input is JSON or a list, stringify it.
+
+node_input: The input of the step (a string). If the input is JSON or a list, stringify it.
+
+node_output: The input of the step (a string). If the input is JSON or a list, stringify it.
+
+node_output: The input of the step (a string). If the input is JSON or a list, stringify it.
+
+chain_root_id: The ID of its parent node (see below)
+
+chain_root_id: The ID of its parent node (see below)
+
+step: The order of this step in the sequence
+
+step: The order of this step in the sequence
+
+has_children: true if this node has children. false otherwise.
+
+has_children: true if this node has children. false otherwise.
+
+creation_timestamp: (Optional) unix timestamp when this step was taken
+
+creation_timestamp: (Optional) unix timestamp when this step was taken
+
+latency: Optional) Latency of this step (in ms)
+
+latency: Optional) Latency of this step (in ms)
+
+query_input_tokens: (Optional) Number of tokens in the input into this step.
+
+query_input_tokens: (Optional) Number of tokens in the input into this step.
+
+query_output_tokens: (Optional) Number of tokens in the output of this step.
+
+query_output_tokens: (Optional) Number of tokens in the output of this step.
+
+query_total_tokens: (Optional) Total number of tokens in the input and output of this step.
+query_total_tokens: (Optional) Total number of tokens in the input and output of this step.
+```
+
+**What is a NodeRow?**
+
+Galileo helps you trace multi-step workflow executions, including Chains, Agents, and RAG. To use it, create a record for each step or node in your system. Set the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">node_type</code> field to one of the following: "llm," "chat," "chain," "tool," "agent," or "retriever."
+
+Each node has 3 IDs that help create the hierarchy of the graph:
+
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">node_id</code>: A unique ID for each node (use <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">uuid()</code>).
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">chain_id</code>: The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">node_id</code> of the parent node (the node that called it).
+    
+*   <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">chain_root_id</code>: The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">node_id</code> of the root executor node (the root of the chain or workflow).
+    
+
+These fields establish the hierarchy and allow you to trace your executions. Imagine the following system architecture represented as a DAG:
+
+Copy```
+├── Agent
+
+├── Agent
+
+│   └── Chain
+
+│   └── Chain
+
+│       ├── Retriever
+
+│       ├── Retriever
+
+│       └── LLM
+│       └── LLM
+```
+
+Here's how the IDs would look for this DAG.
+
+Copy```
+├── Agent (id = foo)
+
+├── Agent (id = foo)
+
+│   └── Chain (node_id = bar1, chain_id = foo, chain_root_id = foo)
+
+│   └── Chain (node_id = bar1, chain_id = foo, chain_root_id = foo)
+
+│       ├── Retriever (node_id = bar2, chain_id = bar1, chain_root_id = foo)
+
+│       ├── Retriever (node_id = bar2, chain_id = bar1, chain_root_id = foo)
+
+│       └── LLM (node_id = bar3, chain_id = bar1, chain_root_id = foo)
+│       └── LLM (node_id = bar3, chain_id = bar1, chain_root_id = foo)
+```
+
+If a Node has children, set <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">has_children</code> to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">true</code>.
+
+Copy```
+const rows = [{
+
+const rows = [{
+
+const rows 
+=
+ [
+{
+        node_id: "A_UNIQUE_ID",
+
+        node_id: "A_UNIQUE_ID",
+
+        node_id
+:
+ 
+"A_UNIQUE_ID"
+,
+        node_type: "chain",
+
+        node_type: "chain",
+
+        node_type
+:
+ 
+"chain"
+,
+        node_name: "Chain",
+
+        node_name: "Chain",
+
+        node_name
+:
+ 
+"Chain"
+,
+        node_input: "Tell me a joke about bears!",
+
+        node_input: "Tell me a joke about bears!",
+
+        node_input
+:
+ 
+"Tell me a joke about bears!"
+,
+        node_output: "Here is one: Why did the bear go to the doctor? Because it had a grizzly cough!",
+
+        node_output: "Here is one: Why did the bear go to the doctor? Because it had a grizzly cough!",
+
+        node_output
+:
+ 
+"Here is one: Why did the bear go to the doctor? Because it had a grizzly cough!"
+,
+        chain_root_id: "A_UNIQUE_ID",
+
+        chain_root_id: "A_UNIQUE_ID",
+
+        chain_root_id
+:
+ 
+"A_UNIQUE_ID"
+,
+        step: 0,
+
+        step: 0,
+
+        step
+:
+ 
+0
+,
+        has_children: true,
+
+        has_children: true,
+
+        has_children
+:
+ true
+,
+        creation_timestamp: 0,
+
+        creation_timestamp: 0,
+
+        creation_timestamp
+:
+ 
+0
+,
+        latency: 0,
+
+        latency: 0,
+
+        latency
+:
+ 
+0
+,
+        query_input_tokens: 0,
+
+        query_input_tokens: 0,
+
+        query_input_tokens
+:
+ 
+0
+,
+        query_output_tokens: 0,
+
+        query_output_tokens: 0,
+
+        query_output_tokens
+:
+ 
+0
+,
+        query_total_tokens: 0
+
+        query_total_tokens: 0
+
+        query_total_tokens
+:
+ 
+0
+    },
+
+    },
+
+    
+},
+    {
+
+    {
+
+    
+{
+        node_id: "ANOTHER_UNIQUE_ID",
+
+        node_id: "ANOTHER_UNIQUE_ID",
+
+        node_id
+:
+ 
+"ANOTHER_UNIQUE_ID"
+,
+        node_type: "retriever",
+
+        node_type: "retriever",
+
+        node_type
+:
+ 
+"retriever"
+,
+        node_name: "Retriever",
+
+        node_name: "Retriever",
+
+        node_name
+:
+ 
+"Retriever"
+,
+        node_input: "Tell me a joke about bears!",
+
+        node_input: "Tell me a joke about bears!",
+
+        node_input
+:
+ 
+"Tell me a joke about bears!"
+,
+        node_output: ...,# serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...])),
+
+        node_output: ...,# serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...])),
+
+        chain_root_id: "A_UNIQUE_ID", # The ID of the parent node (i.e. step 0)
+
+        chain_root_id: "A_UNIQUE_ID", # The ID of the parent node (i.e. step 0)
+
+        chain_root_id
+:
+ 
+"A_UNIQUE_ID"
+,
+ 
+# The ID of the parent node (i.e. step 0)
+        step: 1,
+
+        step: 1,
+
+        step
+:
+ 
+1
+,
+        has_children: false,
+
+        has_children: false,
+
+        has_children
+:
+ false
+,
+        creation_timestamp: 0,
+
+        creation_timestamp: 0,
+
+        creation_timestamp
+:
+ 
+0
+,
+        latency: 0,
+
+        latency: 0,
+
+        latency
+:
+ 
+0
+,
+        query_input_tokens: 0,
+
+        query_input_tokens: 0,
+
+        query_input_tokens
+:
+ 
+0
+,
+        query_output_tokens: 0,
+
+        query_output_tokens: 0,
+
+        query_output_tokens
+:
+ 
+0
+,
+        query_total_tokens: 0
+
+        query_total_tokens: 0
+
+        query_total_tokens
+:
+ 
+0
+    },
+
+    },
+
+    
+},
+    {
+
+    {
+
+    
+{
+        node_id: "YET_ANOTHER_UNIQUE_ID",
+
+        node_id: "YET_ANOTHER_UNIQUE_ID",
+
+        node_id
+:
+ 
+"YET_ANOTHER_UNIQUE_ID"
+,
+        node_type: "llm",
+
+        node_type: "llm",
+
+        node_type
+:
+ 
+"llm"
+,
+        node_name: "LLM",
+
+        node_name: "LLM",
+
+        node_name
+:
+ 
+"LLM"
+,
+        node_input: "",
+
+        node_input: "",
+
+        node_input
+:
+ 
+""
+,
+        node_output: ...,# serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...])),
+
+        node_output: ...,# serialized output of the retriever (i.e. json.dumps([{"page_content": "doc_1", "metadata": {"key": "val"}}, {"page_content": "doc_2", "metadata": {"key": "val"}}, ...])),
+
+        chain_root_id: "A_UNIQUE_ID", # The ID of the parent node (i.e. step 0)
+
+        chain_root_id: "A_UNIQUE_ID", # The ID of the parent node (i.e. step 0)
+
+        chain_root_id
+:
+ 
+"A_UNIQUE_ID"
+,
+ 
+# The ID of the parent node (i.e. step 0)
+        step: 1,
+
+        step: 1,
+
+        step
+:
+ 
+1
+,
+        has_children: false,
+
+        has_children: false,
+
+        has_children
+:
+ false
+,
+        creation_timestamp: 0,
+
+        creation_timestamp: 0,
+
+        creation_timestamp
+:
+ 
+0
+,
+        latency: 0,
+
+        latency: 0,
+
+        latency
+:
+ 
+0
+,
+        query_input_tokens: 0,
+
+        query_input_tokens: 0,
+
+        query_input_tokens
+:
+ 
+0
+,
+        query_output_tokens: 0,
+
+        query_output_tokens: 0,
+
+        query_output_tokens
+:
+ 
+0
+,
+        query_total_tokens: 0
+
+        query_total_tokens: 0
+
+        query_total_tokens
+:
+ 
+0
+    }]
+    }]
+    
+}
+]
+```
+
+It's recommended you generate _node\_id_ and _chain\_root\_id_ (e.g. uuid()) and add the _id_ of the 'parent' node as the _chain\_root\_id_ of its children.
+
+Once you've created your rows, you can log them via the /ingest endpoint:
+
+Copy```
+
+
+
+
+async function logRun(projectId, runId, promptScorersConfiguration, rows) {
+
+async function logRun(projectId, runId, promptScorersConfiguration, rows) {
+
+async
+ function 
+logRun
+(projectId, runId, promptScorersConfiguration, rows)
+ 
+{
+    const customLogURL = `${ROOT_URL}/projects/${projectId}/runs/${runId}/chains/ingest`;
+
+    const customLogURL = `${ROOT_URL}/projects/${projectId}/runs/${runId}/chains/ingest`;
+
+    const customLogURL = `$
+{
+ROOT_URL
+}
+/
+projects
+/
+$
+{
+projectId
+}
+/
+runs
+/
+$
+{
+runId
+}
+/
+chains
+/
+ingest`;
+    const requestBody = {
+
+    const requestBody = {
+
+    const requestBody = 
+{
+        rows: [node],
+
+        rows: [node],
+
+        rows
+:
+ [node]
+,
+        prompt_scorers_configuration: promptScorersConfiguration
+
+        prompt_scorers_configuration: promptScorersConfiguration
+
+        prompt_scorers_configuration
+:
+ promptScorersConfiguration
+    };
+
+    };
+
+    
+}
+;
+    try {
+
+    try {
+
+    
+try
+ 
+{
+        const response = await fetch(customLogURL, {
+
+        const response = await fetch(customLogURL, {
+
+        const response = 
+await
+ 
+fetch
+(customLogURL, {
+            method: 'POST',
+
+            method: 'POST',
+
+            method: 
+'POST'
+,
+            headers: {
+
+            headers: {
+
+            headers: {
+                'Content-Type': 'application/json',
+
+                'Content-Type': 'application/json',
+
+                
+'Content-Type'
+: 
+'application/json'
+,
+                'Galileo-Api-Key': GALILEO_API_KEY
+
+                'Galileo-Api-Key': GALILEO_API_KEY
+
+                
+'Galileo-Api-Key'
+: GALILEO_API_KEY
+            },
+
+            },
+
+            },
+            body: JSON.stringify(requestBody)
+
+            body: JSON.stringify(requestBody)
+
+            body: JSON.
+stringify
+(requestBody)
+        });
+
+        });
+
+        })
+;
+        if (response.ok) {
+
+        if (response.ok) {
+
+        
+if
+ (response
+.
+ok) 
+{
+            console.log('Custom log request was successful');
+
+            console.log('Custom log request was successful');
+
+            console
+.
+log
+(
+'Custom log request was successful'
+)
+;
+            console.log(response);
+
+            console.log(response);
+
+            console
+.
+log
+(response)
+;
+        }
+
+        }
+
+        
+}
+        else {
+
+        else {
+
+        
+else
+ 
+{
+            console.error(`POST request failed. Response Code: ${response.status}`);
+
+            console.error(`POST request failed. Response Code: ${response.status}`);
+
+            console
+.
+error
+(`POST request failed. Response Code: ${response.status}`)
+;
+            const errorResponse = await response.text();
+
+            const errorResponse = await response.text();
+
+            const errorResponse = 
+await
+ response
+.
+text
+()
+;
+            console.error('Error Response:', errorResponse);
+
+            console.error('Error Response:', errorResponse);
+
+            console
+.
+error
+(
+'Error Response:'
+, errorResponse)
+;
+        }
+
+        }
+
+        
+}
+    }
+
+    }
+
+    
+}
+    catch (error) {
+
+    catch (error) {
+
+    
+catch 
+(error)
+ 
+{
+        console.error('Error occurred during the custom log request:', error);
+
+        console.error('Error occurred during the custom log request:', error);
+
+        console
+.
+error
+(
+'Error occurred during the custom log request:'
+, error)
+;
+    }
+
+    }
+
+    
+}
+}
+
+}
+
+}
+
+
+```
+
+[PreviousLog Pre-generated Responses in Python](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/logging-pre-generated-responses)[NextEvaluate and Optimize Agents, Chains or multi-step workflows](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-chains-or-multi-step-workflows)
+
+Last updated 27 days ago

@@ -1,0 +1,51 @@
+---
+title: "Context Adherence Luna"
+---
+
+# Context Adherence Luna
+
+Understand Galileo's Context Adherence Luna Metric
+
+_**Definition:**_ Measures whether your model's response was purely based on the context provided.
+
+_**Calculation:**_ Context Adherence Luna is computed using a fine-tuned in-house Galileo evaluation model. The model is a transformer-based encoder that predicts the probability of _Context Adherence_ for an input response and context. The model is trained on carefully curated RAG datasets and optimized to mimic the Context Adherence Plus metric.
+
+The same model is used to compute Chunk Adherence, Chunk Completeness, Chunk Attribution and Utilization, and a single inference call is used to compute all the Luna metrics at once.
+
+#### 
+
+[](#explainability)
+
+Explainability
+
+The _Luna_ model identifies which parts of the response are not adhering to the context provided. These sections can be highlighted in the response by clicking on the 👁️ icon next to the _Context Adherence_ metric value in _LLM_ or _Chat_ nodes.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FvYdfqugOfWZJfnqKY9GY%252Fimage.png%3Falt%3Dmedia%26token%3D3de0bcbd-a87b-4de3-9de6-9a8d9abd049a&width=768&dpr=4&quality=100&sign=8b319feb&sv=1)
+
+#### 
+
+[](#what-to-do-when-context-adherence-is-low)
+
+_What to Do When Context Adherence Is Low?_
+
+When a response is highly adherent to the context (i.e., it has a value of 1 or close to 1), it strictly includes information from the provided context. However, when a response is not adherent (i.e., it has a value of 0 or close to 0), it likely contains facts not present in the given context.
+
+Several factors can contribute to low context adherence:
+
+1.  **Insufficient Context**: If the source document lacks key information needed to answer the user's question, the response may be incomplete or off-topic. To address this, users should consider using various context enrichment strategies to ensure that the source documents retrieved contain the necessary information to answer the user's questions effectively.
+    
+2.  **Lack of Internal Reasoning and Creativity**: While Retrieval-Augmented Generation (RAG) focuses on factual grounding, it doesn't directly enhance the internal reasoning processes of the LLM. This limitation can cause the model to struggle with logic or common-sense reasoning, potentially resulting in nonsensical outputs even if the facts are accurate.
+    
+3.  **Lack of Contextual Awareness**: Although RAG provides factual grounding for the language model, it might not fully understand the nuances of the prompt or user intent. This can lead to the model incorporating irrelevant information or missing key points, thus affecting the overall quality of the response.
+    
+
+To improve context adherence, we recommend:
+
+1.  Ensuring your context DB has all the necessary info to answer the question
+    
+2.  Adjusting the prompt to tell the model to stick to the information it's given in the context.
+    
+
+[PreviousContext Adherence](/galileo/gen-ai-studio-products/guardrail-store/context-adherence)[NextContext Adherence Plus](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/groundedness)
+
+Last updated 29 days ago

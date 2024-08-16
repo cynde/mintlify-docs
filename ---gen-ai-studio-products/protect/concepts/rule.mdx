@@ -1,0 +1,90 @@
+---
+title: "Rule"
+---
+
+# Rule
+
+A condition or rule you never want your application to break. It's composed of three ingredients:
+
+*   A metric
+    
+*   An operator
+    
+*   A target value
+    
+
+Your Rules should evaluate to False for the base case, and to True for unwanted scenarios.
+
+In the example above, the "_input/output shall never contain PII_" is encoded into a Rule like below:
+
+Copy```
+                    { 
+
+                    { 
+
+                        "metric": "pii",
+
+                        "metric": "pii",
+
+                        "operator": "contains",
+
+                        "operator": "contains",
+
+                        "target_value": "ssn",
+
+                        "target_value": "ssn",
+
+                    },
+                    },
+```
+
+Or:
+
+Copy```
+gp.Rule(
+
+gp.Rule(
+
+gp
+.
+Rule
+(
+    metric=gp.RuleMetrics.pii,
+
+    metric=gp.RuleMetrics.pii,
+
+    metric
+=
+gp.RuleMetrics.pii,
+    operator=gp.RuleOperator.contains,
+
+    operator=gp.RuleOperator.contains,
+
+    operator
+=
+gp.RuleOperator.contains,
+    target_value="ssn"
+
+    target_value="ssn"
+
+    target_value
+=
+"ssn"
+)
+)
+)
+```
+
+## 
+
+[](#rules-and-metrics)
+
+Rules and Metrics
+
+Each metric requires a specific operator and target value to be compared against. An exhaustive list of metrics supported along with the operators and target values can be found [here](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators).
+
+At runtime, the rule is compared with the provided payload, and the metric is computed. If all of the rules are triggered, the ruleset is triggered and the action is applied.
+
+[PreviousRuleset](/galileo/gen-ai-studio-products/galileo-protect/concepts/ruleset)[NextAction](/galileo/gen-ai-studio-products/galileo-protect/concepts/action)
+
+Last updated 2 months ago

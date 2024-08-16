@@ -49,39 +49,352 @@
     }
   ],
   "navigation": [
-    {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
-    }
+      {
+          "group": "Gen Ai Studio Products",
+          "pages": [
+              {
+                  "group": "Evaluate",
+                  "pages": [
+                      "---gen-ai-studio-products/evaluate",
+                      {
+                          "group": "Quickstart",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/quickstart",
+                              "---gen-ai-studio-products/evaluate/quickstart/integrate-evaluate-into-my-existing-application-with-python",
+                              "---gen-ai-studio-products/evaluate/quickstart/prompt-engineering-from-a-ui"
+                          ]
+                      },
+                      {
+                          "group": "How To",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/how-to",
+                              "---gen-ai-studio-products/evaluate/how-to/create-an-evaluation-set",
+                              "---gen-ai-studio-products/evaluate/how-to/evaluate-and-optimize-prompts",
+                              "---gen-ai-studio-products/evaluate/how-to/evaluate-and-optimize-rag-applications",
+                              "---gen-ai-studio-products/evaluate/how-to/choose-your-guardrail-metrics",
+                              "---gen-ai-studio-products/evaluate/how-to/enabling-scorers-in-runs",
+                              "---gen-ai-studio-products/evaluate/how-to/identify-hallucinations",
+                              "---gen-ai-studio-products/evaluate/how-to/register-custom-metrics",
+                              "---gen-ai-studio-products/evaluate/how-to/prompt-management---storage",
+                              "---gen-ai-studio-products/evaluate/how-to/a-b-compare-prompts",
+                              "---gen-ai-studio-products/evaluate/how-to/experiment-with-multiple-prompts",
+                              "---gen-ai-studio-products/evaluate/how-to/experiment-with-multiple-chain-workflows",
+                              "---gen-ai-studio-products/evaluate/how-to/evaluate-with-human-feedback",
+                              "---gen-ai-studio-products/evaluate/how-to/add-tags-and-metadata-to-prompt-runs",
+                              "---gen-ai-studio-products/evaluate/how-to/log-pre-generated-responses-in-python",
+                              "---gen-ai-studio-products/evaluate/how-to/log-evaluate-runs-via-rest-apis",
+                              "---gen-ai-studio-products/evaluate/how-to/evaluate-and-optimize-agents--chains-or-multi-step-workflows",
+                              "---gen-ai-studio-products/evaluate/how-to/programmatically-fetch-logged-data",
+                              "---gen-ai-studio-products/evaluate/how-to/collaborate-with-other-personas",
+                              "---gen-ai-studio-products/evaluate/how-to/share-a-project",
+                              "---gen-ai-studio-products/evaluate/how-to/export-your-evaluation-runs",
+                              "---gen-ai-studio-products/evaluate/how-to/understand-your-metric-s-values",
+                              "---gen-ai-studio-products/evaluate/how-to/logging-and-comparing-against-your-expected-answers",
+                              "---gen-ai-studio-products/evaluate/how-to/customize-chainpoll-powered-metrics"
+                          ]
+                      },
+                      {
+                          "group": "Concepts",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/concepts",
+                              "---gen-ai-studio-products/evaluate/concepts/project",
+                              "---gen-ai-studio-products/evaluate/concepts/run",
+                              "---gen-ai-studio-products/evaluate/concepts/template",
+                              "---gen-ai-studio-products/evaluate/concepts/metrics",
+                              "---gen-ai-studio-products/evaluate/concepts/human-ratings"
+                          ]
+                      },
+                      {
+                          "group": "Integrations",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/integrations",
+                              "---gen-ai-studio-products/evaluate/integrations/llms",
+                              "---gen-ai-studio-products/evaluate/integrations/langchain",
+                              "---gen-ai-studio-products/evaluate/integrations/custom-chain"
+                          ]
+                      },
+                      {
+                          "group": "Examples",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/examples",
+                              "---gen-ai-studio-products/evaluate/examples/zero-shot-prompting",
+                              "---gen-ai-studio-products/evaluate/examples/rag-q-a--langchain---chromadb-"
+                          ]
+                      },
+                      {
+                          "group": "Faq",
+                          "pages": [
+                              "---gen-ai-studio-products/evaluate/faq",
+                              "---gen-ai-studio-products/evaluate/faq/errors-when-computing-metrics"
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "group": "Observe",
+                  "pages": [
+                      "---gen-ai-studio-products/observe",
+                      "---gen-ai-studio-products/observe/quickstart",
+                      {
+                          "group": "How To",
+                          "pages": [
+                              "---gen-ai-studio-products/observe/how-to",
+                              "---gen-ai-studio-products/observe/how-to/choosing-your-guardrail-metrics",
+                              "---gen-ai-studio-products/observe/how-to/registering-and-using-custom-metrics",
+                              "---gen-ai-studio-products/observe/how-to/setting-up-alerts",
+                              "---gen-ai-studio-products/observe/how-to/identifying-and-debugging-issues",
+                              "---gen-ai-studio-products/observe/how-to/monitoring-your-rag-application",
+                              "---gen-ai-studio-products/observe/how-to/logging-data-via-python",
+                              "---gen-ai-studio-products/observe/how-to/logging-data-via-restful-apis",
+                              "---gen-ai-studio-products/observe/how-to/programmatically-fetching-logged-data",
+                              "---gen-ai-studio-products/observe/how-to/exporting-your-data",
+                              "---gen-ai-studio-products/observe/how-to/understand-your-metric-s-values"
+                          ]
+                      },
+                      {
+                          "group": "Examples",
+                          "pages": [
+                              "---gen-ai-studio-products/observe/examples",
+                              "---gen-ai-studio-products/observe/examples/example-code---monitor-app"
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "group": "Protect",
+                  "pages": [
+                      "---gen-ai-studio-products/protect",
+                      "---gen-ai-studio-products/protect/quickstart",
+                      {
+                          "group": "How To",
+                          "pages": [
+                              "---gen-ai-studio-products/protect/how-to",
+                              "---gen-ai-studio-products/protect/how-to/creating-and-using-stages",
+                              "---gen-ai-studio-products/protect/how-to/invoking-rulesets",
+                              "---gen-ai-studio-products/protect/how-to/defining-rules",
+                              "---gen-ai-studio-products/protect/how-to/setting-a-timeout-on-your-protect-requests",
+                              "---gen-ai-studio-products/protect/how-to/using-protect-in-chains",
+                              "---gen-ai-studio-products/protect/how-to/pausing-or-resuming-a-stage",
+                              "---gen-ai-studio-products/protect/how-to/editing-centralized-stages"
+                          ]
+                      },
+                      {
+                          "group": "Concepts",
+                          "pages": [
+                              "---gen-ai-studio-products/protect/concepts",
+                              "---gen-ai-studio-products/protect/concepts/project",
+                              "---gen-ai-studio-products/protect/concepts/stage",
+                              "---gen-ai-studio-products/protect/concepts/ruleset",
+                              "---gen-ai-studio-products/protect/concepts/rule",
+                              "---gen-ai-studio-products/protect/concepts/action"
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "group": "Fine Tune",
+                  "pages": [
+                      "---gen-ai-studio-products/fine-tune",
+                      {
+                          "group": "Quickstart",
+                          "pages": [
+                              "---gen-ai-studio-products/fine-tune/quickstart",
+                              "---gen-ai-studio-products/fine-tune/quickstart/configuring-dq-auto"
+                          ]
+                      },
+                      "---gen-ai-studio-products/fine-tune/console-walkthrough",
+                      "---gen-ai-studio-products/fine-tune/using-alerts",
+                      "---gen-ai-studio-products/fine-tune/visualizing-and-understanding-your-data",
+                      "---gen-ai-studio-products/fine-tune/using-data-error-potential",
+                      "---gen-ai-studio-products/fine-tune/using-uncertainty",
+                      "---gen-ai-studio-products/fine-tune/finding-similar-samples",
+                      "---gen-ai-studio-products/fine-tune/taking-action",
+                      "---gen-ai-studio-products/fine-tune/selecting-additional-data-to-train-with"
+                  ]
+              },
+              {
+                  "group": "Galileo Guardrail Metrics",
+                  "pages": [
+                      "---gen-ai-studio-products/galileo-guardrail-metrics",
+                      {
+                          "group": "Chunk Relevance",
+                          "pages": [
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-relevance",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-relevance/chunk-relevance-luna"
+                          ]
+                      },
+                      {
+                          "group": "Context Adherence",
+                          "pages": [
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/context-adherence",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/context-adherence/context-adherence-luna",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/context-adherence/context-adherence-plus"
+                          ]
+                      },
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/instruction-adherence",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/correctness",
+                      {
+                          "group": "Completeness",
+                          "pages": [
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/completeness",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/completeness/completeness-luna",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/completeness/completeness-plus"
+                          ]
+                      },
+                      {
+                          "group": "Chunk Attribution",
+                          "pages": [
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-attribution",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-attribution/chunk-attribution-luna",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-attribution/chunk-attribution-plus"
+                          ]
+                      },
+                      {
+                          "group": "Chunk Utilization",
+                          "pages": [
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-utilization",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-utilization/chunk-utilization-luna",
+                              "---gen-ai-studio-products/galileo-guardrail-metrics/chunk-utilization/chunk-utilization-plus"
+                          ]
+                      },
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/uncertainty",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/prompt-perplexity",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/context-relevance",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/private-identifiable-information",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/toxicity",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/tone",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/sexism",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/bleu---rouge-1",
+                      "---gen-ai-studio-products/galileo-guardrail-metrics/prompt-injection"
+                  ]
+              },
+              {
+                  "group": "Galileo Ai Research",
+                  "pages": [
+                      "---gen-ai-studio-products/------galileo-ai-research",
+                      "---gen-ai-studio-products/------galileo-ai-research/rag-quality-metrics-using-luna",
+                      "---gen-ai-studio-products/------galileo-ai-research/chainpoll",
+                      "---gen-ai-studio-products/------galileo-ai-research/rag-quality-metrics-using-chainpoll",
+                      "---gen-ai-studio-products/------galileo-ai-research/galileo-data-error-potential--dep-",
+                      "---gen-ai-studio-products/------galileo-ai-research/data-drift-detection",
+                      "---gen-ai-studio-products/------galileo-ai-research/likely-mislabeled",
+                      "---gen-ai-studio-products/------galileo-ai-research/class-boundary-detection",
+                      "---gen-ai-studio-products/------galileo-ai-research/errors-in-object-detection",
+                      "---gen-ai-studio-products/------galileo-ai-research/automatic-prompt-optimization"
+                  ]
+              }
+          ]
+      },
+      {
+          "group": "Galileo Nlp Studio",
+          "pages": [
+              "---galileo-nlp-studio/train-high-quality-supervised-nlp-models",
+              {
+                  "group": "Text Classification",
+                  "pages": [
+                      "---galileo-nlp-studio/text-classification",
+                      "---galileo-nlp-studio/text-classification/getting-started",
+                      "---galileo-nlp-studio/text-classification/logging-data-to-galileo",
+                      "---galileo-nlp-studio/text-classification/model-monitoring-and-data-drift",
+                      "---galileo-nlp-studio/text-classification/-build-your-own-conditions",
+                      "---galileo-nlp-studio/text-classification/--automated-production-monitoring"
+                  ]
+              },
+              {
+                  "group": "Multi Label Text Classification",
+                  "pages": [
+                      "---galileo-nlp-studio/multi-label-text-classification",
+                      "---galileo-nlp-studio/multi-label-text-classification/getting-started"
+                  ]
+              },
+              {
+                  "group": "Named Entity Recognition",
+                  "pages": [
+                      "---galileo-nlp-studio/named-entity-recognition",
+                      "---galileo-nlp-studio/named-entity-recognition/getting-started",
+                      "---galileo-nlp-studio/named-entity-recognition/model-monitoring-and-data-drift"
+                  ]
+              },
+              {
+                  "group": "Natural Language Inference",
+                  "pages": [
+                      "---galileo-nlp-studio/natural-language-inference",
+                      "---galileo-nlp-studio/natural-language-inference/getting-started",
+                      "---galileo-nlp-studio/natural-language-inference/logging-data-to-galileo",
+                      "---galileo-nlp-studio/natural-language-inference/model-monitoring-and-data-drift"
+                  ]
+              },
+              "---galileo-nlp-studio/galileo---delta-lake--databricks-"
+          ]
+      },
+      {
+          "group": "How To And Faq",
+          "pages": [
+              {
+                  "group": "Product Features",
+                  "pages": [
+                      "how-to-and-faq/---product-features",
+                      "how-to-and-faq/---product-features/dataset-view",
+                      "how-to-and-faq/---product-features/embeddings-view",
+                      "how-to-and-faq/---product-features/insights-panel",
+                      "how-to-and-faq/---product-features/alerts",
+                      "how-to-and-faq/---product-features/clustering",
+                      "how-to-and-faq/---product-features/error-types-breakdown",
+                      "how-to-and-faq/---product-features/similarity-search",
+                      "how-to-and-faq/---product-features/dataset-slices",
+                      "how-to-and-faq/---product-features/actions",
+                      "how-to-and-faq/---product-features/compare-across-runs",
+                      "how-to-and-faq/---product-features/third-party--3p--integrations"
+                  ]
+              },
+              "how-to-and-faq/---faqs",
+              {
+                  "group": "Enterprise Deployment",
+                  "pages": [
+                      "how-to-and-faq/---enterprise-deployment",
+                      "how-to-and-faq/---enterprise-deployment/--pre-requisites",
+                      "how-to-and-faq/---enterprise-deployment/--dependencies",
+                      "how-to-and-faq/---enterprise-deployment/--setting-up-new-users",
+                      {
+                          "group": "Deploying Galileo   Eks",
+                          "pages": [
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---eks",
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---eks/eks-cluster-config-example",
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---eks/updating-galileo-eks-cluster"
+                          ]
+                      },
+                      {
+                          "group": "Deploying Galileo   Eks  Zero Access",
+                          "pages": [
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---eks--zero-access-",
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---eks--zero-access-/eks-cluster-config-example--zero-access-"
+                          ]
+                      },
+                      {
+                          "group": "Deploying Galileo   Gke",
+                          "pages": [
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---gke",
+                              "how-to-and-faq/---enterprise-deployment/--deploying-galileo---gke/galileo-gcp-setup-script"
+                          ]
+                      },
+                      "how-to-and-faq/---enterprise-deployment/--deploying-galileo---aks",
+                      "how-to-and-faq/---enterprise-deployment/--deploying-galileo---exoscale",
+                      "how-to-and-faq/---enterprise-deployment/-----post-deployment-checklist",
+                      {
+                          "group": "Scheduling Automatic Backups For Your Cluster",
+                          "pages": [
+                              "how-to-and-faq/---enterprise-deployment/--scheduling-automatic-backups-for-your-cluster",
+                              "how-to-and-faq/---enterprise-deployment/--scheduling-automatic-backups-for-your-cluster/aws-velero-account-setup-script",
+                              "how-to-and-faq/---enterprise-deployment/--scheduling-automatic-backups-for-your-cluster/gcp-velero-account-setup-script"
+                          ]
+                      },
+                      "how-to-and-faq/---enterprise-deployment/--sso-integration",
+                      "how-to-and-faq/---enterprise-deployment/--security---access-control",
+                      "how-to-and-faq/---enterprise-deployment/--data-privacy-and-compliance"
+                  ]
+              }
+          ]
+      }
   ],
   "footerSocials": {
     "x": "https://x.com/mintlify",

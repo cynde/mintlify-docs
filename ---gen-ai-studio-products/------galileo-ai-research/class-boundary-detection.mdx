@@ -1,0 +1,37 @@
+---
+title: "Class Boundary Detection"
+---
+
+# Class Boundary Detection
+
+Detecting samples on the decision boundary
+
+**\[**🏅 **Enterprise-Only\] Class Boundary Detection is only available for Enterprise users for now.**
+
+Stay tuned for future announcements.
+
+Understanding a model's decision boundaries and the samples that exist near or on these decision boundaries is critical when evaluating a model's robustness and performance. A model with poorly defined decision boundaries is prone to making low confidence and erroneous predictions.
+
+Galileo's **On the Boundary** feature highlights data cohorts that exist near or on these decision boundaries - i.e. data that the model struggles to discern between distinct classes. Identifying these samples reveals high ROI data that are not well distinguished by the model (i.e. confidently predicted as a certain class) and are likely to be poorly classified. Moreover, tracking these samples in production can reveal overlapping class definitions and signal a need for model and data tuning to better differentiate select classes.
+
+Within the Galileo Console, selecting the **On the Boundary** tab filters exactly the samples existing between the model's learned definition of classes:
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-697c6a67d905f76e958446b8566fa08d5c8ad74c%252Fimage%2520%283%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=8c95a744&sv=1)
+
+Full Dataset View - Samples Colored by Class Label
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-21981e88f5923f216a8e43420d8aec883cadd40c%252Fimage%2520%2820%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=925e345b&sv=1)
+
+On the boundary - samples on the model's decision boundary
+
+#### 
+
+[](#on-the-boundary-calculation)
+
+**On the Boundary Calculation**
+
+On the boundary samples are identified by analyzing the model's output probability distribution. Given the model's output probabilities, we analyze the model's class confusion through computing per-sample certainty ratios - a metric computed as the ratio between a model's most confident predictions. Certainty ratios provide intuitive measures of class confusion not captured by traditional methods such as confidence. Through smart thresholding, we then identify samples that are particularly confused between two or more prediction classes.
+
+[PreviousLikely Mislabeled](/galileo/gen-ai-studio-products/ml-research-algorithms/likely-mislabeled)[NextErrors in Object Detection](/galileo/gen-ai-studio-products/ml-research-algorithms/errors-in-object-detection)
+
+Last updated 1 year ago

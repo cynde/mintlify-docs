@@ -1,0 +1,137 @@
+---
+title: "Evaluate And Optimize Prompts"
+---
+
+# Evaluate and Optimize Prompts
+
+How to use Galileo Evaluate for prompt engineering
+
+Galileo Evaluate enables you to evaluate and optimize your prompts with out-of-the-box Guardrail metrics.
+
+1.  <strong class="font-bold">Pip Install</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">promptquality</code> and create runs in your Python notebook.
+    
+2.  Next, you execute **promptquality.run()** like shown below.
+    
+
+Copy```
+import promptquality as pq
+
+import promptquality as pq
+
+import
+ promptquality 
+as
+ pq
+
+
+
+
+pq.login({YOUR_GALILEO_URL})
+
+pq.login({YOUR_GALILEO_URL})
+
+pq
+.
+login
+({YOUR_GALILEO_URL})
+
+
+
+
+template = "Explain {topic} to me like I'm a 5 year old"
+
+template = "Explain {topic} to me like I'm a 5 year old"
+
+template 
+=
+ 
+"Explain 
+{topic}
+ to me like I'm a 5 year old"
+
+
+
+
+data = {"topic": ["Quantum Physics", "Politics", "Large Language Models"]}
+
+data = {"topic": ["Quantum Physics", "Politics", "Large Language Models"]}
+
+data 
+=
+ 
+{
+"topic"
+:
+ [
+"Quantum Physics"
+,
+ 
+"Politics"
+,
+ 
+"Large Language Models"
+]
+}
+
+
+
+
+pq.run(project_name='my_first_project',
+
+pq.run(project_name='my_first_project',
+
+pq
+.
+run
+(project_name
+=
+'my_first_project'
+,
+       template=template,
+
+       template=template,
+
+       template
+=
+template,
+       dataset=data,
+
+       dataset=data,
+
+       dataset
+=
+data,
+       settings=pq.Settings(model_alias='ChatGPT (16K context)',
+
+       settings=pq.Settings(model_alias='ChatGPT (16K context)',
+
+       settings
+=
+pq.
+Settings
+(model_alias
+=
+'ChatGPT (16K context)'
+,
+                            temperature=0.8,
+
+                            temperature=0.8,
+
+                            temperature
+=
+0.8
+,
+                            max_tokens=400)) 
+                            max_tokens=400)) 
+                            max_tokens
+=
+400
+))
+ 
+```
+
+The code snippet above uses ChatGPT API endpoint from OpenAI. Want to use other models (Azure OpenAI, Cohere, Anthropic, Mistral, etc)? Check out the integration page [here.](https://app.gitbook.com/o/-MO05cVyQ2tmzGFt9tky/s/4jVWiQpRqmi04OnqZmn2/~/changes/1243/gen-ai-studio-products/galileo-evaluate/integrations/setting-up-your-llms/supported-llms)
+
+[PreviousCreate an Evaluation Set](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/creating-an-evaluation-set)[NextEvaluate and Optimize RAG Applications](/galileo/gen-ai-studio-products/galileo-evaluate/how-to/using-prompt-with-rag-or-vector-databases)
+
+Last updated 2 months ago

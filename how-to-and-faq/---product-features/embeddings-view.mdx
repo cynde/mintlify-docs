@@ -1,0 +1,77 @@
+---
+title: "Embeddings View"
+---
+
+# Embeddings View
+
+The Embeddings View provides a visual playground for you to interact with your datasets. To visualize your datasets, we leverage your model's embeddings logged during training, validation, testing or inference. Given these embeddings, we plot the data points on the 2D plane using the techniques explained below.
+
+## 
+
+[](#scalable-visualization)
+
+Scalable Visualization
+
+After experimenting with a host of different dimensionality reduction techniques, we have adopted the principles of UMAP \[[1](https://arxiv.org/abs/1802.03426)\]. Given a high dimensional dataset, UMAP seeks to preserve the positional information of each data sample while projecting the data into a lower dimensional space (the 2D plane in our case). We additionally use a parameterized version of UMAP along with custom compression techniques to efficiently scale our data visualization to O(million) samples.
+
+## 
+
+[](#embedding-view-interaction)
+
+Embedding View Interaction
+
+The Embedding View allows you to visually detect patterns in the data, interactively select dataset sub populations for further exploration, and visualize different dataset features and insights to identify model decision boundaries and better gauge overall model performance. Visualizing data embeddings provides a key component in going beyond traditional dataset level metrics for analyzing model performance and understanding data quality.
+
+### 
+
+[](#general-navigation)
+
+General Navigation
+
+Navigating the embedding view is made easy with interactive plotting. While exploring your dataset you can easily adjust and drag the embedding plane with the P_an_ tool, zoom in and out on specific data regions with S_croll to Zoom,_ and reset the visualization with the _Reset Axes_ tool\*.\* To interact with individual data samples, simply hover the cursor over a data sample of interest to display information and insights.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FyVlanTbuo6VoyuyQtijx%252Fezgif.com-video-to-gif%2520%287%29.gif%3Falt%3Dmedia%26token%3D7eacac68-e721-4814-8e9a-c22964c3a146&width=768&dpr=4&quality=100&sign=24652d35&sv=1)
+
+Fig. General embeddings view navigation
+
+### 
+
+[](#color-by)
+
+**Color By**
+
+One powerful feature is the ability to color data points by different data fields e.g. <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">ground truth labels</code>, <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">data error potential (DEP)</code>, etc. Different data coloring schemes reveal different dataset insights (i.e. using color by <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">predicted labels</code> reveals the model's perceived decision boundaries) and altogether provide a more holistic view of the data.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F8k3PTAhIYp5YpfGP6vgb%252Fezgif.com-video-to-gif%2520%288%29.gif%3Falt%3Dmedia%26token%3D510bfbe9-3357-4f86-8d0d-c128f7079ce6&width=768&dpr=4&quality=100&sign=46ac85f1&sv=1)
+
+Fig. Coloring by different data fields opens the door to a range of insights
+
+### 
+
+[](#subset-selection)
+
+Subset Selection
+
+Once you have identified a data subset of interest, you can explicitly select this subset to further analyze and view insights on. We offer two different selection tools: _lasso selection_ and _box_ _select_.
+
+After selecting a data subset, the embeddings view, insights charts, and the general data table are all updated to reflect _just_ the selected data. As shown below, given a cluster of miss-classified data points, you can make a lasso selection to easily inspect subset specific insights. For example, you can view model performance on the selected sub population, as well as develop insights into which classes are most significantly underperforming.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FEkiYeUnnbvL0JPeVZgoU%252Fezgif.com-video-to-gif%2520%286%29.gif%3Falt%3Dmedia%26token%3De8d3d072-b0a3-4863-b4f4-d904dca137b8&width=768&dpr=4&quality=100&sign=2ea73d03&sv=1)
+
+Fig. Lasso Selection
+
+### 
+
+[](#similarity-search)
+
+Similarity Search
+
+In the Embeddings View, you can easily interact with Galileo's _similarity search_ feature. Hovering over a data point reveals the "Show similar" button. When selected, your inspection dataset is restricted to the data samples with most similar embeddings to the selected data sample, allowing you to quickly inspect model performance over a highly focused data sub-population. See the [_similarity search_](/galileo/how-to-and-faq/galileo-product-features/similarity-search) \_\_ documentation for more details.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F1qV8ZtQEvzakkO1Na5Ft%252Fezgif.com-video-to-gif%2520%289%29.gif%3Falt%3Dmedia%26token%3D53b87028-0b48-4640-b256-a68238be6622&width=768&dpr=4&quality=100&sign=c172b056&sv=1)
+
+Fig. Similarity search enables quick surfacing of similar data samples
+
+[PreviousDataset View](/galileo/how-to-and-faq/galileo-product-features/dataset-view)[NextInsights Panel](/galileo/how-to-and-faq/galileo-product-features/insights-panel)
+
+Last updated 10 months ago

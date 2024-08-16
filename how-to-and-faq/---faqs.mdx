@@ -1,0 +1,801 @@
+---
+title: "   Faqs"
+---
+
+# 🙋FAQs
+
+You have questions, we have (some) answers!
+
+### 
+
+[](#text-classification)
+
+Text Classification
+
+1.  [How to find mislabeled samples?](https://www.loom.com/share/19b5eb751b7c4d1598fafdbc552a4a82)
+    
+2.  [How to analyze misclassified samples?](https://www.loom.com/share/8fbcf48384964bdb9aa60d21310a3a6f)
+    
+3.  [What is DEP and how to use it?](https://www.loom.com/share/a49dfbd68a624bcfaff5601bf3c6b449)
+    
+4.  [How to inspect my model's embeddings?](https://www.loom.com/share/f5e0e38d265b4a818b89892dd8ee5600)
+    
+5.  [How to best leverage Similarity Search?](https://www.loom.com/share/f9dae455fcfa4442b738f2ccbb3b155f)
+    
+
+### 
+
+[](#named-entity-recognition)
+
+Named Entity Recognition
+
+1.  [NER: What's new?](https://www.loom.com/share/eebad1acedac49a3851216bbf509f83b)
+    
+2.  [How to identify spans that were hard to train on?](https://www.loom.com/share/4843dd3c79124b2c80c399915ba5c68e)
+    
+    1.  _Most Frequent High DEP words_
+        
+    2.  _Span-level Embeddings_
+        
+    
+3.  What do the different Error Types mean?
+    
+    1.  [Ghost Span Errors](https://www.loom.com/share/96f941703a424f4993cf38105ee262e3)
+        
+    2.  [Missed Span Errors](https://www.loom.com/share/a70cf72e9bb9445496ed5b186a76a710)
+        
+    3.  [Span Shift Errors](https://www.loom.com/share/92e4cd59389e4c31bedcde852c912d0a)
+        
+    4.  [Wrong Tag Errors](https://www.loom.com/share/1e945e1245344452ac5b745ea6139d18)
+        
+    
+
+### 
+
+[](#questions)
+
+Questions
+
+*   [**How do I install the Galileo Python client?**](/galileo/how-to-and-faq/faqs#q-how-do-i-install-the-galileo-python-client)
+    
+*   [**I'm seeing errors importing dataquality in jupyter/google colab**](/galileo/how-to-and-faq/faqs#q-im-seeing-errors-importing-dataquality-in-jupyter-google-colab)
+    
+*   [**My run finished, but there's no data in the console! What went wrong?**](/galileo/how-to-and-faq/faqs#q-my-run-finished-but-theres-no-data-in-the-console-what-went-wrong)
+    
+*   [**Can I Log custom metadata to my dataset?**](/galileo/how-to-and-faq/faqs#q-can-i-log-custom-metadata-to-my-dataset)
+    
+*   [**How do I disable Galileo logging during model training?**](/galileo/how-to-and-faq/faqs#q-how-do-i-disable-galileo-logging-during-model-training)
+    
+*   [**How do I load a Galileo exported file for re-training?**](/galileo/how-to-and-faq/faqs#q-how-do-i-load-a-galileo-exported-file-for-re-training)
+    
+*   [**How do I get my NER data into huggingface format?**](/galileo/how-to-and-faq/faqs#q-how-do-i-get-my-ner-data-into-huggingface-format)
+    
+*   [**My spans JSON column for my NER data can't be loaded with json.loads**](/galileo/how-to-and-faq/faqs#q-my-spansjson-column-for-my-ner-data-cant-be-loaded-with-json.loads)
+    
+*   [**Galileo marked an incorrect span as a span shift error, but it looks like a wront tag error. What's going on?**](/galileo/how-to-and-faq/faqs#q-galileo-marked-an-incorrect-span-as-a-span-shift-error-but-it-looks-like-a-wrong-tag-error.-whats)
+    
+*   [**What do you mean when you say the deployment logs are written to Google Cloud?**](/galileo/how-to-and-faq/faqs#q-what-do-you-mean-when-you-say-the-deployment-logs-are-written-to-google-cloud)
+    
+*   [**Does Galileo store data in the cloud?**](/galileo/how-to-and-faq/faqs#q-does-galileo-store-data-in-the-cloud)
+    
+*   [**Where are the client logs stored?**](/galileo/how-to-and-faq/faqs#q-where-are-the-client-logs-stored)
+    
+*   [**Do you offer air-gapped deployments?**](/galileo/how-to-and-faq/faqs#q-do-you-offer-air-gapped-deployments)
+    
+*   [**How do I contact Galileo?**](/galileo/how-to-and-faq/faqs#q-how-do-i-contact-galileo)
+    
+*   [**How do I convert my vaex dataframe to pandas when using dq.metrics.get\_dataframe?**](/galileo/how-to-and-faq/faqs#q-how-do-i-convert-my-vaex-dataframe-to-a-pandas-dataframe-when-using-the-dq.metrics.get_dataframe)
+    
+*   [**Importing dataquality throws a permissions error \`PermissionError\`**](/galileo/how-to-and-faq/faqs#q-importing-dataquality-throws-a-permissions-error-permissionerror)
+    
+*   [**vaex-core fails to build with Python 3.10 on MacOs Monterey**](/galileo/how-to-and-faq/faqs#q-vaex-core-fails-to-build-with-python-3.10-on-macos-monterey)
+    
+*   [**Training a model is really slow. Can I make it go faster?**](/galileo/how-to-and-faq/faqs#q-training-a-model-is-really-slow.-can-i-make-it-go-faster)
+    
+
+### 
+
+[](#q-how-do-i-install-the-galileo-python-client)
+
+Q: How do I install the Galileo Python client?
+
+Copy```
+pip install dataquality
+pip install dataquality
+```
+
+### 
+
+[](#q-im-seeing-errors-importing-dataquality-in-jupyter-google-colab)
+
+Q: I'm seeing errors importing dataquality in Jupyter / Google Colab
+
+Make sure you running at least <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataquality &gt;= 0.8.6</code> The first thing to try in this case it to <strong class="font-bold">restart your kernel</strong>. Dataquality uses certain python packages that require your kernel to be restarted after installation. In Jupyter you can click "Kernel -&gt; Restart"
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-aab18ee238ad5f4c089f3e98efc631f2a307d5fb%252Fimage%2520%2814%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=4972fd75&sv=1)
+
+In Colab you can click "Runtime -> Disconnect and delete runtime"
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-7734f80c65c3cd40f5b6e76f2691ee3f001673f8%252Fimage%2520%2826%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=e7862c80&sv=1)
+
+If you already had <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://github.com/vaexio">vaex</a> installed on your machine prior to installing <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataquality,</code> there is a known bug when upgrading. <strong class="font-bold">Solution:</strong> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">pip uninstall -y vaex-core vaex-hdf5 &amp;&amp; pip install --upgrade --force-reinstall dataquality</code> ``<strong class="font-bold">And then restart your jupyter/colab kernel</strong>
+
+### 
+
+[](#q-my-run-finished-but-theres-no-data-in-the-console-what-went-wrong)
+
+Q: My run finished, but there's no data in the console! What went wrong?
+
+Make sure you ran <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.finish()</code> after the run.
+
+t's possible that:
+
+*   your run hasn't finished processing
+    
+*   you've logged some data incorrectly
+    
+*   you may have found a bug (congrats!
+    
+
+First, to see what happened to your data, you can run <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.wait_for_run()</code> (you can optionally pass in the project and run name, or the most recent will be used)
+
+This function will wait for your run to finish processing. If it's completed, check the console again by refreshing.
+
+If that shows an exception, your run failed to be processed. You can see the logs from your model training by running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.get_dq_log_file()</code> which will download and return the path to your logfile. That may indicate the issue. Feel free to reach out to us for more help!
+
+### 
+
+[](#q-can-i-log-custom-metadata-to-my-dataset)
+
+Q: Can I log custom metadata to my dataset?
+
+Yes (glad you asked)! You can attach any metadata fields you'd like to your original dataset, as long as they are primitive datatypes (numbers and strings).
+
+In all available logging functions for input data, you can attach custom metadata:
+
+Copy```
+df = pd.DataFrame(
+
+df = pd.DataFrame(
+
+df 
+=
+ pd
+.
+DataFrame
+(
+    {
+
+    {
+
+    {
+        "id": [0,1,2,3],
+
+        "id": [0,1,2,3],
+
+        
+"id"
+: [
+0
+,
+1
+,
+2
+,
+3
+],
+        "text": ["sen 1","sen 2","sen 3","sen 4"],
+
+        "text": ["sen 1","sen 2","sen 3","sen 4"],
+
+        
+"text"
+: [
+"sen 1"
+,
+"sen 2"
+,
+"sen 3"
+,
+"sen 4"
+],
+        "label": [0, 1, 1, 0],
+
+        "label": [0, 1, 1, 0],
+
+        
+"label"
+: [
+0
+, 
+1
+, 
+1
+, 
+0
+],
+        "customer_score": [0.66, 0.98, 0.12, 0.05],
+
+        "customer_score": [0.66, 0.98, 0.12, 0.05],
+
+        
+"customer_score"
+: [
+0.66
+, 
+0.98
+, 
+0.12
+, 
+0.05
+],
+        "sentiment": ["happy", "sad", "happy", "angry"]
+
+        "sentiment": ["happy", "sad", "happy", "angry"]
+
+        
+"sentiment"
+: [
+"happy"
+, 
+"sad"
+, 
+"happy"
+, 
+"angry"
+]
+    }
+
+    }
+
+    }
+)
+
+)
+
+)
+
+
+
+
+dq.log_dataset(df, meta=["customer_score", "sentiment"])
+dq.log_dataset(df, meta=["customer_score", "sentiment"])
+dq
+.
+log_dataset
+(df, meta
+=
+[
+"customer_score"
+, 
+"sentiment"
+])
+```
+
+Copy```
+texts = [
+
+texts = [
+
+texts 
+=
+ [
+    "Text sample 1",
+
+    "Text sample 1",
+
+    
+"Text sample 1"
+,
+    "Text sample 2",
+
+    "Text sample 2",
+
+    
+"Text sample 2"
+,
+    "Text sample 3",
+
+    "Text sample 3",
+
+    
+"Text sample 3"
+,
+    "Text sample 4"
+
+    "Text sample 4"
+
+    
+"Text sample 4"
+]
+
+]
+
+]
+labels = ["B", "C", "A", "A"]
+
+labels = ["B", "C", "A", "A"]
+
+labels 
+=
+ [
+"B"
+,
+ 
+"C"
+,
+ 
+"A"
+,
+ 
+"A"
+]
+meta = {
+
+meta = {
+
+meta 
+=
+ 
+{
+    "sample_importance": ["high", "low", "low", "medium"]
+
+    "sample_importance": ["high", "low", "low", "medium"]
+
+    
+"sample_importance"
+:
+ [
+"high"
+,
+ 
+"low"
+,
+ 
+"low"
+,
+ 
+"medium"
+]
+    "quality_ranking": [9.7, 2.4, 5.5, 1.2]
+
+    "quality_ranking": [9.7, 2.4, 5.5, 1.2]
+
+    
+"quality_ranking"
+:
+ [
+9.7
+,
+ 
+2.4
+,
+ 
+5.5
+,
+ 
+1.2
+]
+}
+
+}
+
+}
+ids = [0, 1, 2, 3]
+
+ids = [0, 1, 2, 3]
+
+ids 
+=
+ [
+0
+,
+ 
+1
+,
+ 
+2
+,
+ 
+3
+]
+split = "training"
+
+split = "training"
+
+split 
+=
+ 
+"training"
+
+
+
+
+dq.log_data_samples(texts=texts, labels=labels, ids=ids, meta=meta split=split)
+dq.log_data_samples(texts=texts, labels=labels, ids=ids, meta=meta split=split)
+dq
+.
+log_data_samples
+(texts
+=
+texts, labels
+=
+labels, ids
+=
+ids, meta
+=
+meta split
+=
+split)
+```
+
+This data will show up in the console under the column dropdown ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-f92fc9612adc983bc9926506167d35741a35dd82%252Fimage%2520%287%29.png%3Falt%3Dmedia&width=300&dpr=4&quality=100&sign=448d2445&sv=1)
+
+And you can see any performance metric grouped by your categorical metadata ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-bcc9844ce63a96253b2c59c263d59f362b54ad4b%252Fimage%2520%2836%29.png%3Falt%3Dmedia&width=300&dpr=4&quality=100&sign=b46ce50e&sv=1)
+
+Lastly, once active, you can further filter your data by your metadata fields, helping find high-value cohorts ![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-fb8c22b01060ecfac72632dad07ffd9ea18c3273%252Fimage%2520%284%29.png%3Falt%3Dmedia&width=300&dpr=4&quality=100&sign=c8806d65&sv=1)\*\*\*\*
+
+### 
+
+[](#q-how-do-i-disable-galileo-logging-during-model-training)
+
+Q: How do I disable Galileo logging during model training?
+
+* * *
+
+See Disabling Galileo
+
+### 
+
+[](#q-how-do-i-load-a-galileo-exported-file-for-re-training)
+
+Q: How do I load a Galileo exported file for re-training?
+
+* * *
+
+Copy```
+from datasets import Dataset, dataset_dict
+
+from datasets import Dataset, dataset_dict
+
+from
+ datasets 
+import
+ Dataset
+,
+ dataset_dict
+file_name_train = "exported_galileo_sample_file_train.parquet"
+
+file_name_train = "exported_galileo_sample_file_train.parquet"
+
+file_name_train 
+=
+ 
+"exported_galileo_sample_file_train.parquet"
+file_name_val = "exported_galileo_sample_file_val.parquet"
+
+file_name_val = "exported_galileo_sample_file_val.parquet"
+
+file_name_val 
+=
+ 
+"exported_galileo_sample_file_val.parquet"
+file_name_test = "exported_galileo_sample_file_test.parquet"
+
+file_name_test = "exported_galileo_sample_file_test.parquet"
+
+file_name_test 
+=
+ 
+"exported_galileo_sample_file_test.parquet"
+ds_train = Dataset.from_parquet(file_name_train)
+
+ds_train = Dataset.from_parquet(file_name_train)
+
+ds_train 
+=
+ Dataset
+.
+from_parquet
+(file_name_train)
+ds_val = Dataset.from_parquet(file_name_val)
+
+ds_val = Dataset.from_parquet(file_name_val)
+
+ds_val 
+=
+ Dataset
+.
+from_parquet
+(file_name_val)
+ds_test = Dataset.from_parquet(file_name_test)
+
+ds_test = Dataset.from_parquet(file_name_test)
+
+ds_test 
+=
+ Dataset
+.
+from_parquet
+(file_name_test)
+
+
+
+
+ds_exported = dataset_dict.DatasetDict({"train": ds_train, "validation": ds_val, "test": ds_test})
+
+ds_exported = dataset_dict.DatasetDict({"train": ds_train, "validation": ds_val, "test": ds_test})
+
+ds_exported 
+=
+ dataset_dict
+.
+DatasetDict
+({
+"train"
+: ds_train, 
+"validation"
+: ds_val, 
+"test"
+: ds_test})
+labels = ds_new["train"]["ner_labels"][0]
+
+labels = ds_new["train"]["ner_labels"][0]
+
+labels 
+=
+ ds_new
+[
+"train"
+]
+[
+"ner_labels"
+][
+0
+]
+
+
+
+
+tokenized_datasets = hf.tokenize_and_log_dataset(ds_exported, tokenizer, labels)
+
+tokenized_datasets = hf.tokenize_and_log_dataset(ds_exported, tokenizer, labels)
+
+tokenized_datasets 
+=
+ hf
+.
+tokenize_and_log_dataset
+(ds_exported, tokenizer, labels)
+train_dataloader = hf.get_dataloader(tokenized_datasets["train"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=True)
+
+train_dataloader = hf.get_dataloader(tokenized_datasets["train"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=True)
+
+val_dataloader = hf.get_dataloader(tokenized_datasets["validation"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=False)
+
+val_dataloader = hf.get_dataloader(tokenized_datasets["validation"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=False)
+
+test_dataloader = hf.get_dataloader(tokenized_datasets["test"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=False)
+test_dataloader = hf.get_dataloader(tokenized_datasets["test"], collate_fn=data_collator, batch_size=MINIBATCH_SIZE, shuffle=False)
+```
+
+### 
+
+[](#q-how-do-i-get-my-ner-data-into-huggingface-format)
+
+Q: How do I get my NER data into huggingface format?
+
+* * *
+
+Copy```
+import dataquality as dq
+
+import dataquality as dq
+
+from datasets import Dataset
+
+from datasets import Dataset
+
+
+
+
+
+dq.login()
+
+dq.login()
+
+# A vaex dataframe
+
+# A vaex dataframe
+
+df = dq.metrics.get_dataframe(
+
+df = dq.metrics.get_dataframe(
+
+    project_name, run_name, split, hf_format=True, tagging_schema="BIO"
+
+    project_name, run_name, split, hf_format=True, tagging_schema="BIO"
+
+)
+
+)
+
+df.export("data.parquet")
+
+df.export("data.parquet")
+
+ds = Dataset.from_parquet("data.parquet")
+ds = Dataset.from_parquet("data.parquet")
+```
+
+### 
+
+[](#q-my-spans-json-column-for-my-ner-data-cant-be-loaded-with-json.loads)
+
+Q: My `spans` JSON column for my NER data can't be loaded with `json.loads`
+
+If you're seeing an error similar to: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">JSONDecodeError: Expecting ',' delimiter: line 1 column 84 (char 83)</code> It's likely the case that you have some data in your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">text</code> field that is not valid json (extra quotes <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">"</code> or <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">'</code>). Unfortunately, we cannot modify the content of your span text, but we can strip out the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">text</code> field with some regex. Given a pandas dataframe <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">df</code> with column <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">spans</code> (from a Galileo export) you can replace <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">df["spans"] = df.apply(json.loads)</code> with (make sure to <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">import re</code>) <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">df["spans"] = df.apply(lambda row: json.loads(re.sub(r","text".}", "}", row)))</code>
+
+### 
+
+[](#q-galileo-marked-an-incorrect-span-as-a-span-shift-error-but-it-looks-like-a-wrong-tag-error.-whats)
+
+Q: Galileo marked an incorrect span as a span shift error, but it looks like a wrong tag error. What's going on?
+
+Great observation! Let's take a real example below, from the WikiNER IT dataset. As you can see, the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Anemone apennina</code> clearly looks like a wrong tag error (correct span boundaries, incorrect class prediction), but is marked as a span shift.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-d10120b9b97301ab4a8997878cf50245c8b1b48f%252Fimage%2520%2823%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=4219aca8&sv=1)
+
+We can further validate this with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.metrics.get_dataframe</code>. We can see that there are 2 spans with identical character boundaries, one with a label and one without (which is the prediction span).
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-f9105d3399e304f020eded3b3a582fbb68853739%252Fimage%2520%286%29%2520%281%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=f257df1a&sv=1)
+
+So what is going on here? When Galileo computes error types for each span, they are computed at the _byte-pair (BPE)_ level using the span **token** indices, not \*\*\*\* the **character** indices. When looking at the console, however, you are seeing the **character** level indices, because that's much more intuitive view of your data. That conversion from **token** (fine-grained) to \*\*character\*\* (coarse-grained) level indices can cause index differences to overlap as a result of less-granular information.
+
+We can again validate this with <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.metrics</code> by looking at the raw data logged to Galileo. As we can see, at the <strong class="font-bold">token</strong> level, the span start and end indices do not align, and in fact overlap (ids 21948 and 21950), which is the reason for the span_shift error 🤗
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fgit-blob-a549514d19d1c22b164f5c08340298a3fb4614c4%252Fimage%2520%2828%29.png%3Falt%3Dmedia&width=768&dpr=4&quality=100&sign=7c2fa98d&sv=1)
+
+### 
+
+[](#q-what-do-you-mean-when-you-say-the-deployment-logs-are-written-to-google-cloud)
+
+Q: What do you mean when you say the deployment logs are written to Google Cloud?
+
+We manage deployments and updates to the versions of services running in your cluster via Github Actions. Each deployment/update produces logs that go into a bucket on Galileo's cloud (GCP). During our private deployment process \*\*\*\* (for Enterprise users), we allow customers to provide us with their emails, so they can have access to these deployment logs.
+
+### 
+
+[](#q-where-are-the-client-logs-stored)
+
+Q: Where are the client logs stored?
+
+The client logs are stored in the home (~) folder of the machine where the training occurs.
+
+### 
+
+[](#q-does-galileo-store-data-in-the-cloud)
+
+Q: Does Galileo store data in the cloud?
+
+For Enterprise Users, data does not leave the customer VPC/Data Center. For users of the Free version of our product, we store data and model outputs in secured servers in the cloud. We pride ourselves in taking data security very seriously.
+
+### 
+
+[](#q-do-you-offer-air-gapped-deployments)
+
+Q: Do you offer air-gapped deployments?
+
+Yes, we do! Contact us to learn more.
+
+### 
+
+[](#q-how-do-i-contact-galileo)
+
+Q: How do I contact Galileo?
+
+You can write us at team\[at\]rungalileo.io
+
+### 
+
+[](#q-how-do-i-convert-my-vaex-dataframe-to-a-pandas-dataframe-when-using-the-dq.metrics.get_dataframe)
+
+Q: How do I convert my vaex dataframe to a pandas DataFrame when using the `dq.metrics.get_dataframe`
+
+Simply add <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dq.metrics.get_dataframe(...).to_pandas_df()</code>
+
+### 
+
+[](#q-importing-dataquality-throws-a-permissions-error-permissionerror)
+
+Q: **Importing dataquality throws a permissions error** `**PermissionError**`
+
+Galileo creates a folder in your system's <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> directory. If you are seeing a <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">PermissionsError</code> it means that your system does not have access to your current <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> directory. This may happen in an automated CI system like AWS Glue. To overcome this, simply change your <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> python Environment Variable to somewhere accessible. For example, the current directory you are in
+
+Copy```
+import os
+
+import os
+
+import
+ os
+
+
+
+
+# Set the HOME directory to the current working directory
+
+# Set the HOME directory to the current working directory
+
+# Set the HOME directory to the current working directory
+os.environ["HOME"] = os.getcwd()
+
+os.environ["HOME"] = os.getcwd()
+
+os
+.
+environ
+[
+"HOME"
+]
+ 
+=
+ os
+.
+getcwd
+()
+import dataquality as dq
+import dataquality as dq
+import
+ dataquality 
+as
+ dq
+```
+
+This will only affect the current python runtime, it will not change your system's <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> directory. Because of that, if you run a new python script in this environment again, you will need to set the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">HOME</code> variable in each new runtime.
+
+### 
+
+[](#q-vaex-core-fails-to-build-with-python-3.10-on-macos-monterey)
+
+Q: vaex-core fails to build with Python 3.10 on MacOs Monterey
+
+When installing dataquality with python 3.10 on MacOS Monterey you might encounter an issue when building vaex-core binaries. To fix any issues that come up, please follow the instructions in the failure output which may include running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">xcodebuild -runFirstLaunch</code> and also allowing for any clang permission requests that pop up.
+
+### 
+
+[](#q-training-a-model-is-really-slow.-can-i-make-it-go-faster)
+
+Q: Training a model is really slow. Can I make it go faster?
+
+For larger datasets you can speed up model training by running CUDA.
+
+**Note: You** _**must**_ **be running CUDA 11.X for this functionality to work.**
+
+Cuda's CUML libraries require CUDA 11.X to work properly. You can check your CUDA version by running <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">nvcc -V</code>. <strong class="font-bold">Do not run nvidia-smi</strong>, that does not give you the true CUDA version. To learn more about this installation or to do it manually, see the <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="https://docs.rapids.ai/install">installation guide</a>.
+
+If you are training on datasets in the millions, and noticing that the Galileo processing is slowing down at the "Dimensionality Reduction" stage, you can optionally run those steps on the GPU/TPU that you are training your model with.
+
+In order to leverage this feature, simply install <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">dataquality</code> with the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">[cuda]</code> extra.
+
+Copy```
+pip install 'dataquality[cuda]' --extra-index-url=https://pypi.nvidia.com/
+pip install 'dataquality[cuda]' --extra-index-url=https://pypi.nvidia.com/
+```
+
+We pass in the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">extra-index-url</code> to the install, because the extra required packages are hosted by Nvidia, and exist on Nvidia's personal pypi repository, not the standard pypi repository.
+
+After running that installation, dataquality will automatically pick up on the available libraries, and leverage your GPU/TPU to apply the dimensionality reduction.
+
+<strong class="font-bold">Please validate that the installation ran correctly by running </strong><code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">import cuml</code> <strong class="font-bold">in your environment. </strong>This must complete successfully.
+
+To manually install these packages (at your own risk), you can run
+
+Copy```
+pip install cuml-cu11 ucx-py-cu11 rmm-cu11 raft-dask-cu11 pylibraft-cu11 dask-cudf-cu11 cudf-cu11  --extra-index-url=https://pypi.nvidia.com/
+pip install cuml-cu11 ucx-py-cu11 rmm-cu11 raft-dask-cu11 pylibraft-cu11 dask-cudf-cu11 cudf-cu11  --extra-index-url=https://pypi.nvidia.com/
+```
+
+[PreviousThird Party (3P) Integrations](/galileo/how-to-and-faq/galileo-product-features/3p-integrations)[NextEnterprise Deployment](/galileo/how-to-and-faq/enterprise-only)
+
+Last updated 4 months ago

@@ -1,0 +1,898 @@
+---
+title: "Logging Data Via Python"
+---
+
+# Logging Data via Python
+
+Learn how to manually log your data via our Python Logger
+
+If you use Langchain in your production app, we recommend integrating via our [Langchain callback](/galileo/gen-ai-studio-products/galileo-observe/getting-started#integrating-with-langchain).
+
+You can use our Python Logger to log your data to Galileo. The Logger automatically batches and uploads data in the background asynchronously, ensuring the performance and reliability of your application are not compromised.
+
+Use the **log\_node\_start()** and **log\_node\_completion()** to log the beginning and end of each step:
+
+Copy```
+import json
+
+import json
+
+import
+ json
+
+
+
+
+from openai import OpenAI
+
+from openai import OpenAI
+
+from
+ openai 
+import
+ OpenAI
+from galileo_observe import GalileoObserve
+
+from galileo_observe import GalileoObserve
+
+from
+ galileo_observe 
+import
+ GalileoObserve
+from galileo_observe.schema.transaction import TransactionRecordType
+
+from galileo_observe.schema.transaction import TransactionRecordType
+
+from
+ galileo_observe
+.
+schema
+.
+transaction 
+import
+ TransactionRecordType
+
+
+
+
+client = OpenAI()
+
+client = OpenAI()
+
+client 
+=
+ 
+OpenAI
+()
+observe = GalileoObserve(project_name="llm_monitor_test_1", version='manual_app_v1')
+
+observe = GalileoObserve(project_name="llm_monitor_test_1", version='manual_app_v1')
+
+observe 
+=
+ 
+GalileoObserve
+(project_name
+=
+"llm_monitor_test_1"
+, version
+=
+'manual_app_v1'
+)
+
+
+
+
+prompt = "Tell me a joke about Large Language Models"
+
+prompt = "Tell me a joke about Large Language Models"
+
+prompt 
+=
+ 
+"Tell me a joke about Large Language Models"
+model = "gpt-3.5-turbo"
+
+model = "gpt-3.5-turbo"
+
+model 
+=
+ 
+"gpt-3.5-turbo"
+temperature = 0.3
+
+temperature = 0.3
+
+temperature 
+=
+ 
+0.3
+
+
+
+
+# Start a new chain
+
+# Start a new chain
+
+# Start a new chain
+chain_id = observe.log_node_start(
+
+chain_id = observe.log_node_start(
+
+chain_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chain,
+
+    node_type=TransactionRecordType.chain,
+
+    node_type
+=
+TransactionRecordType.chain,
+    input_text=json.dumps({"input": prompt}),
+
+    input_text=json.dumps({"input": prompt}),
+
+    input_text
+=
+json.
+dumps
+({
+"input"
+: prompt}),
+    constructor="CustomChain",
+
+    constructor="CustomChain",
+
+    constructor
+=
+"CustomChain"
+,
+)
+
+)
+
+)
+
+
+
+
+# Start a chat trace
+
+# Start a chat trace
+
+# Start a chat trace
+node_id = observe.log_node_start(
+
+node_id = observe.log_node_start(
+
+node_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chat,
+
+    node_type=TransactionRecordType.chat,
+
+    node_type
+=
+TransactionRecordType.chat,
+    chain_id=chain_id,
+
+    chain_id=chain_id,
+
+    chain_id
+=
+chain_id,
+    input_text=prompt,
+
+    input_text=prompt,
+
+    input_text
+=
+prompt,
+    model=model,
+
+    model=model,
+
+    model
+=
+model,
+    temperature=temperature,
+
+    temperature=temperature,
+
+    temperature
+=
+temperature,
+    constructor="ChatOpenAI",
+
+    constructor="ChatOpenAI",
+
+    constructor
+=
+"ChatOpenAI"
+,
+    user_metadata={"env": "production"},
+
+    user_metadata={"env": "production"},
+
+    user_metadata
+=
+{
+"env"
+: 
+"production"
+},
+    tags=["prod", "chat"],
+
+    tags=["prod", "chat"],
+
+    tags
+=
+[
+"prod"
+, 
+"chat"
+],
+)
+
+)
+
+)
+
+
+
+
+# Initiate the chat call
+
+# Initiate the chat call
+
+# Initiate the chat call
+chat_completion = client.chat.completions.create(
+
+chat_completion = client.chat.completions.create(
+
+chat_completion 
+=
+ client
+.
+chat
+.
+completions
+.
+create
+(
+    model=model,
+
+    model=model,
+
+    model
+=
+model,
+    messages=[{"role": "user", "content": prompt}],
+
+    messages=[{"role": "user", "content": prompt}],
+
+    messages
+=
+[{
+"role"
+: 
+"user"
+, 
+"content"
+: prompt}],
+    temperature=temperature,
+
+    temperature=temperature,
+
+    temperature
+=
+temperature,
+)
+
+)
+
+)
+
+
+
+
+# Log the chat completion
+
+# Log the chat completion
+
+# Log the chat completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=node_id,
+
+    node_id=node_id,
+
+    node_id
+=
+node_id,
+    output_text=chat_completion.choices[0].message.content,
+
+    output_text=chat_completion.choices[0].message.content,
+
+    output_text
+=
+chat_completion.choices[
+0
+].message.content,
+    num_input_tokens=chat_completion.usage.prompt_tokens,
+
+    num_input_tokens=chat_completion.usage.prompt_tokens,
+
+    num_input_tokens
+=
+chat_completion.usage.prompt_tokens,
+    num_output_tokens=chat_completion.usage.completion_tokens,
+
+    num_output_tokens=chat_completion.usage.completion_tokens,
+
+    num_output_tokens
+=
+chat_completion.usage.completion_tokens,
+    num_total_tokens=chat_completion.usage.total_tokens,
+
+    num_total_tokens=chat_completion.usage.total_tokens,
+
+    num_total_tokens
+=
+chat_completion.usage.total_tokens,
+    finish_reason=chat_completion.choices[0].finish_reason,
+
+    finish_reason=chat_completion.choices[0].finish_reason,
+
+    finish_reason
+=
+chat_completion.choices[
+0
+].finish_reason,
+)
+
+)
+
+)
+
+
+
+
+# Log the chain completion
+
+# Log the chain completion
+
+# Log the chain completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=chain_id,
+
+    node_id=chain_id,
+
+    node_id
+=
+chain_id,
+    finish_reason="chain_end",
+
+    finish_reason="chain_end",
+
+    finish_reason
+=
+"chain_end"
+,
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text
+=
+json.
+dumps
+({
+"output"
+: chat_completion.choices[
+0
+].message.content}),
+)
+)
+)
+```
+
+#### 
+
+[](#node-types)
+
+Node types
+
+We support logging the following types of nodes: “llm”, “chat”, “chain”, “agent”, “tool”, “retriever”.
+
+*   Chain and Agent nodes call on other nodes to perform actions, and wait on the outcome of these nodes to return their result. They're orchestrators. As such, they're generally _parent_ nodes of other nodes. Generally you would wrap your entire workflow in a Chain or Agent node.
+    
+*   LLM and Chat nodes represent LLM generation steps. If you're calling a Chat LLM, use a Chat node type. If you're calling a completion model, use an "LLM" node type.
+    
+*   Retriever nodes represent your retrievers. To log the output of your retriever, stringify your chunks when logging them as the output of your retriever:
+    
+
+Copy```
+example_retriever_output= [
+
+example_retriever_output= [
+
+example_retriever_output
+=
+ [
+    {"page_content": "doc_1", "metadata": {"key": "val"}}, 
+
+    {"page_content": "doc_1", "metadata": {"key": "val"}}, 
+
+    
+{
+"page_content"
+:
+ 
+"doc_1"
+,
+ 
+"metadata"
+:
+ 
+{
+"key"
+:
+ 
+"val"
+}},
+ 
+    {"page_content": "doc_2", "metadata": {"key": "val"}}, 
+
+    {"page_content": "doc_2", "metadata": {"key": "val"}}, 
+
+    
+{
+"page_content"
+:
+ 
+"doc_2"
+,
+ 
+"metadata"
+:
+ 
+{
+"key"
+:
+ 
+"val"
+}},
+ 
+...]
+
+...]
+
+...]
+
+
+
+
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=retriever_node_id,
+
+    node_id=retriever_node_id,
+
+    node_id
+=
+retriever_node_id,
+    output_text=json.dumps(example_retriever_output))
+
+    output_text=json.dumps(example_retriever_output))
+
+    output_text
+=
+json.
+dumps
+(example_retriever_output))
+)
+)
+)
+```
+
+*   Tool nodes are used to represent any _Tool_ or external API you use in your application
+    
+
+#### 
+
+[](#wrap-your-multi-step-workflows-in-a-chain-or-agent-node)
+
+**Wrap your multi-step workflows in a Chain or Agent node**
+
+When logging a multi-step workflow or chain, each step in your workflow will be represented by a 'node'. E.g. if you have a RAG system with a retriever step and an LLM step, you'll want to add a retriever node and an LLM node. This allows Galileo to trace and analyze each individual step.
+
+When you have multiple steps, wrap your steps in a "chain" or "agent" node. Your sub-steps will be children of that node.
+
+Copy```
+# Start a parent chain
+
+# Start a parent chain
+
+# Start a parent chain
+chain_id = observe.log_node_start(
+
+chain_id = observe.log_node_start(
+
+chain_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chain,
+
+    node_type=TransactionRecordType.chain,
+
+    node_type
+=
+TransactionRecordType.chain,
+    input_text=json.dumps({"input": prompt}),
+
+    input_text=json.dumps({"input": prompt}),
+
+    input_text
+=
+json.
+dumps
+({
+"input"
+: prompt}),
+    constructor="CustomChain",
+
+    constructor="CustomChain",
+
+    constructor
+=
+"CustomChain"
+,
+)
+
+)
+
+)
+
+
+
+
+# Start a retriever trace
+
+# Start a retriever trace
+
+# Start a retriever trace
+retriever_node_id = observe.log_node_start(
+
+retriever_node_id = observe.log_node_start(
+
+retriever_node_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.retriever,
+
+    node_type=TransactionRecordType.retriever,
+
+    node_type
+=
+TransactionRecordType.retriever,
+    chain_id=chain_id,
+
+    chain_id=chain_id,
+
+    chain_id
+=
+chain_id,
+    input_text=...,
+
+    input_text=...,
+
+    input_text
+=
+...,
+    tags=["prod", "chat"],
+
+    tags=["prod", "chat"],
+
+    tags
+=
+[
+"prod"
+, 
+"chat"
+],
+)
+
+)
+
+)
+
+
+
+
+... YOUR RETRIEVER CODE ...
+
+... YOUR RETRIEVER CODE ...
+
+... YOUR RETRIEVER CODE ...
+
+
+
+
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=retriever_node_id,
+
+    node_id=retriever_node_id,
+
+    node_id
+=
+retriever_node_id,
+    output_text=...
+
+    output_text=...
+
+    output_text
+=
+...
+)
+
+)
+
+)
+
+
+
+
+# Start a trace for your LLM node
+
+# Start a trace for your LLM node
+
+# Start a trace for your LLM node
+node_id = observe.log_node_start(
+
+node_id = observe.log_node_start(
+
+node_id 
+=
+ observe
+.
+log_node_start
+(
+    node_type=TransactionRecordType.chat,
+
+    node_type=TransactionRecordType.chat,
+
+    node_type
+=
+TransactionRecordType.chat,
+    chain_id=chain_id,
+
+    chain_id=chain_id,
+
+    chain_id
+=
+chain_id,
+    input_text=prompt,
+
+    input_text=prompt,
+
+    input_text
+=
+prompt,
+    model=model,
+
+    model=model,
+
+    model
+=
+model,
+    constructor="ChatOpenAI",
+
+    constructor="ChatOpenAI",
+
+    constructor
+=
+"ChatOpenAI"
+,
+    user_metadata={"env": "production"},
+
+    user_metadata={"env": "production"},
+
+    user_metadata
+=
+{
+"env"
+: 
+"production"
+},
+    tags=["prod", "chat"],
+
+    tags=["prod", "chat"],
+
+    tags
+=
+[
+"prod"
+, 
+"chat"
+],
+)
+
+)
+
+)
+
+
+
+
+... YOUR LLM CODE ...
+
+... YOUR LLM CODE ...
+
+... YOUR LLM CODE ...
+
+
+
+
+# Log the chat completion
+
+# Log the chat completion
+
+# Log the chat completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=node_id,
+
+    node_id=node_id,
+
+    node_id
+=
+node_id,
+    output_text=...,
+
+    output_text=...,
+
+    output_text
+=
+...,
+    num_input_tokens=...,
+
+    num_input_tokens=...,
+
+    num_input_tokens
+=
+...,
+    num_output_tokens=...,
+
+    num_output_tokens=...,
+
+    num_output_tokens
+=
+...,
+    num_total_tokens=...,
+
+    num_total_tokens=...,
+
+    num_total_tokens
+=
+...,
+    finish_reason=...,
+
+    finish_reason=...,
+
+    finish_reason
+=
+...,
+)
+
+)
+
+)
+
+
+
+
+# Finally, log the overall chain completion
+
+# Finally, log the overall chain completion
+
+# Finally, log the overall chain completion
+observe.log_node_completion(
+
+observe.log_node_completion(
+
+observe
+.
+log_node_completion
+(
+    node_id=chain_id,
+
+    node_id=chain_id,
+
+    node_id
+=
+chain_id,
+    finish_reason="chain_end",
+
+    finish_reason="chain_end",
+
+    finish_reason
+=
+"chain_end"
+,
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text=json.dumps({"output": chat_completion.choices[0].message.content}),
+
+    output_text
+=
+json.
+dumps
+({
+"output"
+: chat_completion.choices[
+0
+].message.content}),
+)
+)
+)
+```
+
+#### 
+
+[](#ids-need-to-be-unique)
+
+**IDs need to be unique**
+
+A node\_id cannot be repeated. Node IDs are unique across your project. Be careful when logging your data.
+
+[PreviousMonitoring your RAG application](/galileo/gen-ai-studio-products/galileo-observe/how-to/monitoring-your-rag-application)[NextLogging Data via RESTful APIs](/galileo/gen-ai-studio-products/galileo-observe/how-to/logging-data-via-restful-apis)
+
+Last updated 14 days ago

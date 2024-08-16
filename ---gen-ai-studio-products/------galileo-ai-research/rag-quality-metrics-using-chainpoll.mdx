@@ -1,0 +1,178 @@
+---
+title: "Rag Quality Metrics Using Chainpoll"
+---
+
+# RAG Quality Metrics using ChainPoll
+
+[ChainPoll](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll) powers the "Plus" versions of our four RAG Quality Guardrail Metrics:
+
+*   [Context Adherence Plus](/galileo/gen-ai-studio-products/ml-research-algorithms/rag-quality-metrics#context-adherence)
+    
+*   [Completeness Plus](/galileo/gen-ai-studio-products/ml-research-algorithms/rag-quality-metrics#completeness)
+    
+*   [Chunk Attribution Plus](/galileo/gen-ai-studio-products/ml-research-algorithms/rag-quality-metrics#chunk-attribution)
+    
+*   [Chunk Utilization Plus](/galileo/gen-ai-studio-products/ml-research-algorithms/rag-quality-metrics#chunk-utilization)
+    
+
+This page provides a brief overview of the research behind these metrics.
+
+Our research investments in RAG measurement are built on the foundation of our earlier work on LLM hallucination detection.
+
+For a full overview of that earlier work, check out our paper [Chainpoll: A high efficacy method for LLM hallucination detection](https://arxiv.org/abs/2310.18344 ). We're currently working on a companion paper, which will more comprehensively describe our work on RAG.
+
+### 
+
+[](#overall-metric-performance-results)
+
+**Overall Metric Performance Results**
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FR5ZBSkvrGcKxIXaRoWBd%252Fimage.png%3Falt%3Dmedia%26token%3Dcbfc8366-2320-4da4-b8fa-fc8549c72579&width=768&dpr=4&quality=100&sign=ba3faabe&sv=1)
+
+### 
+
+[](#methodology)
+
+Methodology
+
+In [Chainpoll: A high efficacy method for LLM hallucination detection](https://arxiv.org/abs/2310.18344 ), we found (among other things) that:
+
+*   OpenAI's GPT-4 is a capable judge of content produced by other LLMs.
+    
+    *   For example, on a hallucination detection task, we found that GPT-4's assessments aligned just as well with human annotations as human annotations (made by different annotators) aligned with each another.
+        
+    
+*   Models such as GPT-3.5-Turbo -- which are more cost-effective than GPT-4 and more appropriate for routine use -- are not as effective as GPT-4 at this type of judgment task.
+    
+    *   However, by using a technique we call **ChainPoll** with GPT-3.5, we can close much of this quality gap between GPT-3.5 and GPT-4.
+        
+    
+
+These observations shaped the research methodology we use today to develop new metrics. In particular,
+
+*   We make extensive use of GPT-4 as an annotator, and use GPT-4 annotations as a reference against which to compare each metric we develop.
+    
+    *   While GPT-4 produces high-quality results, using GPT-4 to compute metrics would be prohibitively slow and expensive for our users.
+        
+    *   Hence, we focus on building metrics that use more cost-effective models under the hood, viewing GPT-4 results as a quality bar to shoot for. The ideal, here, would be GPT-4-_quality_ results, offered up with the _cost and speed_ of GPT-3.5-like models.
+        
+    
+*   While we benchmark all metrics against GPT-4, we also supplement these evals where possible with other, complementary ways of assessing whether our metrics do what we want them to do.
+    
+*   To create new metrics, we design new prompts that can be used with ChainPoll.
+    
+    *   We evaluate many different potential prompts, evaluating them against GPT-4 and other sources of information, before settling on one to release.
+        
+    *   We also experiment with different ways of eliciting and aggregating results -- i.e. with variants on the basic ChainPoll recipe, tailored to the needs of each metric.
+        
+        *   For example, we've developed a novel evaluation methodology for RAG Attribution metrics, which involves "counterfactual" responses generated without access to some of the original chunks. We'll present this methodology in our forthcoming paper.
+            
+        
+    
+
+### 
+
+[](#metrics)
+
+Metrics
+
+#### 
+
+[](#response-level-metrics-context-adherence-plus-and-completeness-plus)
+
+Response-level metrics: Context Adherence Plus and Completeness Plus
+
+These two metrics capture different facets of RAG response quality. Both involve assessing the relationship between the response, the retrieved context, and the query that the RAG system is responding to.
+
+These metrics use ChainPoll. To recap, that means:
+
+*   We construct a prompt requesting a judgment from an LLM.
+    
+    *   In this case, the prompt includes the response and the retrieved context, and a set of instructions asking the LLM to make a particular judgment about these texts.
+        
+    *   The prompt requests an extensive, detailed chain of thought in which the LLM describes its step-by-step reasoning. (This is the "chain" part of ChainPoll.)
+        
+    
+*   We fetch _multiple_ responses from this single prompt. (This is the "poll" part of ChainPoll.)
+    
+*   We _aggregate_ the judgments across the responses, producing a single score.
+    
+
+The overall approach is inspired by the [self-consistency for chain of thought](https://arxiv.org/abs/2203.11171) technique.
+
+#### 
+
+[](#context-adherence-plus)
+
+Context Adherence Plus
+
+In our earlier paper [Chainpoll: A high efficacy method for LLM hallucination detection](https://arxiv.org/abs/2310.18344 ), we presented results on the quality of our Context Adherence Plus metric on a dataset suite we called **RealHall**.
+
+In our work on RAG, we've extended these experiments to benchmark Context Adherence Plus on some additional RAG-like datasets.
+
+Here's a peek into those results, showing the precision-recall curves for Context Adherence Plus on three RAG datasets, with GPT-4 annotations as ground truth labels.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FKMDbTrIg3T681KxbkUW7%252Fadh-pr.png%3Falt%3Dmedia%26token%3D9db98845-6c84-4401-9243-b9711f1f4cdd&width=768&dpr=4&quality=100&sign=bac6d0af&sv=1)
+
+As baselines, we compare Context Adherence Plus to a simpler prompting approach with GPT-3.5-Turbo, as well as the Faithfulness score defined by the RAGAS RAG evaluation library.
+
+#### 
+
+[](#completeness-plus)
+
+Completeness Plus
+
+Completeness differs from our other ChainPoll metrics like Context Adherence Plus in that it elicits a numeric score -- not a boolean -- directly from the LLM, then aggregates by taking an average over the scores.
+
+We chose this approach over a boolean + aggregate approach after trying both, because we found the numeric + aggregate approach gave more useful and interpretable scores.
+
+The next figure illustrates the difference in quality between our "final cut" of the Completeness metric and a simpler prompting approach with GPT-3.5-Turbo.
+
+Each pane is a histogram, where larger numbers mean better alignment with the ground truth. Taller bars near 1.0 indicate that a larger fraction of scores from the metric fall very close to the ground truth.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fz9OuPP7Nw2vuXMA4oj6U%252Fcomp-hist.png%3Falt%3Dmedia%26token%3Dd9c28d80-8c6f-45ba-bb4e-867dfd34c119&width=768&dpr=4&quality=100&sign=cf2e1263&sv=1)
+
+#### 
+
+[](#chunk-level-metrics-chunk-attribution-and-chunk-utilization)
+
+Chunk-level metrics: Chunk Attribution and Chunk Utilization
+
+These metrics evaluate individual chunks retrieved by a RAG system, in light of the response written by the system.
+
+We initially prototyped these metrics with ChainPoll, but after closer investigation, we found that ChainPoll aggregation provided minimal quality lift relative to only eliciting a single response.
+
+As a result, we use a single LLM response to compute these metrics. Although we don't use ChainPoll here, we are still able to improve upon simple prompting approaches through careful prompt engineering and task formulation.
+
+#### 
+
+[](#chunk-attribution-plus)
+
+Chunk Attribution Plus
+
+Here are precision-recall curves from one of our evals for Chunk Attribution Plus, namely evaluation against GPT-4.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FOejmYnoq7YDTvkXiQaxb%252Fattr-pr.png%3Falt%3Dmedia%26token%3Dd21e0e53-96ff-4bc4-b077-7918d5b63ffe&width=768&dpr=4&quality=100&sign=2298d5ca&sv=1)
+
+#### 
+
+[](#chunk-utilization-plus)
+
+Chunk Utilization Plus
+
+For Chunk Utilization Plus, we experimented with a number of ways to frame the task. Our most effective framing, which powers the Chunk Utilization metric in the Galileo product, involves
+
+*   Pre-splitting each chunk into sentences
+    
+*   Providing the LLM with brief, unique string keys which it can use to refer to individual chunk sentences (to improve token efficiency)
+    
+*   Asking the LLM to specify, using the keys, which sentences in each chunk were used
+    
+
+Here are the results of one of our evals for Utilization. This is the same style of plot used above for Completeness -- see that section for information on how to read it.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FIvws4dkyHm06gDxtylRW%252Futil-hist.png%3Falt%3Dmedia%26token%3D006f61a7-5ac5-47e8-9bc0-7a13f8b38744&width=768&dpr=4&quality=100&sign=9e897ad4&sv=1)
+
+[PreviousChainPoll](/galileo/gen-ai-studio-products/ml-research-algorithms/chainpoll)[NextGalileo Data Error Potential (DEP)](/galileo/gen-ai-studio-products/ml-research-algorithms/galileo-data-error-potential-dep)
+
+Last updated 3 months ago

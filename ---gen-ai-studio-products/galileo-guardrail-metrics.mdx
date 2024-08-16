@@ -1,0 +1,99 @@
+---
+title: "Galileo Guardrail Metrics"
+---
+
+# Galileo Guardrail Metrics
+
+Understand Galileo's Guardrail Metrics in LLM Studio
+
+Galileo has built a menu of <strong class="font-bold">Guardrail Metrics</strong> to help you evaluate and observe your generative AI applications. These metrics are tailored to your use case and are designed to help you ensure your application quality and behavior. The <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorer</code> definition for each metric is listed immediately below.
+
+Galileo's Guardrail Metrics are a combination of industry-standard metrics and an outcome of Galileo's in-house ML Research Team.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fb0HDkopt2sT6RDkReARn%252FScreenshot%25202024-06-13%2520at%252011.54.37%25E2%2580%25AFAM.png%3Falt%3Dmedia%26token%3Dd009c38b-001d-40ce-829e-fe034d06a2c4&width=768&dpr=4&quality=100&sign=2d65877d&sv=1)
+
+#### 
+
+[](#output-quality-metrics)
+
+Output Quality Metrics
+
+*   [Correctness](/galileo/gen-ai-studio-products/guardrail-store/factuality) (Open Domain Hallucinations)
+    
+*   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/instruction-adherence">Instruction Adherence:</a> <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.instruction_adherence_plus</code>
+    
+*   [Uncertainty](/galileo/gen-ai-studio-products/guardrail-store/uncertainty)
+    
+*   [BLEU](/galileo/gen-ai-studio-products/guardrail-store/bleu-and-rouge-1)
+    
+*   [ROUGE-1](/galileo/gen-ai-studio-products/guardrail-store/bleu-and-rouge-1)
+    
+*   [Completeness](/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness)
+    
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness-basic">Completeness Luna</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.completeness_luna</code>
+        
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/completeness/completeness">Completeness Plus</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.completeness_plus</code>
+        
+    
+
+#### 
+
+[](#rag-quality-metrics)
+
+RAG Quality Metrics
+
+*   [Context Adherence](/galileo/gen-ai-studio-products/guardrail-store/context-adherence/groundedness) (Closed Domain Hallucinations)
+    
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/context-adherence/context-adherence-basic">Context Adherence Luna</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.context_adherence_luna</code>
+        
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/context-adherence/groundedness">Context Adherence Plus</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.context_adherence_plus</code>
+        
+    
+*   [Chunk Attribution](/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution)
+    
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution-basic">Chunk Attribution Luna</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.chunk_attribution_utilization_luna</code>
+        
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/chunk-attribution/chunk-attribution">Chunk Attribution Plus</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.chunk_attribution_utilization_plus</code>
+        
+    
+*   [Chunk Utilization](/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization)
+    
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization-basic">Chunk Utilization Luna</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.chunk_attribution_utilization_luna</code>
+        
+    *   <a class="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors " href="/galileo/gen-ai-studio-products/guardrail-store/chunk-utilization/chunk-utilization">Chunk Utilization Plus</a>: <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">Scorers.chunk_attribution_utilization_plus</code>
+        
+    
+*   [Context Relevance](/galileo/gen-ai-studio-products/guardrail-store/context-relevance)
+    
+
+#### 
+
+[](#input-quality-metrics)
+
+Input Quality Metrics
+
+*   [Prompt Perplexity](/galileo/gen-ai-studio-products/guardrail-store/prompt-perplexity)
+    
+
+#### 
+
+[](#safety-metrics)
+
+Safety Metrics
+
+*   [Input & Output PII](/galileo/gen-ai-studio-products/guardrail-store/private-identifiable-information)
+    
+*   [Input & Output Tone](/galileo/gen-ai-studio-products/guardrail-store/tone)
+    
+*   [Input & Output Toxicity](/galileo/gen-ai-studio-products/guardrail-store/toxicity)
+    
+*   [Input & Output Sexism](/galileo/gen-ai-studio-products/guardrail-store/sexism)
+    
+*   [Prompt Injection](/galileo/gen-ai-studio-products/guardrail-store/prompt-injection)
+    
+
+Looking for something more specific? You can always add your own [custom metric](/galileo/gen-ai-studio-products/galileo-observe/how-to/registering-and-using-custom-metrics).
+
+[PreviousSelecting additional data to train with](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/selecting-additional-data-to-train-with)[NextChunk Relevance](/galileo/gen-ai-studio-products/guardrail-store/chunk-relevance)
+
+Last updated 7 days ago

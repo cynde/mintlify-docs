@@ -1,0 +1,51 @@
+---
+title: "Console Walkthrough"
+---
+
+# Console Walkthrough
+
+Upon completing a run, you'll be taken to the Galileo Console. By default, your Training split will be shown first. You can use the dropdown on the top-right to change it. The first thing you'll notice is your dataset on the right.
+
+By default you will see on each row the Input, its Target (Expected Output), the Generated Output if available, and the [Data Error Potential (DEP)](/galileo/gen-ai-studio-products/ml-research-algorithms/galileo-data-error-potential-dep) of the sample. The samples are sorted by DEP, showing the hardest samples first. Each Token in the Target also has a DEP value, which can easily be seen via highlighting.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fs7i8u390DixsSvCIVRqI%252Fimage.png%3Falt%3Dmedia%26token%3D9f919b5e-d658-4646-8ba6-409409ba1d3e&width=768&dpr=4&quality=100&sign=dd0c76cd&sv=1)
+
+Grid view with one row per sample.
+
+You can also view your samples in the [embeddings space](/galileo/how-to-and-faq/galileo-product-features/embeddings-view) of the model. This can help you get a semantic understanding of your dataset. Using features like _Color-By DEP,_ you might discover pockets of problematic data (e.g. decision boundaries that might benefit from more samples or a cluster of garbage samples).
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FImrf13PkHEltowF7RMpF%252FScreenshot%25202023-10-11%2520at%252010.19.24%2520PM.png%3Falt%3Dmedia%26token%3D76508ee1-655e-4c10-8758-4c0a8ac48d7b&width=768&dpr=4&quality=100&sign=63dfa871&sv=1)
+
+Embedding view colored by DEP. The hard/problematic points will be colored in red.
+
+Your left pane is called the [Insights Menu](/galileo/how-to-and-faq/galileo-product-features/insights-panel). On the top, you can see your dataset size and choose the metric you want to guide your exploration by (F1 by default). Size and metric value update as you add filters to your dataset.
+
+Your main source of insights will be [Alerts](/galileo/how-to-and-faq/galileo-product-features/xray-insights), [Metrics](/galileo/how-to-and-faq/galileo-product-features/insights-panel), and [Clusters](/galileo/how-to-and-faq/galileo-product-features/clusters). Alerts are a distilled list of different issues we've identified in your dataset. Under _Metrics_, you'll find different charts to help you debug your data.
+
+Clicking on an Alert will filter the dataset to the subset of data that corresponds to the Alert.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fd8B1bG5qmvt2Nprep1WS%252Fimage.png%3Falt%3Dmedia%26token%3D94af88ba-8704-417f-8993-ee469683b605&width=768&dpr=4&quality=100&sign=b1a1358b&sv=1)
+
+Insight's Menu
+
+These charts are dynamic and update as you add different filters. They are also interactive - clicking on a class or group of classes will filter the dataset accordingly, allowing you to inspect and fix the samples.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FlbGhbeTPuir5vfL5v4fw%252Fimage.png%3Falt%3Dmedia%26token%3De3eba44d-4841-478e-928b-e48e43cd114f&width=768&dpr=4&quality=100&sign=b476ab05&sv=1)
+
+The third tab is for your [Clusters](/galileo/how-to-and-faq/galileo-product-features/clusters). We automatically cluster your dataset taking into account frequent words and semantic distance. For each Cluster, we show you its average DEP score and the size of the cluster - factors you can use to determine which clusters are worth looking into.
+
+We also show you the common words in the cluster, and, if you enable your OpenAI integration, we leverage GPT to generate summaries of your clusters (more details [here](/galileo/how-to-and-faq/galileo-product-features/clusters)).
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252Fervkk1dkqw1wVlcrjZuU%252Fimage.png%3Falt%3Dmedia%26token%3Db4c2795a-c5e1-4adc-bffe-22fe1559a9d8&width=768&dpr=4&quality=100&sign=5066c801&sv=1)
+
+Description of various clusters.
+
+Analyzing the various Clusters side-by-side with the embeddings view is often a hepful way to discover interesting pockets of data.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FtSSp5sAlTBmQPtd2x92J%252FScreenshot%25202023-10-11%2520at%252010.24.40%2520PM.png%3Falt%3Dmedia%26token%3D751c96bc-ce42-45b9-8843-fe05c50d04cd&width=768&dpr=4&quality=100&sign=cac72eec&sv=1)
+
+Clusters and Embeddings side-by-side.
+
+[PreviousConfiguring DQ Auto](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/getting-started/dq.auto)[NextUsing Alerts](/galileo/gen-ai-studio-products/galileo-llm-fine-tune/using-alerts)
+
+Last updated 10 months ago

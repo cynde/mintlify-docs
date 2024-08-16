@@ -1,0 +1,54 @@
+---
+title: "Setting A Timeout On Your Protect Requests"
+---
+
+# Setting a Timeout on your Protect Requests
+
+Your Protect Rules rely on [Guardrail Metrics](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators). Metrics are calculated using ML models, which can have varying latencies.
+
+### 
+
+[](#setting-a-timeout-on-your-protect-invocations)
+
+Setting a timeout on your Protect invocations
+
+You can set a timeout on your Protect invocations to ensure that your Protect checks don't add excessive wait times for your users. If a metric exceeds the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">timeout</code> , any Rule and Ruleset that require it also time out and will not trigger.
+
+To configure your timeout setting, set the <code class="py-[1px] px-1.5 min-w-[1.625rem] inline-flex justify-center items-center ring-1 ring-inset ring-dark/1 bg-dark/[0.06] rounded text-dark/8 dark:ring-light/1 dark:bg-light/1 dark:text-light/7 text-[.875em] leading-[calc(max(1.20em,1.25rem))]">timeout</code> param when calling invoke:
+
+Copy```
+galileo_protect.invoke(payload=..., 
+
+galileo_protect.invoke(payload=..., 
+
+galileo_protect
+.
+invoke
+(payload
+=
+..., 
+                       prioritized_rulesets=..., 
+
+                       prioritized_rulesets=..., 
+
+                       prioritized_rulesets
+=
+..., 
+                       stage_id=..., 
+
+                       stage_id=..., 
+
+                       stage_id
+=
+..., 
+                       timeout=300.0)
+                       timeout=300.0)
+                       timeout
+=
+300.0
+)
+```
+
+[PreviousDefining Rules](/galileo/gen-ai-studio-products/galileo-protect/how-to/supported-metrics-and-operators)[NextUsing Protect in Chains](/galileo/gen-ai-studio-products/galileo-protect/how-to/using-protect-in-chains)
+
+Last updated 4 months ago

@@ -1,0 +1,111 @@
+---
+title: "Getting Started"
+---
+
+# Getting Started
+
+**How to use Galileo for Text Classification?**
+
+<iframe src="https://cdn.iframe.ly/WF8Ho2s" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen="" scrolling="no" allow="encrypted-media *;"></iframe>
+
+## 
+
+[](#discover-the-console)
+
+**Discover the Console**
+
+Upon completing a run, you'll be taken to the Galileo Console. The first thing you'll notice is your dataset on the right. On each row, we show you the sample's text, its Ground Truth and Prediction labels, and the [Data Error Potential](/galileo/gen-ai-studio-products/ml-research-algorithms/galileo-data-error-potential-dep) of the sample. By default, your samples are sorted by Data Error Potential.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252F2gKgij7Om1pZbIKzAzDx%252Fimage.png%3Falt%3Dmedia%26token%3D832d7ddd-e5ea-4696-9891-91e08167eedc&width=768&dpr=4&quality=100&sign=7553628d&sv=1)
+
+You can also view your samples in the [embeddings space](/galileo/how-to-and-faq/galileo-product-features/embeddings-view) of the model. This can help you get a semantic understanding of your dataset. Using features like _Color-By DEP,_ you might discover pockets of problematic data (e.g. decision boundaries that might benefit from more samples or a cluster of garbage samples).
+
+Your left pane is called the [Insights Menu](/galileo/how-to-and-faq/galileo-product-features/insights-panel). On the top you can see your dataset size and choose the metric you want to guide your exploration by (F1 by default). Size and metric update as you add filters to your dataset.
+
+Your main source of insights will be [Alerts](/galileo/how-to-and-faq/galileo-product-features/xray-insights), [Metrics](/galileo/how-to-and-faq/galileo-product-features/insights-panel) and [Clusters](/galileo/how-to-and-faq/galileo-product-features/clusters). Alerts are a distilled list of different issues we've identified in your dataset. Insights such as [_Mislabeled Samples_](/galileo/gen-ai-studio-products/ml-research-algorithms/likely-mislabeled), Class Imbalance, [Overlapping Classes](/galileo/gen-ai-studio-products/ml-research-algorithms/class-boundary-detection), etc will be surfaced as Alerts.
+
+Clicking on an Alert will filter the dataset to the subset of data that corresponds to the Alert.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FmmjESdnQoZlC0jw3OIkk%252Fimage.png%3Falt%3Dmedia%26token%3D712afad7-ca44-4b15-ae46-3766f579f645&width=768&dpr=4&quality=100&sign=c449f43a&sv=1)
+
+Under metrics, you'll find different charts, such as:
+
+*   F1 by Class
+    
+*   Sample Count by Class
+    
+*   Overlapping Classes
+    
+*   Top Misclassified Pairs
+    
+*   DEP Distribution
+    
+
+These charts are dynamic and update as you add different filters. They're also interactive - clicking on a class or group of classes will filter the dataset accordingly, allowing you to inspect and fix the samples.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FxK0pgwXjhocUfxaVp4wv%252Fezgif.com-video-to-gif%2520%2817%29.gif%3Falt%3Dmedia%26token%3D92141929-65ab-41a3-a55b-bf9cd6a03f9e&width=768&dpr=4&quality=100&sign=f9e42b00&sv=1)
+
+The third tab are your [Clusters](/galileo/how-to-and-faq/galileo-product-features/clusters). We automatically cluster your dataset taking into account frequent words and semantic distance. For each Cluster, we show you its average DEP score, F1, and the size of the cluster - factors you can use to determine which clusters are worth looking into. We also show you the common words in the cluster, and, if you enable your OpenAI integration, we leverage GPT to generate summaries of your clusters (more details [here](/galileo/how-to-and-faq/galileo-product-features/clusters)).
+
+**Taking Action**
+
+Once you've identified a problematic subset of data, Galileo allows you to fix your samples with the goal of improving your F1 or performance metric of choice. In Text Classification runs, we allow you to:
+
+*   Change Label - Re-assign the label of your image right in-tool
+    
+*   Remove - Remove problematic images you want to discard from your dataset
+    
+*   Edit Data - Fix typos or extraneous characters in your samples
+    
+*   Send to Labelers - Send your samples to your labelers through our [Labeling Integrations](/galileo/how-to-and-faq/galileo-product-features/3p-integrations)
+    
+*   Export - Download your samples so you can fix them elsewhere
+    
+
+Your changes are tracked in your Edits Cart. There you can view a summary of the changes you've made, you can undo them, or download a clean and fixed dataset to retrain your model.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FrspqZxstOClD04v1SqJO%252Fezgif.com-video-to-gif%2520%2821%29.gif%3Falt%3Dmedia%26token%3Dc615d330-6f8e-45a9-a754-1caf592414e2&width=768&dpr=4&quality=100&sign=dfdfc272&sv=1)
+
+**Changing Splits**
+
+Your dataset splits are maintained on Galileo. Your data is logged as Training, Test and/or Validation split. Galileo allows you to explore each split independently. Some alerts, such as Underfitting Classes or Overfitting Classes look at cross-split performance. However, for the most part, each split is treated independently.
+
+To switch splits, find the _Splits_ dropdown next to your project and run name near the top of the screen. By default, the Training split is shown first.
+
+![](https://docs.rungalileo.io/~gitbook/image?url=https%3A%2F%2F1924900477-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F4jVWiQpRqmi04OnqZmn2%252Fuploads%252FS8exoT91lWZFw72w6mwx%252Fimage.png%3Falt%3Dmedia%26token%3D919b750c-8a15-475e-9e8a-aaa5a9267d41&width=768&dpr=4&quality=100&sign=b0a63b58&sv=1)
+
+### 
+
+[](#get-started-with-a-notebook)
+
+Get started with a notebook 📘
+
+*   [Huggingface](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_Huggingface_Trainer_and_%F0%9F%94%AD_Galileo.ipynb) 🤗 [Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_Huggingface_Trainer_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [PyTorch Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_PyTorch_and_%F0%9F%94%AD_Galileo_Simple.ipynb)
+    
+*   [TensorFlow Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_Tensorflow_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [Keras Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_Keras_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+*   [SetFit Notebook](https://colab.research.google.com/github/rungalileo/examples/blob/main/examples/text_classification/Text_Classification_using_SetFit_and_%F0%9F%94%AD_Galileo.ipynb)
+    
+
+### 
+
+[](#start-integrating-galileo-with-our-supported-frameworks)
+
+Start integrating Galileo with our supported frameworks 💻
+
+*   HuggingFace 🤗
+    
+*   PyTorch
+    
+*   TensorFlow
+    
+*   Keras
+    
+
+[PreviousText Classification](/galileo/galileo-nlp-studio/text-classification)[NextLogging Data to Galileo](/galileo/galileo-nlp-studio/text-classification/logging-data-to-galileo)
+
+Last updated 11 months ago
